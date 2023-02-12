@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic
@@ -9,6 +11,8 @@ from django.db.models import Q
 
 
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -25,9 +29,11 @@ def loginPage(request):
     context = {}
     return render(request, 'base/login_register.html', context)
 
+
 def logoutUser(request):
-    logout(request);
+    logout(request)
     return redirect('home')
+
 
 def home(request):
     if request.GET.get('q') != None:
@@ -48,6 +54,7 @@ def room(request, pk):
     return render(request, 'base/room.html', context)
 
 
+@login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
     if request.method == 'POST':
@@ -59,9 +66,13 @@ def createRoom(request):
     return render(request, 'base/room_form.html', context)
 
 
+@login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)  # prefilled with room instance
+
+    if request.user != room.host:  # different user is not allowed to update room
+        return HttpResponse('You are not allowed here !')
 
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
@@ -73,8 +84,12 @@ def updateRoom(request, pk):
     return render(request, 'base/room_form.html', context)
 
 
+@login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
+
+    if request.user != room.host:  # different user is not allowed to update room
+        return HttpResponse('You are not allowed here !')
 
     if (request.method == 'POST'):
         room.delete()
