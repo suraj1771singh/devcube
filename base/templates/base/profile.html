@@ -12,6 +12,9 @@
 <div class="profile-container">
   <div>{% include 'base/topics_component.html' %}</div>
   <div>
+    {% if request.user == user %}
+    <a href="{% url 'update-profile' %}">Update Profile</a>
+    {% endif %}
     <h3> Study rooms hosted by {{user}}</h3>
     {% include 'base/feed_component.html' %}</div>
   <div>{% include 'base/activity_component.html' %}</div>

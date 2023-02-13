@@ -1,0 +1,23 @@
+{% include 'main.html' %} {% block content %}
+<style>
+  .update-profile-container {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+</style>
+<div>
+  <form class="update-profile-container" method="POST" action="">
+    {% csrf_token %} {% for field in form %}
+    <div>
+      <label for="profile_pic">{{field.label}}</label>
+      {{field}}
+    </div>
+    {% endfor %}
+    <div>
+      <button><a href="{% url 'home' %}">cancel</a></button>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}
