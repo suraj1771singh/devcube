@@ -11,7 +11,9 @@
 
 <div class="profile-container">
   <div>{% include 'base/topics_component.html' %}</div>
-  <div>{% include 'base/feed_component.html' %}</div>
+  <div>
+    <h3> Study rooms hosted by {{user}}</h3>
+    {% include 'base/feed_component.html' %}</div>
   <div>{% include 'base/activity_component.html' %}</div>
 </div>
 
