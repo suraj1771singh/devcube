@@ -1,11 +1,15 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from base.models import Room, Topic
-from .serializers import RoomSerializer, UserSerializer, TopicSerializer
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from rest_framework import status
+
+from base.models import Room, Topic
+from .serializers import RoomSerializer, UserSerializer, TopicSerializer
 from ..forms import RoomForm, UserForm
 
 
@@ -45,6 +49,7 @@ def getTopics(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createRoom(request):
 
     sl = RoomSerializer(data=request.data)
