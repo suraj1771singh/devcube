@@ -34,10 +34,12 @@ def getRooms(request):
 
 
 @api_view(['GET'])
-def getRoom(request, pk):
-    room = Room.objects.get(id=pk)
+@permission_classes([IsAuthenticated])
+def getRoom(request):
+    user = request.user
+    room = user.room_set.all()
     # many is set to true, to serialize many objects
-    serializer = RoomSerializer(room, many=False)
+    serializer = RoomSerializer(room, many=True)
     return Response(serializer.data)
 
 
@@ -51,13 +53,11 @@ def getTopics(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createRoom(request):
-
     sl = RoomSerializer(data=request.data)
     if sl.is_valid():
-        room = sl.save(commit=False)
-        room.host = request.user
-        room.save()
-        return Response(sl.data)
+        # room = sl.save(commit=False)
+        sl.save(host=request.user)
+        return Response({'msg': "Created room successfully !"}, status=status.HTTP_200_OK)
     else:
         return Response({'msg': "Invalid form Details!"}, status=status.HTTP_400_BAD_REQUEST)
 

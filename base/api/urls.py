@@ -9,9 +9,9 @@ urlpatterns = [
     path('', views.getRoutes),
     path('rooms/', views.getRooms),
     path('topics/', views.getTopics),
-    path('room/<str:pk>/', views.getRoom),
+    path('room/', views.getRoom),
     path('user/<str:pk>/', views.getUserProfile),
-    path('createroom', views.createRoom),
+    path('createroom/', views.createRoom),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
