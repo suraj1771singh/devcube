@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
-from .models import Room, Topic, Message
-from .forms import RoomForm, UserForm
+
+from .models import Room, Topic, Message, User
+from .forms import RoomForm, UserForm, MyUserCreationForm
 from django.db.models import Q
 # Create your views here.
 
@@ -39,14 +39,15 @@ def logoutUser(request):
 
 def registerUser(request):
     page = 'register'
-    form = UserCreationForm()
+    form = MyUserCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             # this will freeze and return user object that will be created in database
             # in order to provide customization before actually saving user
             user = form.save(commit=False)
-            user.username = user.username.lower()
+            user.email = user.email.lower()
+            user.username = user.email.lower()
             user.save()
             login(request, user)
             return redirect('home')

@@ -1,7 +1,23 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.contrib.auth.models import AbstractUser
+from .userManager import MyUserManager
 # Create your models here.
+
+
+class User(AbstractUser):
+    # Username = None
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=100, blank=False)
+    bio = models.TextField(null=True, blank=True)
+    linkedin_url = models.CharField(max_length=100, null=True, blank=True)
+    twitter_url = models.CharField(max_length=100, null=True, blank=True)
+    insta_url = models.CharField(max_length=100, null=True, blank=True)
+    objects = MyUserManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
 
 
 class Topic (models.Model):

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig'  # setting base app
 ]
 
+AUTH_USER_MODEL = 'base.User'
+
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
