@@ -5,9 +5,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
-from base.models import Room, Topic
+from base.models import Room, Topic, User
 from .serializers import RoomSerializer, UserSerializer, TopicSerializer
 from ..forms import RoomForm, UserForm, MyUserCreationForm
 
@@ -38,6 +38,7 @@ def registerUser(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUserProfile(request, pk):
     try:
         user = User.objects.get(id=pk)
@@ -53,10 +54,11 @@ def getUserProfile(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createRoom(request):
-    sl = RoomSerializer(data=request.data)
-    if sl.is_valid():
-        # room = sl.save(commit=False)
-        sl.save(host=request.user)
+    form = RoomForm(request.data)
+    if form.is_valid():
+        room = form.save(commit=False)
+        room.host = request.user
+        room.save()
         return Response({'msg': "Created room successfully !"}, status=status.HTTP_200_OK)
     else:
         return Response({'msg': "Invalid form Details!"}, status=status.HTTP_400_BAD_REQUEST)
@@ -64,8 +66,25 @@ def createRoom(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getRooms(request):
+def getAllRooms(request):
     rooms = Room.objects.all()
+    # many is set to true, to serialize many objects
+    serializer = RoomSerializer(rooms, many=True)
+    try:
+        for room in serializer.data:
+            user = User.objects.get(id=room['host'])
+            room['hostname'] = user.username
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        Response({'msg': "Something went wrong !"},
+                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getRoomsByUser(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
     # many is set to true, to serialize many objects
     serializer = RoomSerializer(rooms, many=True)
     return Response(serializer.data)
@@ -73,12 +92,45 @@ def getRooms(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getRoom(request):
-    user = request.user
-    room = user.room_set.all()
-    # many is set to true, to serialize many objects
-    serializer = RoomSerializer(room, many=True)
-    return Response(serializer.data)
+def getRoomsById(request, pk):
+    rooms = Room.objects.get(id=pk)
+    serializer = RoomSerializer(rooms, many=True)
+    try:
+        for room in serializer.data:
+            user = User.objects.get(id=room['host'])
+            room['hostname'] = user.username
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        Response({'msg': "Something went wrong !"},
+                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteRoom(request, pk):
+    try:
+        room = Room.objects.get(id=pk)
+        if request.user != room.host:
+            return Response({"msg": "Unauthorized request"}, status=status.HTTP_401_UNAUTHORIZED)
+        room.delete()
+        return Response({'msg': "Successfully Deleted "}, status=status.HTTP_200_OK)
+    except Room.DoesNotExist:
+        return Response({'msg': "Room doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def updateRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    if request.user != room.host:
+        return Response({'msg': "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    form = RoomForm(request.data, instance=room)
+    if form.is_valid():
+        form.save()
+        return Response({'msg': "Updated successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({'msg': "Invalid update"}, status=status.HTTP_400_BAD_REQUEST)
 
 # ------------------------Topics
 
