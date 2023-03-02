@@ -7,9 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.models import User
 
-from base.models import Room, Topic, User, UserRelationship
-from .serializers import RoomSerializer, UserSerializer, TopicSerializer
-from ..forms import RoomForm, UserForm, MyUserCreationForm
+from base.models import Room, Topic, User, UserRelationship, Message
+from .serializers import RoomSerializer, UserSerializer, TopicSerializer, MsgSerializer
+from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm
 
 
 @api_view(['GET'])
@@ -93,16 +93,16 @@ def getRoomsByUser(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getRoomsById(request, pk):
-    rooms = Room.objects.get(id=pk)
-    serializer = RoomSerializer(rooms, many=True)
     try:
-        for room in serializer.data:
-            user = User.objects.get(id=room['host'])
-            room['hostname'] = user.username
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        room = Room.objects.get(id=pk)
+        user = room.host
+        serializer = RoomSerializer(room, many=False)
+        data = serializer.data
+        data["hostname"] = user.username
+        return Response(data, status=status.HTTP_200_OK)
     except:
-        Response({'msg': "Something went wrong !"},
-                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'msg': "Something went wrong !"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['DELETE'])
@@ -239,3 +239,81 @@ def getTopics(request):
     topics = Topic.objects.all()
     sl = TopicSerializer(topics, many=True)
     return Response(sl.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createMsg(request, pk):
+    user = request.user
+    room = Room.objects.get(id=pk)
+    form = MsgForm(request.data)
+
+    if form.is_valid():
+        msg = form.save(commit=False)
+        msg.user = user
+        msg.room = room
+        msg.save()
+        return Response({'msg': "Message created successfully"}, status=status.HTTP_201_CREATED)
+    else:
+        return Response({'msg': "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteMsg(request, pk):
+    try:
+        msg = Message.objects.get(id=pk)
+    except Message.DoesNotExist:
+        return Response({'msg': "Message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+    if msg.user != request.user:
+        return Response({'msg': "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+    msg.delete()
+    return Response({'msg': "Message deleted successfully"},
+                    status=status.HTTP_200_OK)
+
+
+@api_view(['PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def updateMsg(request, pk):
+    try:
+        msg = Message.objects.get(id=pk)
+    except Message.DoesNotExist:
+        return Response({'msg': "Message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+    if msg.user != request.user:
+        return Response({'msg': "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+    form = MsgForm(request.data, instance=msg)
+    if form.is_valid():
+        form.save()
+        return Response({'msg': "Message updated successfully"},
+                        status=status.HTTP_200_OK)
+    else:
+        return Response({'msg': "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getAllMsg(request):
+    msgs = Message.objects.all()
+    sl = MsgSerializer(msgs)
+    return Response(sl.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMsgsByUser(request, pk):
+    user = User.objects.get(id=pk)
+    msgs = user.message_set.all()
+    sl = MsgSerializer(msgs, many=True)
+    return Response(sl.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMsgsByRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    msgs = room.message_set.all()
+    sl = MsgSerializer(msgs, many=True)
+    for data in sl.data:
+        user = User.objects.get(id=data['user'])
+        data["username"] = user.username
+    return Response(sl.data, status=status.HTTP_200_OK)
