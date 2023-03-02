@@ -61,10 +61,10 @@ class Message(models.Model):
 
 
 class UserRelationship(models.Model):
-    user = models.ForeignKey(
+    followed = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        related_name='user_relationship_as_user', null=True
+        related_name='user_relationship_as_followed', null=True
     )
     follower = models.ForeignKey(
         User,
@@ -76,8 +76,6 @@ class UserRelationship(models.Model):
     class Meta:
         ordering = ['-created']
 
-    def __str__(self):
-        return self.follower
 
 # Make migrations
 # python manage.py makemigrations

@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.models import User
 
-from base.models import Room, Topic, User
+from base.models import Room, Topic, User, UserRelationship
 from .serializers import RoomSerializer, UserSerializer, TopicSerializer
 from ..forms import RoomForm, UserForm, MyUserCreationForm
 
@@ -132,9 +132,108 @@ def updateRoom(request, pk):
     else:
         return Response({'msg': "Invalid update"}, status=status.HTTP_400_BAD_REQUEST)
 
-# ------------------------Topics
+
+@api_view(['PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def addParticipant(request, pk):
+    try:
+        room = Room.objects.get(id=pk)
+    except Room.DoesNotExist:
+        return Response({'msg': 'Room does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+    user = request.user
+    if user.id == room.host:
+        return Response({'msg': "unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    room.participants.add(user)
+    return Response({'msg': "added successfully"}, status=status.HTTP_201_CREATED)
 
 
+@api_view(['PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def removeParticipant(request, pk):
+    try:
+        room = Room.objects.get(id=pk)
+    except Room.DoesNotExist:
+        return Response({'msg': 'Room does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+    user = request.user
+    if user.id == room.host:
+        return Response({'msg': "unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    room.participants.remove(user)
+    return Response({'msg': "removed successfully"}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getJoinedRoomsByUser(request, pk):
+
+    user = User.objects.get(id=pk)
+    rooms = Room.objects.filter(participants=user)
+    serializer = RoomSerializer(rooms, many=True)
+    try:
+        for room in serializer.data:
+            user = User.objects.get(id=room['host'])
+            room['hostname'] = user.username
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        Response({'msg': "Something went wrong !"},
+                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# ------------------------ FOLLOWER AND FOLLOWING
+
+
+@api_view(['PUT', 'POST'])
+@permission_classes([IsAuthenticated])
+def follow(request, pk):
+    try:
+        user_to_follow = User.objects.get(id=pk)
+    except:
+        Response({'msg': "User to follow doesn't exist"},
+                 status=status.HTTP_404_NOT_FOUND)
+    relationship, created = UserRelationship.objects.get_or_create(
+        follower=request.user,
+        followed=user_to_follow,
+    )
+
+    if not created:
+        return Response({"msg": "You are already following this user."}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'msg': f"started following{ user_to_follow}"},
+                    status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT', 'POST'])
+@permission_classes([IsAuthenticated])
+def unfollow(request, pk):
+    relationship = UserRelationship.get(follower=request.user, followed_id=pk)
+    relationship.delete()
+    return Response({'msg': f"Unfollowed user with id {pk} "}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getFollowers(request, pk):
+    res = UserRelationship.objects.filter(followed_id=pk)
+    data = list()
+    for e in res:
+        data.append(e.follower)
+    sl = UserSerializer(data, many=True)
+    return Response(sl.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getFollowing(request, pk):
+    res = UserRelationship.objects.filter(follower_id=pk)
+    data = list()
+    for e in res:
+        data.append(e.followed)
+    sl = UserSerializer(data, many=True)
+    return Response(sl.data, status=status.HTTP_200_OK)
+
+
+# ------------------------TOPICS
 @api_view(['GET'])
 def getTopics(request):
     topics = Topic.objects.all()

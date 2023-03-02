@@ -13,6 +13,14 @@ urlpatterns = [
     path('rooms-user/<str:pk>/', views.getRoomsByUser),
     path('room-delete/<str:pk>/', views.deleteRoom),
     path('room-update/<str:pk>/', views.updateRoom),
+    path('room-add-participant/<str:pk>/', views.addParticipant),
+    path('room-remove-participant/<str:pk>/', views.removeParticipant),
+    path('rooms-joined/<str:pk>/', views.getJoinedRoomsByUser),
+    # ---------FOLLOWER AND FOLLOWING
+    path('follow/<str:pk>/', views.follow),
+    path('unfollow/<str:pk>/', views.unfollow),
+    path('followers/<str:pk>/', views.getFollowers),
+    path('following/<str:pk>/', views.getFollowing),
     #---------- TOPICS
     path('topics/', views.getTopics),
     #----------- USER
