@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('', views.getRoutes),
     #---------- ROOMS
+    path('createroom/', views.createRoom),
     path('rooms/', views.getAllRooms),
     path('room/<str:pk>/', views.getRoomsById),
     path('rooms-user/<str:pk>/', views.getRoomsByUser),
@@ -16,17 +17,28 @@ urlpatterns = [
     path('room-add-participant/<str:pk>/', views.addParticipant),
     path('room-remove-participant/<str:pk>/', views.removeParticipant),
     path('rooms-joined/<str:pk>/', views.getJoinedRoomsByUser),
+
     # ---------FOLLOWER AND FOLLOWING
     path('follow/<str:pk>/', views.follow),
     path('unfollow/<str:pk>/', views.unfollow),
     path('followers/<str:pk>/', views.getFollowers),
     path('following/<str:pk>/', views.getFollowing),
+
     #---------- TOPICS
     path('topics/', views.getTopics),
+
+    # -----------MESSAGE
+    path('createMsg/<str:pk>/', views.createMsg),
+    path('msgs/', views.getAllMsg),
+    path('msgs-user/<str:pk>/', views.getMsgsByUser),
+    path('msg-update/<str:pk>/', views.updateMsg),
+    path('msg-delete/<str:pk>/', views.deleteMsg),
+    path('msgs-room/<str:pk>/', views.getMsgsByRoom),
+
     #----------- USER
     path('user/<str:pk>/', views.getUserProfile),
-    path('createroom/', views.createRoom),
     path('register/', views.registerUser),
+
     #----------- TOKEN
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
