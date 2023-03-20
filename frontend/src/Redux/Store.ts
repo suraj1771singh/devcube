@@ -10,7 +10,6 @@ import {authReducer} from "./auth/auth.reducer";
 const rootReducer = combineReducers({
     auth:authReducer
 })
+export const store = legacy_createStore(rootReducer,compose(applyMiddleware(thunk)))
 
-const composeEnhancer = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose;
-
-export const store = legacy_createStore(rootReducer,composeEnhancer(applyMiddleware(thunk)))
+export type rootReducertype = ReturnType<typeof rootReducer>

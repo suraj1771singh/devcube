@@ -13,7 +13,7 @@ export const registerUserApi = async(data:registerUserDataType)=>{
 
 export const loginUserApi = async(data:loginUserDataType)=>{
     try{
-        let res = await axios.post(`${baseUrl}/token`,data);
+        let res = await axios.post(`${baseUrl}/token/`,data);
         return res;
     }catch(err){
         console.log(err)
