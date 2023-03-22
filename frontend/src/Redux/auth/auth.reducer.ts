@@ -11,8 +11,7 @@ import {USER_LOGIN_LOADING,
 
     let authTokens:any = localStorage.getItem("authTokens");
     authTokens = authTokens?(JSON.parse(authTokens)):null
-    let token:string|undefined = authTokens.access
-    ;
+    let token:string|undefined = authTokens?.access||undefined;
     const initialState:authUserDataType = {
         login_loading:false,
         login_error:false,

@@ -9,8 +9,8 @@ const Navbar = () => {
                 <div className=''>
                     <NavLink to="/" className='text-xl cursor-pointer'>StudyBuddy</NavLink>
                 </div>
-                <div className='border-2 border-gray-600 px-4 py-2 rounded-md w-[40%] flex justify-around'>
-                    <input type="text" className='w-[70%] bg-transparent outline-none' placeholder='Search' />
+                <div className='border-2 border-bg_sec px-4 py-2 rounded-md w-[40%] flex justify-around'>
+                    <input type="text" className='w-[70%] bg-bg_pri outline-none' placeholder='Search' />
                    <CiSearch className='cursor-pointer text-2xl' />
                 </div>
                 <div className=''>

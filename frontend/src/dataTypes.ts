@@ -29,3 +29,12 @@ export interface userDataType{
     email:string;
     token:string;
 }
+
+export interface createRoomDataType{
+    topic:string;
+    name:string;
+    description:string;
+    author:string;
+    created_at?:string|number;
+    joinee?:string[]|null
+}
