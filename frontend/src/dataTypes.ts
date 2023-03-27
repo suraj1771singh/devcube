@@ -23,6 +23,11 @@ export interface authUserDataType{
         userData:userDataType|null,
         logout_loading:boolean,
         logout_error:boolean,
+        token?:userTokenType|null
+}
+export interface userTokenType {
+    access:string,
+    refresh:string;
 }
 export interface userDataType{
     name:string,
@@ -34,7 +39,9 @@ export interface createRoomDataType{
     topic:string;
     name:string;
     description:string;
-    author:string;
-    created_at?:string|number;
-    joinee?:string[]|null
+}
+
+export interface topicDataType{
+    id:number|string;
+    name:string
 }

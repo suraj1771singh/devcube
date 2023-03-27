@@ -1,9 +1,12 @@
-import AllRoutes from './Components/AllRoutes'
+import AllRoutes from './route/AllRoutes'
 import './App.css';
+import { useSelector } from 'react-redux';
+import { rootReducertype } from './Redux/Store';
 
 function App() {
+  let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
   return (
-    <div className='bg-bg_pri text-font_pri h-[100vh]'>
+    <div className={`min-h-[100vh] ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} `}>
       <AllRoutes/>
     </div>
   );

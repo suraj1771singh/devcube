@@ -7,6 +7,7 @@ const Login = () => {
   const nav = useNavigate()
  const {isAuth}  = useSelector((val:rootReducertype)=>val?.auth)
   let dispatch:Dispatch<any> = useDispatch()
+  let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
   const [userData,setUserData] = useState({email:"",password:""})
   const handleChange=(e: { target: { name: any; value: any } })=>{
     setUserData({...userData,[e.target.name]:e.target.value})
@@ -26,7 +27,7 @@ const Login = () => {
         <h3 className='font-bold text-2xl'>
           Login
         </h3>
-      <div className='border-2 border-gray-500 rounded-md p-6 w-3/4 my-4'>
+      <div className={`shadow-md rounded-md p-6 w-3/4 my-4 ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`}>
       <form className='flex flex-col' onSubmit={handleLogin}>
         <label htmlFor="email" className='my-4 my-4 border-[1px] rounded-md border-gray-600 p-3'>Email:
         <input type="email" value={userData.email} name='email' onChange={handleChange} placeholder='user@example' className='bg-transparent w-3/4 outline-none px-2' />

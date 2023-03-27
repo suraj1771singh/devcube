@@ -1,22 +1,25 @@
 import axios from "axios";
-import { createRoomDataType } from "../../dataTypes";
+import { createRoomDataType, userTokenType } from "../../dataTypes";
 let baseUrl = process.env.REACT_APP_BASE_URL;
-export const getRoomsApi = async(token:string)=>{
-    try{
-        let res = await axios.get(`${baseUrl}/rooms/`,{
-            headers:{
-                Authorization: "Bearer " + String(token)
-            }
-        })
-        return res
+
+export const getRoomsApi = async()=>{
+    try {
+        let token:any = localStorage.getItem("authTokens");
+            let authToken:userTokenType = JSON.parse(token);
+            let data = authToken.access;
+        const res = await axios.get(`${baseUrl}/rooms/`,{headers:{Authorization:`Bearer ${data}`}});
+          return res.data
     }catch(err){
         throw err
     }
 } 
 
-export const createRoomApi = (data:createRoomDataType,token:string)=>{
-    try{
-        let res = axios.post(`${baseUrl}/createroom`,{Headers:{Authorization: "Bearer " + String(token)},data})
+export const createRoomApi = async(data:createRoomDataType)=>{
+     try{
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.post(`${baseUrl}/createroom/`,data,{headers:{Authorization:`Bearer ${token}`}})
         return res
     }catch(err){
         throw err

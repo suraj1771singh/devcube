@@ -1,4 +1,4 @@
-import { authUserDataType } from "../../dataTypes";
+import { authUserDataType, userTokenType } from "../../dataTypes";
 import {USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
@@ -7,18 +7,20 @@ import {USER_LOGIN_LOADING,
     USER_LOGOUT_SUCCESS,
     USER_LOGOUT_FAILURE,
     USER_LOGOUT_LOADING,
-    USER_SIGNUP_SUCCESS} from "./auth.actions.types";
+    USER_SIGNUP_SUCCESS, USER_REFRESH_LOADING,
+    USER_REFRESH_SUCCESS,
+    USER_REFRESH_FAILURE,} from "./auth.actions.types";
 
-    let authTokens:any = localStorage.getItem("authTokens");
-    authTokens = authTokens?(JSON.parse(authTokens)):null
-    let token:string|undefined = authTokens?.access||undefined;
+    let authTokens:string|null = localStorage.getItem("authTokens");
+    let authToken:userTokenType = authTokens?(JSON.parse(authTokens)):null
     const initialState:authUserDataType = {
         login_loading:false,
         login_error:false,
-        isAuth:token?true:false,
+        isAuth:authToken?true:false,
         signup_loading:false,
         signup_error:false,
         userData:null,
+        token:authToken,
         logout_loading:false,
         logout_error:false,
     }
@@ -55,6 +57,16 @@ export const authReducer = (state=initialState,actions:{type:string,payload:any}
         case USER_LOGOUT_LOADING:{
             return {...state, logout_loading:true,
                 logout_error:false,}
+        }
+        case USER_REFRESH_LOADING:{
+            return {...state}
+        }
+        case USER_REFRESH_SUCCESS:{
+            localStorage.setItem("authTokens",JSON.stringify(payload))
+            return {...state, isAuth:true}
+        }
+        case USER_REFRESH_FAILURE:{
+            return {...state, isAuth:false}
         }
         
         default:{

@@ -1,6 +1,9 @@
 import React, { FormEvent, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { BsArrowLeft } from 'react-icons/bs'
+import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
+import { createRoom } from '../Redux/room/room.action';
+import { rootReducertype } from '../Redux/Store';
 import Alert from './Alert';
 
 interface closeModalFunc {
@@ -9,31 +12,31 @@ interface closeModalFunc {
 const CreateRoomModal = (props:closeModalFunc) => {
   const {closeCreateModal} = props;
   const dispatch:Dispatch<any> = useDispatch()
+ let {token} = useSelector((val:rootReducertype)=>val.auth)
+ const {allTopics} =  useSelector((val:rootReducertype)=>val.topics)
   const [roomData,setRoomData] = useState({room_name:"",room_topic:"",room_about:""})
   const [alert,setAlert] = useState(false)
+  let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
   const handleChange = (e: { target: { name: any; value: any; }; })=>{
     setRoomData({...roomData,[e.target.name]:e.target.value})
+    setAlert(true)
+    setTimeout(() => {
+      setAlert(false)
+    }, 3000);
   }
   const handleRoomData = (e:FormEvent)=>{
     e.preventDefault();
     let name = roomData.room_name.trim();
     let topic= roomData.room_topic.trim();
     let description = roomData.room_about.trim();
-    let author='curr_user';
-    let created_at = Date.now();
-    let joinee=null
-    if(name&&topic&&description){
+    if(name&&topic&&description&&token){
       let data = {
         name,
         topic,
-        description,
-        author,
-        created_at,
-        joinee
+        description
       }
-      console.log(data)
-      // dispatch(createStudyRoom())
-
+        dispatch(createRoom(data))
+        closeCreateModal()
     }else{
       setAlert(true)
       setTimeout(() => {
@@ -49,25 +52,32 @@ const CreateRoomModal = (props:closeModalFunc) => {
   }
 
   return (
-    <div onClick={handleClose} className='fixed flex justify-center items-center bg-black/50 top-0 bottom-0 left-0 right-0'>
-        <div onClick={(e)=>e.stopPropagation()} className='bg-bg_pri w-[50%] rounded-md overflow-hidden'>
-          <div className='h-14 flex items-center px-10 bg-bg_sec'>
-            <h3>CREATE STUDY ROOM</h3>
+    <div className='fixed flex justify-center items-center bg-black/50 top-0 bottom-0 left-0 right-0'>
+        <div className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} md:w-[50%] overflow-hidden shadow-xl rounded-2xl`}>
+          <div className={`h-14 flex items-center px-4 bg-bg_sec ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`}>
+            <BsArrowLeft onClick={()=>closeCreateModal()} className='cursor-pointer text-2xl mx-4 text-third_color font-bold' />
+            <h3>CREATE ROOM</h3>
           </div>
-        <form onSubmit={handleRoomData} className='flex flex-col p-10'>
+        <form onSubmit={handleRoomData} className='flex flex-col md:p-10 p-4'>
           <label className='my-2' htmlFor="room_name">Room Name</label>
-          <input required className='bg-transparent outline-none border-2 border-bg_sec p-2 rounded-md' name='room_name' value={roomData.room_name} onChange={handleChange} type="text" placeholder='Room name'/>
+          <input required className={`bg-bg_sec outline-none border-2 p-2 rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`} name='room_name' value={roomData.room_name} onChange={handleChange} type="text" placeholder='Room name'/>
           <label htmlFor="room_topic">Topic</label>
-          <input className='bg-transparent outline-none border-2 border-bg_sec p-2 rounded-md' required type="text" placeholder='Room Topic' name='room_topic' value={roomData.room_topic} onChange={handleChange} />
+            <select className={`outline-none border-2 border-bg_sec p-2 rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`} name="room_topic" id="room_topic" placeholder='Select topic' onChange={handleChange} >
+              <option value="">--- Select topic ---</option>
+          {
+              allTopics.map((el:any)=><option key={el.id} value={el.id}>{el.name}</option>
+            )
+          }
+          </select>
           <label  htmlFor="room_about">About</label>
-          <textarea required name="room_about" value={roomData.room_about} onChange={handleChange} className='bg-transparent outline-none border-2 border-bg_sec p-2 rounded-md resize-none' placeholder='About Your Room'id="room_about" cols={20}  rows={4}></textarea>
+          <textarea required name="room_about" value={roomData.room_about} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}outline-none border-2 border-bg_sec p-2 rounded-md resize-none`} placeholder='About Your Room'id="room_about" cols={20}  rows={4}></textarea>
           <div className=' mt-4 flex flex-row-reverse items-center'>
           <input type="submit" className='py-2 px-4 rounded-md text-right w-fit mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer'value={"Create Room"}/>
             <button onClick={handleClose} className='bg-bg_sec py-2 px-4 rounded-md' >Cancel</button>
           </div>
         </form>
         </div>
-     {alert&&<Alert text='Please Fill all the fields' type="red"/>}
+     {alert&&<Alert text='Please Fill all the fields' type="red-500"/>}
     </div>
   )
 }

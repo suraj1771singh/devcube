@@ -6,6 +6,7 @@ interface alertTypes{
 }
 const Alert = (props:alertTypes) => {
     const {text,type,time=30000} = props;
+    console.log('alert opened')
     const [alert,setAlert] = useState(true)
     useEffect(() => {
       setTimeout(() => {
@@ -15,9 +16,9 @@ const Alert = (props:alertTypes) => {
     }, [])
   return (
     <>
-   {alert&&<div onClick={()=>setAlert(false)} className={`fixed bottom-0 top-[90%] left-1 right-1 z-30 flex items-center `}>
-    <div className={`bg-${type}-400 rounded-md py-2 px-10`}>
-        <h5 className='text-black font-semibold'>{text}</h5>
+   {alert&&<div onClick={()=>setAlert(false)} className={`fixed bottom-0 top-[90%] left-1 right-1 z-30 flex items-center z-index-50`}>
+    <div className={`bg-${type} rounded-md py-2 px-10`}>
+        <h5 className='text-white font-semibold'>{text}</h5>
     </div>
     </div>}
     </>

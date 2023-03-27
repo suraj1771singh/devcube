@@ -8,7 +8,11 @@ import {
     USER_LOGOUT_SUCCESS,
     USER_LOGOUT_FAILURE,
     USER_LOGOUT_LOADING,
-    USER_SIGNUP_SUCCESS
+    USER_SIGNUP_SUCCESS, 
+    USER_REFRESH_LOADING,
+    USER_REFRESH_SUCCESS,
+    USER_REFRESH_FAILURE,
+
 } from "./auth.actions.types"
 import { loginUserApi, registerUserApi, updateTokenApi } from "./auth.api";
 
@@ -40,26 +44,13 @@ export const logoutUser = () => (dispatch: (arg: dispatchType) => void) => {
     }
 }
 
-export const updateToken = (data:string) =>async(dispatch: (arg: dispatchType) => void)=> {
-    try{
-        // dispatch
-        let res = await updateTokenApi(data)
-        console.log(res)
-        //dispatch
-    }catch(err){
-        // dispatch
+export const updateToken = () => async (dispatch: (arg: dispatchType) => void) => {
+    try {
+        dispatch({type:USER_REFRESH_LOADING})
+        let res = await updateTokenApi()
+        dispatch({type:USER_REFRESH_SUCCESS,payload:res})
+    } catch (err) {
+        dispatch({type:USER_REFRESH_FAILURE})
     }
 };
-// try {
-//   const response = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
-//     refresh: authTokens.refresh,
-//   });
-//   const data = response.data;
-//   setAuthTokens(data);
-//   setUser(jwt_decode(data.access));
-//   localStorage.setItem("authTokens", JSON.stringify(data));
-// } catch (err) {
-//   // logoutUser();
-//   console.log("Session Expired, Login again");
-// }
-// if (loading) setLoading(false);
+

@@ -1,0 +1,31 @@
+import Topics from './Topics'
+import { AiOutlineDown } from "react-icons/ai"
+import { useSelector } from 'react-redux'
+import { rootReducertype } from '../Redux/Store'
+import { CiSearch } from 'react-icons/ci'
+
+const BrowseTopics = () => {
+    const { allTopics } = useSelector((val: rootReducertype) => val.topics)
+    let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
+    const handleMoreRooms = () => {
+        // alltopics  will be shown in a modal 
+    }
+  return (
+    <div className={`w-[18%] left-[2%] hidden md:flex flex-col ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} fixed top-[14%] rounded-2xl py-8 px-10 shadow-md h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-hide`}>
+    <h3 className='font-bold mb-4'>BROWSE TOPICS</h3>
+    {/* search for topics  */}
+
+    <div className='bg-bg_light_pri rounded-full flex items-center py-2 ml-[-6px]' >
+   <CiSearch className='cursor-pointer mx-2 font-bold' />
+        <input type="text" placeholder='Search topics' className='bg-transparent w-5/6 outline-none pl-2'/>
+    </div>
+    {allTopics.slice(0,7)?.map((el: any) => <Topics key={el.id} data={el} />)}
+    <div onClick={handleMoreRooms} className='cursor-pointer flex font-semibold items-center justify-between my-3 hover:text-third_color '>
+        <p>More</p>
+        <AiOutlineDown className='font-bold text-third_color mx-2' />
+    </div>
+</div>
+  )
+}
+
+export default BrowseTopics

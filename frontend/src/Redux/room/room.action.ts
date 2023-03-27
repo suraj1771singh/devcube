@@ -15,28 +15,26 @@ GET_ROOM_SUCCESS,
 }from "./room.action.type";
 import { createRoomApi, deleteRoomApi, getRoomsApi, updateRoomApi } from "./room.api";
 
-export const getRooms = (token:string)=>(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_LOADING})
     try{
-        let res = getRoomsApi(token)
-        console.log(res)
-        dispatch({type:GET_ROOM_SUCCESS})
+        let res = await getRoomsApi()
+        dispatch({type:GET_ROOM_SUCCESS,payload:res})
     }catch(err){
         dispatch({type:GET_ROOM_ERROR})
     }
 }
 
-export const createRoom = (data:createRoomDataType,token:string)=>(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const createRoom = (data:createRoomDataType)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:CREATE_ROOM_LOADING})
     try{
-        let res = createRoomApi(data,token)
+        let res = await createRoomApi(data)
         console.log(res)
         dispatch({type:CREATE_ROOM_SUCCESS})
     }catch(err){
         dispatch({type:CREATE_ROOM_ERROR})
     }
 }
-
 export const updateRoom = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:UPDATE_ROOM_LOADING})
     try{

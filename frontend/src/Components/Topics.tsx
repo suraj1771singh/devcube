@@ -1,10 +1,9 @@
 import React from 'react'
 
-const Topics = () => {
+const Topics = ({data}:any) => {
   return (
-        <div className='flex font-semibold items-center justify-between my-3'>
-            <p>All</p>
-            <p className='bg-bg_sec p-1 rounded-sm'>32,221</p>
+        <div className='flex font-semibold items-center justify-between my-3 hover:text-third_color cursor-pointer ml-0'>
+            <p>{data.name}</p>
         </div>
   )
 }

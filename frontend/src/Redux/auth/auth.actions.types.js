@@ -7,4 +7,7 @@ export const USER_SIGNUP_SUCCESS = 'user/registor/success';
 export const USER_LOGOUT_SUCCESS = 'user/logout/success';
 export const USER_LOGOUT_FAILURE = 'user/logout/failure';
 export const USER_LOGOUT_LOADING = 'user/logout/loading';
+export const USER_REFRESH_LOADING = 'user/refresh/loading';
+export const USER_REFRESH_SUCCESS = 'user/refresh/success';
+export const USER_REFRESH_FAILURE = 'user/refresh/failure';
 
