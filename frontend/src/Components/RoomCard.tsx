@@ -1,10 +1,9 @@
-import React from 'react'
 import { useSelector } from 'react-redux';
 import { rootReducertype } from '../Redux/Store';
 import { CalcTime } from './time';
 import { GrGroup } from 'react-icons/gr'
 import { FiMoreHorizontal } from 'react-icons/fi'
-// import { CalcTime } from './time';
+import { NavLink } from 'react-router-dom';
 
 const RoomCard = (props: any) => {
     const { data } = props;
@@ -23,10 +22,10 @@ const RoomCard = (props: any) => {
             <div className='flex justify-between items-center'>
                 <div className='flex items-center'>
                     <div className='border-2 relative border-third_color w-[50px] h-[50px] rounded-full'>
-                        <img src="./profile.svg" alt="dp" />
+                        <img src="/profile.svg" alt="dp" />
                         {/* <div className={`h-3 w-3 rounded-full bg-green-500 absolute bottom-0 right-0 `}></div> */}
                     </div>
-                    <p className='mx-2 hover:text-third_color cursor-pointer'>@{data?.hostname}</p>
+                    <NavLink to={`/profile/${data.host}`} className='mx-2 hover:text-third_color cursor-pointer'>@{data?.hostname}</NavLink>
                 </div>
                 <div className={`flex flex-col items-end h-[100%]`}>
                     <FiMoreHorizontal className='text-xl cursor-pointer hover:text-third_color' />

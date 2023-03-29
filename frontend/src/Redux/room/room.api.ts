@@ -42,3 +42,16 @@ export const deleteRoomApi = async(id:string)=>{
         throw err
     }
 }
+
+
+export const getRoomByUserIdApi = async(id:string)=>{
+    try{
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios(`${baseUrl}/rooms-user/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+        return res
+    }catch(err){
+        throw err
+    }
+}

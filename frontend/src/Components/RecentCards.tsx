@@ -7,8 +7,8 @@ const RecentCards = () => {
   return (
     <div className={`rounded-2xl p-4 ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}  >
         <div className='flex items-center' >
-            <div className='rounded-full h-[60px] w-[60px] bg-pink-500'>
-                <img src="./profile.svg" alt="dp" />
+            <div className='rounded-full'>
+                <img src="/profile.svg" className='h-[60px] w-[60px]' alt="dp" />
             </div> 
             <div className='mx-2'>
                 <p className='font-bold hover:text-third_color cursor-pointer w-fit'>@username</p>

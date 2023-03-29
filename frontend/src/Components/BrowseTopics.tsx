@@ -19,10 +19,10 @@ const BrowseTopics = () => {
    <CiSearch className='cursor-pointer mx-2 font-bold' />
         <input type="text" placeholder='Search topics' className={`w-5/6 outline-none pl-2 ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}/>
     </div>
-    {allTopics.slice(0,7)?.map((el: any) => <Topics key={el.id} data={el} />)}
-    <div onClick={handleMoreRooms} className='cursor-pointer flex font-semibold items-center justify-between my-3 hover:text-third_color '>
+    {allTopics.slice(0,5)?.map((el: any) => <Topics key={el.id} data={el} />)}
+    <div onClick={handleMoreRooms} className='cursor-pointer flex font-semibold items-center justify-between my-3 mx-2 hover:text-third_color '>
         <p>More</p>
-        <AiOutlineDown className='font-bold text-third_color mx-2' />
+        <AiOutlineDown className='font-bold mx-2' />
     </div>
 </div>
   )

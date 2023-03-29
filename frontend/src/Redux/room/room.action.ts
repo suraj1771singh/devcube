@@ -12,8 +12,11 @@ DELETE_ROOM_SUCCESS,
 GET_ROOM_LOADING,
 GET_ROOM_ERROR,
 GET_ROOM_SUCCESS,
+GET_ROOM_BY_USER_LOADING,
+GET_ROOM_BY_USER_ERROR,
+GET_ROOM_BY_USER_SUCCESS,
 }from "./room.action.type";
-import { createRoomApi, deleteRoomApi, getRoomsApi, updateRoomApi } from "./room.api";
+import { createRoomApi, deleteRoomApi, getRoomByUserIdApi, getRoomsApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_LOADING})
@@ -56,3 +59,13 @@ export const deleteRoom = (id:string)=>async(dispatch: (arg0: { type: string; pa
         dispatch({type:DELETE_ROOM_ERROR})
     }
 }
+
+export const getRoomByUserId = (id:string)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+    dispatch({type:GET_ROOM_BY_USER_LOADING})
+    try{
+        let res = await getRoomByUserIdApi(id)
+        dispatch({type:GET_ROOM_BY_USER_SUCCESS,payload:res.data})
+    }catch(err){
+        dispatch({type:GET_ROOM_BY_USER_ERROR})
+    }
+} 

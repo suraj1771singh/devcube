@@ -13,3 +13,7 @@ export const DELETE_ROOM_SUCCESS="delete/room/success"
 export const GET_ROOM_LOADING="get/room/loading"
 export const GET_ROOM_ERROR="get/room/error"
 export const GET_ROOM_SUCCESS="get/room/success"
+
+export const GET_ROOM_BY_USER_LOADING="get/user/room/loading"
+export const GET_ROOM_BY_USER_ERROR="get/user/room/error"
+export const GET_ROOM_BY_USER_SUCCESS="get/user/room/success"
