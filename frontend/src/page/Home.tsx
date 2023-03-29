@@ -25,6 +25,7 @@ const Home = () => {
     const closeCreateModal = () => {
         setCreateRoom(false)
     }
+    console.log(allRooms)
     return (
         <> 
             <div className='w-11/12 m-auto flex flex-col md:flex-row justify-between'>

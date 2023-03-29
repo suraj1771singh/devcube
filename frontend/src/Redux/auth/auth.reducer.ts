@@ -10,6 +10,8 @@ import {USER_LOGIN_LOADING,
     USER_SIGNUP_SUCCESS, USER_REFRESH_LOADING,
     USER_REFRESH_SUCCESS,
     USER_REFRESH_FAILURE,} from "./auth.actions.types";
+import jwt_decode from "jwt-decode"
+
 
     let authTokens:string|null = localStorage.getItem("authTokens");
     let authToken:userTokenType = authTokens?(JSON.parse(authTokens)):null
@@ -19,7 +21,7 @@ import {USER_LOGIN_LOADING,
         isAuth:authToken?true:false,
         signup_loading:false,
         signup_error:false,
-        userData:null,
+        myData:authToken?jwt_decode(authToken.access):null,
         token:authToken,
         logout_loading:false,
         logout_error:false,
@@ -32,7 +34,7 @@ export const authReducer = (state=initialState,actions:{type:string,payload:any}
         }
         case USER_LOGIN_SUCCESS:{
             localStorage.setItem("authTokens",JSON.stringify(payload))
-            return {...state, isAuth:true }
+            return {...state, isAuth:true,myData:jwt_decode(payload.access)}
         }
         case USER_LOGIN_FAILURE:{
             return {...state, login_error:true, login_loading:false }
@@ -63,7 +65,7 @@ export const authReducer = (state=initialState,actions:{type:string,payload:any}
         }
         case USER_REFRESH_SUCCESS:{
             localStorage.setItem("authTokens",JSON.stringify(payload))
-            return {...state, isAuth:true}
+            return {...state, isAuth:true,myData:jwt_decode(payload.access)}
         }
         case USER_REFRESH_FAILURE:{
             return {...state, isAuth:false}

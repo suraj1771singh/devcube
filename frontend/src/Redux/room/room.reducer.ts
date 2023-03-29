@@ -11,6 +11,9 @@ DELETE_ROOM_SUCCESS,
 GET_ROOM_LOADING,
 GET_ROOM_ERROR,
 GET_ROOM_SUCCESS,
+GET_ROOM_BY_USER_LOADING,
+GET_ROOM_BY_USER_ERROR,
+GET_ROOM_BY_USER_SUCCESS,
 }from "./room.action.type";
 let initialData = {
     create_loading:false,
@@ -67,6 +70,15 @@ export const roomReducer = (state=initialData,actions: { type:string; payload: a
     }
     case GET_ROOM_SUCCESS:{
         return {...state, get_success:true,get_loading:false,get_error:false,allRooms:payload}
+    }
+    case GET_ROOM_BY_USER_LOADING:{
+        return {...state}
+    }
+    case GET_ROOM_BY_USER_ERROR:{
+        return {...state}
+    }
+    case GET_ROOM_BY_USER_SUCCESS:{
+        return {...state,allRooms:payload}
     }
         default:
            return{...state}
