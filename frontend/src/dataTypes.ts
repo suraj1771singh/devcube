@@ -20,6 +20,7 @@ export interface authUserDataType{
         isAuth:boolean,
         signup_loading:boolean,
         signup_error:boolean,
+        signup_success:boolean,
         myData:any,
         logout_loading:boolean,
         logout_error:boolean,

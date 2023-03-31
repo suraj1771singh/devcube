@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { logoutUser, updateToken } from '../Redux/auth/auth.actions'
 import { toggleTheme } from '../Redux/theme/theme.actions'
-import { AiOutlineDown, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUp, AiOutlineUser } from 'react-icons/ai'
+import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
 const Navbar = () => {
     const dispatch:Dispatch<any> = useDispatch()
@@ -51,7 +51,7 @@ const Navbar = () => {
                 <div onClick={toggleDropdown} className='flex justify-center mx-6 items-center cursor-pointer px-4'>
                    {isAuth?<div className='h-14 w-14 rounded-full'><img src="/profile.svg" alt=""/></div>
                     :<CgProfile className='text-3xl '/>}
-                    {dropdown?<AiOutlineUp className='font-bold text-xl ml-3 text-third_color'/>:<AiOutlineDown className='font-bold text-xl ml-3'/>}
+                    {dropdown?<AiOutlineCaretUp className='font-bold text-2xl ml-3 text-third_color'/>:<AiOutlineCaretDown className='text-2xl ml-3'/>}
                 </div>
                             {/* DropDown on Profile Click  */}
                 { dropdown&&<div className='absolute top-[100%] w-full shadow-lg animate-in slide-in-from-top-5 duration-300 '>

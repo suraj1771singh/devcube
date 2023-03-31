@@ -49,9 +49,33 @@ export const getRoomByUserIdApi = async(id:string)=>{
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios(`${baseUrl}/rooms-user/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+        let res = await axios.get(`${baseUrl}/rooms-user/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
         return res
     }catch(err){
         throw err
     }
+}
+
+export const joinRoomApi = async(id:string|number)=>{
+try{
+    let tokenAll:any = localStorage.getItem("authTokens");
+    let authToken:userTokenType = JSON.parse(tokenAll);
+    let token = authToken.access;
+    let res = axios.patch(`${baseUrl}/room-add-participant/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+    return res
+}catch(err){
+    throw err
+}
+}
+
+export const leaveRoomApi = async(id:string|number)=>{
+try{
+    let tokenAll:any = localStorage.getItem("authTokens");
+    let authToken:userTokenType = JSON.parse(tokenAll);
+    let token = authToken.access;
+    let res = axios.patch(`${baseUrl}/room-add-participant/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+    return res
+}catch(err){
+    throw err
+}
 }

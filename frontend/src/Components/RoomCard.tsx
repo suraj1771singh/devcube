@@ -1,11 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rootReducertype } from '../Redux/Store';
 import { CalcTime } from './time';
 import { GrGroup } from 'react-icons/gr'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { NavLink } from 'react-router-dom';
+import { Dispatch } from 'react';
+import { joinRoom } from '../Redux/room/room.action';
 
 const RoomCard = (props: any) => {
+    const dispatch:Dispatch<any> = useDispatch()
     const { data } = props;
     let date = data.created;
     let dt = new Date(date).getTime()
@@ -17,6 +20,9 @@ const RoomCard = (props: any) => {
             title = element.name
         }
     });
+    const handleJoinRoom = (id:number|string)=>{
+       dispatch(joinRoom(id))
+    }
     return (
         <div className={`my-3 ${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md`} >
             <div className='flex justify-between items-center'>
@@ -40,7 +46,7 @@ const RoomCard = (props: any) => {
             </div>
             <div className='flex justify-between mt-6' >
                 <div className='flex items-center'>
-                    <button className='bg-third_color px-6 rounded-full text-semibold text-white text-center py-1 mr-4'>Join</button>
+                    <button onClick={()=>handleJoinRoom(data.id)} className='bg-third_color px-6 rounded-full text-semibold text-white text-center py-1 mr-4'>Join</button>
                     <GrGroup className='text-sm mx-2 text-gray-600' />
                     <p className='text-sm text-gray-600'> {data?.participants.length} Joined</p>
                 </div>
@@ -49,7 +55,7 @@ const RoomCard = (props: any) => {
                 </div>
             </div>
         </div>
-    )
+    ) 
 }
 
 export default RoomCard
