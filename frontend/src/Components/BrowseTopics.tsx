@@ -1,17 +1,24 @@
 import Topics from './Topics'
 import { AiOutlineDown } from "react-icons/ai"
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { CiSearch } from 'react-icons/ci'
+import { Dispatch, useEffect } from 'react'
+import { getTopics } from '../Redux/topic/topic.actions'
 
 const BrowseTopics = () => {
     const { allTopics } = useSelector((val: rootReducertype) => val.topics)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
+    const dispatch:Dispatch<any> = useDispatch()
+    useEffect(()=>{
+      dispatch(getTopics())
+    },[dispatch])
     const handleMoreRooms = () => {
         // alltopics  will be shown in a modal 
+        console.log(allTopics)
     }
   return (
-    <div className={`w-[18%] left-[2%] hidden md:flex flex-col ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} fixed top-[14%] rounded-2xl py-8 px-10 shadow-md h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-hide animate-in slide-in-from-right-96 ease-in-out duration-500`}>
+    <div className={`w-[18%] left-[2%] hidden md:flex flex-col ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} fixed rounded-2xl py-8 px-10 shadow-md h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-hide animate-in slide-in-from-right-96 ease-in-out duration-500`}>
     <h3 className='font-bold mb-4'>BROWSE TOPICS</h3>
     {/* search for topics  */}
 

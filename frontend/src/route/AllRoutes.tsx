@@ -6,14 +6,16 @@ import Navbar from '../Components/Navbar'
 import Signup from '../page/Signup'
 import PrivateRoutes from './PrivateRoutes'
 import Profile from '../page/Profile'
+import Room from '../page/Room'
 const AllRoutes = () => {
   return (
     <div>
         <Navbar/>
-        <div className='pt-20'>
+        <div className='pt-28'>
         <Routes>
         <Route path='/' element={<PrivateRoutes><Home/></PrivateRoutes>}/>
         <Route path='/profile/:id' element={<PrivateRoutes><Profile/></PrivateRoutes>}/>
+        <Route path='/room/:id' element={<PrivateRoutes><Room/></PrivateRoutes>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
         </Routes>

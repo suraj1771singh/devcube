@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { getRooms } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
-import { getTopics } from '../Redux/topic/topic.actions'
 import BrowseTopics from '../Components/BrowseTopics'
 import RecentActivites  from '../Components/RecentActivites'
 const Home = () => {
@@ -16,7 +15,7 @@ const Home = () => {
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     useEffect(() => {
         dispatch(getRooms())
-        dispatch(getTopics())
+        // dispatch(getTopics())
     }, [ dispatch])
     
     const openCreateModal = () => {
@@ -36,10 +35,10 @@ const Home = () => {
                     <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Recent Activites</button>
                 </div>
                 {/* middle section => study rooms  */}
-                <div className='md:w-[54%] ml-[19.3%] my-[2%] '>
+                <div className='md:w-[54%] ml-[19.3%]'>
                     <div className={`flex items-center justify-between`} >
                         <div className={`${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} py-3 px-4 rounded-xl`}>
-                            <h3 className='font-bold'>STUDY ROOMS</h3>
+                            <h3 className='font-bold'>Study Rooms</h3>
                             <p className='text-gray-500 text-sm font-semibold'>3,84473 Rooms Available</p>
                         </div>
                         <button onClick={openCreateModal} className='text-sm bg-third_color text-bg_pri font-semibold md:px-4 p-2 md:py-2 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</button>

@@ -29,5 +29,4 @@ const Alert = (props:alertTypes) => {
     </>
   )
 }
-
 export default Alert

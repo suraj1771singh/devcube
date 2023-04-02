@@ -34,8 +34,8 @@ const Navbar = () => {
     toggleDropdown()
   }
     return (
-        <nav className={`fixed left-0 right-0 top-0 w-screen ${drk_theme?"bg-bg_dark_sec":"bg-bg_light_sec"} p-2 z-50 flex items-center px-10 `}>
-            <div className='flex md:h-14 m-auto justify-around md:justify-between items-center md:w-11/12 '>
+        <nav className={`fixed h-[80px] left-0 right-0 top-0 w-screen ${drk_theme?"bg-bg_dark_sec":"bg-bg_light_sec"} p-2 z-50 flex items-center px-10 `}>
+            <div className='flex m-auto justify-around md:justify-between items-center md:w-11/12 '>
                 <div className=''> 
                     <NavLink to="/" className='text-sm  cursor-pointer md:flex'>
                         <img src="/logo.svg" alt="" className='w-8' />
