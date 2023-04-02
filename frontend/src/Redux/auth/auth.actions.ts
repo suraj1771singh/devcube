@@ -20,7 +20,7 @@ export const registerUser = (data: registerUserDataType) => async (dispatch: (ar
     dispatch({ type: USER_SIGNUP_LOADING })
     try {
         let res = await registerUserApi(data)
-        dispatch({ type: USER_SIGNUP_SUCCESS, payload: res?.data })
+        dispatch({ type: USER_SIGNUP_SUCCESS, payload: res})
     } catch (err) {
         dispatch({ type: USER_SIGNUP_FAILURE })
     }

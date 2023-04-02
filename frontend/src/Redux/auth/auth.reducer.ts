@@ -21,6 +21,7 @@ import jwt_decode from "jwt-decode"
         isAuth:authToken?true:false,
         signup_loading:false,
         signup_error:false,
+        signup_success:false,
         myData:authToken?jwt_decode(authToken.access):null,
         token:authToken,
         logout_loading:false,
@@ -30,7 +31,7 @@ export const authReducer = (state=initialState,actions:{type:string,payload:any}
     const {type,payload} = actions;
     switch (type) {
         case USER_LOGIN_LOADING:{
-            return {...state,   }
+            return {...state,login_loading:true,login_error:false}
         }
         case USER_LOGIN_SUCCESS:{
             localStorage.setItem("authTokens",JSON.stringify(payload))
@@ -46,7 +47,7 @@ export const authReducer = (state=initialState,actions:{type:string,payload:any}
             return {...state, signup_loading:false, signup_error:true}
         }
         case USER_SIGNUP_SUCCESS:{
-            return {...state, signup_loading:false, signup_error:false}
+            return {...state, signup_loading:false, signup_error:false,signup_success:true}
         }
         case USER_LOGOUT_SUCCESS:{
             localStorage.removeItem("authTokens")

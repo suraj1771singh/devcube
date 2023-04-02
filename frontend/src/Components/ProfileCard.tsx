@@ -30,29 +30,31 @@ const ProfileCard = ({id}:any) => {
                             <div className={` border-4 ${drk_theme?"border-bg_dark_sec":"border-bg_light_sec"} w-[120px] h-[120px] rounded-full z-20`}>
                                 <img src="/profile.svg" alt="profile" className='w-full' />
                             </div>
-                            <div className='mx-4 py-7'>
-                                <h2 className='text-2xl font-bold'>{userData.first_name}</h2>
+                            <div className='mx-4 pt-7'>
+                                <h2 className='text-2xl font-bold'>{userData.first_name} {userData.last_name} </h2>
                                 <p className='font-semibold'>{userData?.username}</p>
                                 <div className='flex mt-2 itemx-center'>
-                                    <p className='font-semibold mr-3 text-sm'><span className='text-lg font-bold'>1.3k</span> Followers</p>
+                                    <p className='font-semibold mr-3 text-sm'><span className='text-lg font-bold'>1</span> Followers</p>
                                     <p className='font-semibold ml-3 text-sm'><span className='text-lg font-bold'>{userData?.following?.length}</span> Following</p>
                                 </div>
-                            </div> 
-                        </div>
-                       <div className="mt-10">
-                       {userId===(+id)?<BiEdit onClick={()=>handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color'/>:<button className='text-xl bg-third_color text-font_dark_pri px-4 py-1 rounded-full'>Follow</button> }
-                       <div className='flex justify-between pt-4'>
+                                <div className='flex justify-between pt-2'>
                             <a href={`${(userData.insta_url)?userData.insta_url:"#"}`} target='_blank' rel="noreferrer" ><AiOutlineInstagram className='text-3xl text-blue-500 cursor-pointer my-2 mr-3'/></a>
                             <a href={`${(userData.linkedin_url)?userData.insta_url:"#"}`}target='_blank' rel="noreferrer"><AiOutlineLinkedin className='text-3xl text-blue-500 cursor-pointer my-2 mr-3'/></a>
                             <a href={`${(userData.twitter_url)?userData.insta_url:"#"}`}target='_blank' rel="noreferrer">< AiOutlineTwitter className='text-3xl text-blue-500 cursor-pointer my-2 mr-3'/></a>
                        </div>
+                            </div> 
+                        </div>
+                       <div className="mt-10 mr-10">
+                       {userId===(+id)?<BiEdit onClick={()=>handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color'/>:<button className='text-xl bg-third_color text-font_dark_pri px-4 py-1 rounded-full'>Follow</button> }
                        </div>
                     </div>
                 </div>
                 <div className='m-4'>
                     <div className='p-4'>
                         <h2 className='font-bold text-xl'>Bio</h2>
-                        <p>{userData.bio}</p>
+                        <div className={`${drk_theme?"text-font_dark_sec":"text-font_light_sec"}`}>
+                       {userData?.bio?<p>{userData.bio}</p>:<p className='text-gray-500 text-center'>No Bio....</p>}
+                        </div>
                     </div>
                     <div className='text-center'>
                         <button className={`mx-3 bg-third_color font-semibold p-2 px-5 rounded-full text-white`} >Hosted</button>
@@ -61,6 +63,7 @@ const ProfileCard = ({id}:any) => {
                 </div>
             </div>
             {allRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+            {(allRooms.length===0)?<h2 className='text-gray-500 text-center my-10 text-xl'>No Rooms Hosted</h2>:""}
         </div>
         {editModal&&<EditProfileModal data={userData} closeModal={closeEditModal}/>}
         </>
