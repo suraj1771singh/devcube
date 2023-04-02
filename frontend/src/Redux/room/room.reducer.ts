@@ -20,6 +20,9 @@ import {
     LEAVE_ROOM_LOADING,
     LEAVE_ROOM_ERROR,
     LEAVE_ROOM_SUCCESS,
+    GET_ROOM_BY_ID_LOADING,
+GET_ROOM_BY_ID_ERROR,
+GET_ROOM_BY_ID_SUCCESS,
 } from "./room.action.type";
 let initialData = {
     allRooms: [],
@@ -51,6 +54,11 @@ let initialData = {
     join_error:false,
     join_loading:false,
     join_success:false,
+
+    get_room_by_id_loading:false,
+    get_room_by_id_error:false,
+    get_room_by_id_success:false,
+    roomData:null
 }
 
 export const roomReducer = (state = initialData, actions: { type: string; payload: any; }) => {
@@ -121,6 +129,21 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
         case LEAVE_ROOM_SUCCESS: {
             return { ...state,leave_loading:false,leave_error:false,leave_success:true, }
         }
+        case GET_ROOM_BY_ID_LOADING:{
+            return {...state,get_room_by_id_loading:true,
+                get_room_by_id_error:false,
+                get_room_by_id_success:false,}
+        }
+case GET_ROOM_BY_ID_ERROR:{
+    return {...state,get_room_by_id_loading:false,
+        get_room_by_id_error:true,
+        get_room_by_id_success:false,}
+}
+case GET_ROOM_BY_ID_SUCCESS:{
+    return {...state,get_room_by_id_loading:false,
+        get_room_by_id_error:false,
+        get_room_by_id_success:true,roomData:payload}
+}
         default:
             return { ...state }
     }

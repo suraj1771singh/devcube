@@ -25,3 +25,7 @@ export const JOIN_ROOM_SUCCESS="join/room/success"
 export const LEAVE_ROOM_LOADING="leave/room/loading"
 export const LEAVE_ROOM_ERROR="leave/room/error"
 export const LEAVE_ROOM_SUCCESS="leave/room/success"
+
+export const GET_ROOM_BY_ID_LOADING="get/room/id/loading"
+export const GET_ROOM_BY_ID_ERROR="get/room/id/error"
+export const GET_ROOM_BY_ID_SUCCESS="get/room/id/success"

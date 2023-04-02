@@ -79,3 +79,15 @@ try{
     throw err
 }
 }
+
+export const getRoomByIdApi = async(id:string|number)=>{
+    try{
+    let tokenAll:any = localStorage.getItem("authTokens");
+    let authToken:userTokenType = JSON.parse(tokenAll);
+    let token = authToken.access;
+        let res = await axios.get(`${baseUrl}/room/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
+        return res;
+    }catch(err){
+        throw err
+    } 
+}
