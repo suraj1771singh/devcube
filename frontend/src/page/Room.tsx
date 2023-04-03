@@ -26,7 +26,7 @@ const Room = () => {
                     <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Recent Activites</button>
                 </div>
                 {/* middle section => Room's Data  */}
-                <div className='md:w-[70%] mx-[20%] '>
+                <div className='md:w-[62%] mx-[20%] '>
                 <RoomData data={roomData} />
                 </div>
                 {/* right section => recent acitivies  */}

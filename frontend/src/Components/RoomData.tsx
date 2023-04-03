@@ -5,7 +5,6 @@ import { TbSend } from 'react-icons/tb'
 import Comment from './Comment'
 
 const RoomData = ({data}:any) => {
-  console.log(data)
   const [showComments,setShowComments] = useState(false)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   let topicsTags=[1,2,3,4,2]
