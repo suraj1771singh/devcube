@@ -40,11 +40,10 @@ const Navbar = () => {
                     <NavLink to="/" className='text-sm  cursor-pointer md:flex'>
                         <img src="/logo.svg" alt="" className='w-8' />
                     </NavLink>
-                    {/* <NavLink to="/" className='text-sm cursor-pointer md:text-xl'>StudyBuddy</NavLink> */}
                 </div>
-                <div className={` px-4 py-2 rounded-full md:w-[40%] hidden md:flex justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} shadow-md`}>
-                   <CiSearch className='cursor-pointer text-2xl font-bold' />
-                    <input type="text" className={`w-[70%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Search Here...' />
+                <div className={`w-[50%] px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+                    <input type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..' />
+                    <CiSearch className='cursor-pointer text-3xl' />
                 </div>
                 <div className='flex items-center relative' >
             
