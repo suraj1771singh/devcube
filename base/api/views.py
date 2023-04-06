@@ -71,9 +71,6 @@ def getAllRooms(request):
     # many is set to true, to serialize many objects
     serializer = RoomSerializer(rooms, many=True)
     try:
-        for room in serializer.data:
-            user = User.objects.get(id=room['host'])
-            room['hostname'] = user.username
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         Response({'msg': "Something went wrong !"},
@@ -294,7 +291,7 @@ def updateMsg(request, pk):
 @permission_classes([IsAuthenticated])
 def getAllMsg(request):
     msgs = Message.objects.all()
-    sl = MsgSerializer(msgs)
+    sl = MsgSerializer(msgs, many=True)
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
