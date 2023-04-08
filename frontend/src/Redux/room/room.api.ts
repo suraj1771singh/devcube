@@ -61,7 +61,16 @@ try{
     let tokenAll:any = localStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
-    let res = axios.patch(`${baseUrl}/room-add-participant/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+    console.log(`Bearer ${token}`);
+    
+    let res = await axios({
+        method: "PATCH",
+        url: `${baseUrl}/room-add-participant/${id}/`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
     return res
 }catch(err){
     throw err
