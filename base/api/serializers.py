@@ -31,8 +31,11 @@ class RoomSerializer(ModelSerializer):
         host_data = representation.pop('host')
 
         host_email = host_data.get('email')
+        host_first_name = host_data.get('first_name')
+        host_last_name = host_data.get('last_name')
         host_id = host_data.get('id')
-        representation['host'] = {'email': host_email, 'id': host_id}
+        representation['host'] = {'email': host_email, 'id': host_id,
+                                  'first_name': host_first_name, 'last_name': host_last_name}
 
         participants_data = representation.pop('participants')
         representation['participants'] = [
@@ -54,11 +57,14 @@ class MsgSerializer(ModelSerializer):
         user_data = representation.pop('user')
         user_id = user_data.get('id')
         user_email = user_data.get('email')
+        user_first_name = user_data.get('first_name')
+        user_last_name = user_data.get('last_name')
         room_data = representation.pop('room')
         room_id = room_data.get('id')
         room_name = room_data.get('name')
 
-        representation['user'] = {'id': user_id, 'email': user_email}
+        representation['user'] = {'id': user_id, 'email': user_email,
+                                  'first_name': user_first_name, 'last_name': user_last_name}
         representation['room'] = {'id': room_id, 'name': room_name}
         return representation
 

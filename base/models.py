@@ -8,6 +8,8 @@ class User(AbstractUser):
     # Username = None
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=100, blank=False)
+    last_name = models.CharField(
+        max_length=100, null=True, blank=True, default=None)
     bio = models.TextField(null=True, blank=True)
     linkedin_url = models.CharField(max_length=100, null=True, blank=True)
     twitter_url = models.CharField(max_length=100, null=True, blank=True)
