@@ -48,7 +48,7 @@ def getUserProfile(request, pk):
         return Response({'msg': "User doesn't exist!"},
                         status=status.HTTP_400_BAD_REQUEST)
 
-#------------------------------ ROOMS
+# ------------------------------ ROOMS
 
 
 @api_view(['POST'])
@@ -238,18 +238,33 @@ def getTopics(request):
     return Response(sl.data)
 
 
+# ------------------------MESSAGES
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createMsg(request, pk):
     user = request.user
     room = Room.objects.get(id=pk)
+    height = 0
+    parent_id = request.data.get('parent')
+    parent = None
+    if parent_id is not None:
+        try:
+            parent = Message.objects.get(id=parent_id)
+            height = parent.height+1
+            if height > 2:
+                return Response({'msg': 'Maximum depth reached'}, status=status.HTTP_400_BAD_REQUEST)
+        except Message.DoesNotExist:
+            return Response({'msg': "Parent message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
     form = MsgForm(request.data)
-
     if form.is_valid():
         msg = form.save(commit=False)
         msg.user = user
         msg.room = room
+        msg.parent = parent
+        msg.height = height
         msg.save()
+        if (parent is not None):
+            parent.replies.add(msg)
         return Response({'msg': "Message created successfully"}, status=status.HTTP_201_CREATED)
     else:
         return Response({'msg': "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
@@ -314,3 +329,15 @@ def getMsgsByRoom(request, pk):
         user = User.objects.get(id=data['user'])
         data["username"] = user.username
     return Response(sl.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def likeMsg(request, pk):
+    try:
+        msg = Message.objects.get(id=pk)
+        msg.likes = msg.likes + 1
+        msg.save()
+        return Response({'msg': "Liked Message successfully"}, status=status.HTTP_200_OK)
+    except Message.DoesNotExist:
+        return Response({'msg': "Message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
