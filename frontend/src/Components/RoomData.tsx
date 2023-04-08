@@ -8,6 +8,7 @@ const RoomData = ({data}:any) => {
   const [showComments,setShowComments] = useState(false)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   let topicsTags=[1,2,3,4,2]
+  console.log(data)
   return (
     
     <div className={`${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md ease-in-out duration-500 animate-in slide-in-from-bottom-48`} >
