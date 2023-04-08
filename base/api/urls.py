@@ -34,6 +34,7 @@ urlpatterns = [
     path('msg-update/<str:pk>/', views.updateMsg),
     path('msg-delete/<str:pk>/', views.deleteMsg),
     path('msgs-room/<str:pk>/', views.getMsgsByRoom),
+    path('msg-like/<str:pk>/', views.likeMsg),
 
     #----------- USER
     path('user/<str:pk>/', views.getUserProfile),

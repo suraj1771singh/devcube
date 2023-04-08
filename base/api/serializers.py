@@ -31,8 +31,11 @@ class RoomSerializer(ModelSerializer):
         host_data = representation.pop('host')
 
         host_email = host_data.get('email')
+        host_first_name = host_data.get('first_name')
+        host_last_name = host_data.get('last_name')
         host_id = host_data.get('id')
-        representation['host'] = {'email': host_email, 'id': host_id}
+        representation['host'] = {'email': host_email, 'id': host_id,
+                                  'first_name': host_first_name, 'last_name': host_last_name}
 
         participants_data = representation.pop('participants')
         representation['participants'] = [
@@ -43,6 +46,7 @@ class RoomSerializer(ModelSerializer):
 class MsgSerializer(ModelSerializer):
     user = UserSerializer()
     room = RoomSerializer()
+    # replies = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
@@ -53,13 +57,24 @@ class MsgSerializer(ModelSerializer):
         user_data = representation.pop('user')
         user_id = user_data.get('id')
         user_email = user_data.get('email')
+        user_first_name = user_data.get('first_name')
+        user_last_name = user_data.get('last_name')
         room_data = representation.pop('room')
         room_id = room_data.get('id')
         room_name = room_data.get('name')
 
-        representation['user'] = {'id': user_id, 'email': user_email}
+        representation['user'] = {'id': user_id, 'email': user_email,
+                                  'first_name': user_first_name, 'last_name': user_last_name}
         representation['room'] = {'id': room_id, 'name': room_name}
         return representation
+
+    # def get_replies(self, obj):
+    #     # Retrieve the children of the current object
+    #     children = obj.replies
+    #     # Create an instance of the serializer to serialize the children
+    #     serializer = self.__class__(children, many=True)
+    #     # Call the serializer's data property to get the serialized data
+    #     return serializer.data
 
 
 class TopicSerializer(ModelSerializer):
