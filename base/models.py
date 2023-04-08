@@ -50,6 +50,12 @@ class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     body = models.TextField()
+    parent = models.ForeignKey(
+        "self", related_name="child", on_delete=models.CASCADE, null=True, blank=True, default=None)
+    replies = models.ManyToManyField(
+        'self', symmetrical=False, blank=True)
+    height = models.IntegerField(blank=False, default=0)
+    likes = models.IntegerField(blank=False, default=0)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

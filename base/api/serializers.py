@@ -43,6 +43,7 @@ class RoomSerializer(ModelSerializer):
 class MsgSerializer(ModelSerializer):
     user = UserSerializer()
     room = RoomSerializer()
+    # replies = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
@@ -60,6 +61,14 @@ class MsgSerializer(ModelSerializer):
         representation['user'] = {'id': user_id, 'email': user_email}
         representation['room'] = {'id': room_id, 'name': room_name}
         return representation
+
+    # def get_replies(self, obj):
+    #     # Retrieve the children of the current object
+    #     children = obj.replies
+    #     # Create an instance of the serializer to serialize the children
+    #     serializer = self.__class__(children, many=True)
+    #     # Call the serializer's data property to get the serialized data
+    #     return serializer.data
 
 
 class TopicSerializer(ModelSerializer):
