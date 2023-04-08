@@ -35,7 +35,7 @@ const RoomCard = (props: any) => {
                         <img src="/profile.svg" alt="dp" />
                         {/* <div className={`h-3 w-3 rounded-full bg-green-500 absolute bottom-0 right-0 `}></div> */}
                     </div>
-                    <NavLink to={`/profile/${data.host}`} className='mx-2 hover:text-third_color cursor-pointer'>@{data?.hostname}</NavLink>
+                    <NavLink to={`/profile/${data.host}`} className='mx-2 hover:text-third_color cursor-pointer'>@{data?.host.email}</NavLink>
                 </div>
                 <div className={`flex flex-col items-end h-[100%]`}>
                     <FiMoreHorizontal className='text-xl cursor-pointer hover:text-third_color' />

@@ -1,68 +1,75 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-import { BsArrowLeft } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import { createRoom } from '../Redux/room/room.action';
 import { rootReducertype } from '../Redux/Store';
+import { AiOutlineClose } from 'react-icons/ai';
+import Alert from './Alert';
 
-interface closeModalFunc {
-    closeCreateModal:()=>void
-}
-const CreateRoomModal = (props:closeModalFunc) => {
-  const {closeCreateModal} = props;
+const CreateRoomModal = ({tags,removeTag}:any) => {
   const dispatch:Dispatch<any> = useDispatch()
- const {allTopics} =  useSelector((val:rootReducertype)=>val.topics)
-  const [roomData,setRoomData] = useState({name:"",topic:"",description:""})
+  const [limit,setLimit] = useState(false)
+  const [exist,setExists] = useState(false)
+  const [addTags,setAddTags]= useState([""])
+  useEffect(()=>{
+    if(tags.length>=6){
+      setLimit(true)
+    }else{
+      setAddTags(tags)
+    }
+  },[tags])
+//  const {allTopics} =  useSelector((val:rootReducertype)=>val.topics)
+  const [roomData,setRoomData] = useState({name:"",description:""})
 
   let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
-  useEffect(()=>{
-    document.body.style.overflow='hidden'
-    return ()=>{
-      document.body.style.overflow='auto'
-    }
-  },[])
   const handleChange = (e: { target: { name: any; value: any; }; })=>{
     setRoomData({...roomData,[e.target.name]:e.target.value})
   }
   const handleRoomData = (e:FormEvent)=>{
     e.preventDefault();
-    console.log(roomData)
-        dispatch(createRoom(roomData))
-        closeCreateModal()
+    if(addTags.length===0){
+      
+    }else{
+      let room = {...roomData,tags:addTags}
+
+      console.log(room)
+    }
+        // dispatch(createRoom(roomData))
   }
   const handleClose = ()=>{
-    setRoomData({name:"",topic:"",description:""})
-    closeCreateModal()
+    setRoomData({name:"",description:""})
   }
-
+  const closeAlert = ()=>{
+    setLimit(false)
+  }
+  
   return (
-    <div className='fixed flex justify-center items-center bg-black/50 top-0 bottom-0 left-0 right-0'>
-        <div className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} md:w-[50%] overflow-hidden shadow-xl rounded-2xl animate-in zoom-in-50 ease-in-out duration-500`}>
-          <div className={`h-14 flex items-center px-4 bg-bg_sec ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`}>
-            <BsArrowLeft onClick={()=>closeCreateModal()} className='cursor-pointer text-2xl mx-4 text-third_color font-bold' />
-            <h3>CREATE ROOM</h3>
+    <>
+    <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl`}>
+        <form onSubmit={handleRoomData} className='flex flex-col'>
+          <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-gray-500 mb-2`} name='name' id="name" value={roomData.name} onChange={handleChange} type="text" placeholder='Room Title'/>
+          
+          <textarea required name="description" value={roomData.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} outline-none p-4 rounded-md resize-none my-4 border-gray-500 border-2 `} placeholder='About Your Room'id="room_about" cols={20}  rows={16}></textarea>
+
+          <div className='border-2 border-gray-500 p-3 my-2 rounded-xl flex items-center '>
+            <div className='text-gray-500 flex items-center mr-3'>
+            <p className='py-2 mx-2'> Tags </p>
+            <p> {addTags.length}/5 </p>
+            </div>
+            <div className='flex'>
+           { addTags.map((el:string,id:number)=><p key={id} className='border-2 px-4 py-2 mx-2 flex items-center rounded-full'>{el} <span><AiOutlineClose onClick={()=>removeTag(el)} className='ml-2 cursor-pointer'/> </span> </p> )}
+            </div>
           </div>
-        <form onSubmit={handleRoomData} className='flex flex-col md:p-10 p-4'>
-          <label className='my-2' htmlFor="name">Room Name</label>
-          <input required className={`bg-bg_sec outline-none p-2 rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`} name='name' id="name" value={roomData.name} onChange={handleChange} type="text" placeholder='Room name'/>
-          <label htmlFor="topic">Topic</label>
-            <select className={`outline-none p-2 rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`} name="topic" id="topic" placeholder='Select topic' onChange={handleChange} >
-              <option value="">--- Select topic ---</option>
-          {
-              allTopics.map((el:any)=><option key={el.id} value={el.id}>{el.name}</option>
-            )
-          }
-          </select>
-          <label  htmlFor="room_about">About</label>
-          <textarea required name="description" value={roomData.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}outline-none p-2 rounded-md resize-none`} placeholder='About Your Room'id="room_about" cols={20}  rows={4}></textarea>
-          <div className=' mt-4 flex flex-row-reverse items-center'>
-          <input type="submit" className='py-2 px-4 rounded-md text-right w-fit mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer'value={"Create Room"}/>
-            <button onClick={handleClose} className='bg-bg_sec py-2 px-4 rounded-md' >Cancel</button>
+
+          <div className='my-4 flex flex-row-reverse items-center'>
+          <input type="submit" className='py-2 px-4 rounded-md text-right w-fit text-white mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer'value={"Create Room"}/>
+            <button onClick={handleClose} className='bg-red-400 text-white py-2 px-4 rounded-md '>Cancel</button>
           </div>
+
         </form>
         </div>
-     {/* {alert&&<Alert text='Please Fill all the fields' type="red-500"/>} */}
-    </div>
+        {limit&&<Alert text='Tags cannot Exceed 5 elements' type="error" closeAlert={closeAlert} />}
+</>
   )
 }
 
