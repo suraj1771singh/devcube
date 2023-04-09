@@ -21,7 +21,6 @@ export const getRoomCommentsApi = async(id:string|number)=>{
         let token = authToken.access;
         let res = await axios.get(`${baseUrl}/msgs-room/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
         return res
-
     }catch(err){
         throw err
     }
@@ -39,12 +38,12 @@ export const getUserCommentsApi = async(id:string|number)=>{
     }
 }
 
-export const createCommentsApi = async(data:any)=>{
+export const createCommentsApi = async(data:any,id:string|number)=>{
     try{
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.post(`${baseUrl}/createMsg/${data.id}`,{headers:{Authorization:`Bearer ${token}`}})
+        let res = await axios.post(`${baseUrl}/createMsg/${id}/`,data,{headers:{Authorization:`Bearer ${token}`}})
         return res
     }catch(err){
         throw err
@@ -66,7 +65,7 @@ export const deleteCommentsApi = async(id:string|number)=>{
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.get(`${baseUrl}/msg-delete/${id}`,{headers:{Authorization:`Bearer ${token}`}})
+        let res = await axios.post(`${baseUrl}/msg-delete/${id}`,{headers:{Authorization:`Bearer ${token}`}})
         return res
     }catch(err){throw err}
 }

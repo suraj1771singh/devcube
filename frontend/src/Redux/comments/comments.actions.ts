@@ -25,8 +25,7 @@ export const getRecentComments = () => async (dispatch: Dispatch) => {
     dispatch({ type: GET_RECENT_COMMENTS_LOADING })
     try {
         let res = await getRecentCommentsApi();
-        console.log(res.data)
-        dispatch({ type: GET_RECENT_COMMENTS_SUCCESS })
+        dispatch({ type: GET_RECENT_COMMENTS_SUCCESS,payload:res.data })
     } catch (err) {
         dispatch({ type: GET_RECENT_COMMENTS_ERROR })
     }
@@ -52,12 +51,11 @@ try{
     dispatch({type:GET_USER_COMMENTS_ERROR})
 }
 }
-export const createComments = (data:any)=>async(dispatch:Dispatch)=>{
+export const createComments = (data:any,id:string|number)=>async(dispatch:Dispatch)=>{
     dispatch({type:CREATE_COMMENTS_LOADING})
 try{
-    let res = await createCommentsApi(data)
-    console.log(res)
-    dispatch({type:CREATE_COMMENTS_SUCCESS})
+    let res = await createCommentsApi(data,id)
+    dispatch({type:CREATE_COMMENTS_SUCCESS,payload:res.data})
 }catch(err){
     dispatch({type:CREATE_COMMENTS_ERROR})
 }
