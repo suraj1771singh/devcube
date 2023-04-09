@@ -17,7 +17,7 @@ const RoomData = ({data}:any) => {
   const [toggle,setToggle] = useState(false)
   const [owner,setOwner] = useState(false)
   const [isParticipant, setIsParticipant] = useState(false);
-  const [showComments,setShowComments] = useState(false)
+  const [showComments,setShowComments] = useState(true)
   let topicsTags=[1,2,3,4,2]
   // console.log(data)
   let date = data?.created;
