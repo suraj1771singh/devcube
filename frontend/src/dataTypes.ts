@@ -24,7 +24,6 @@ export interface authUserDataType{
         myData:any,
         logout_loading:boolean,
         logout_error:boolean,
-        token?:userTokenType|null
 }
 export interface userTokenType {
     access:string,

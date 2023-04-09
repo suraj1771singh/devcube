@@ -7,11 +7,11 @@ import {USER_LOGIN_LOADING,
     USER_LOGOUT_SUCCESS,
     USER_LOGOUT_FAILURE,
     USER_LOGOUT_LOADING,
-    USER_SIGNUP_SUCCESS, USER_REFRESH_LOADING,
+    USER_SIGNUP_SUCCESS,
+    USER_REFRESH_LOADING,
     USER_REFRESH_SUCCESS,
     USER_REFRESH_FAILURE,} from "./auth.actions.types";
 import jwt_decode from "jwt-decode"
-
 
     let authTokens:string|null = localStorage.getItem("authTokens");
     let authToken:userTokenType = authTokens?(JSON.parse(authTokens)):null
@@ -23,7 +23,6 @@ import jwt_decode from "jwt-decode"
         signup_error:false,
         signup_success:false,
         myData:authToken?jwt_decode(authToken.access):null,
-        token:authToken,
         logout_loading:false,
         logout_error:false,
     }

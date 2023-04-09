@@ -8,24 +8,29 @@ import { logoutUser, updateToken } from '../Redux/auth/auth.actions'
 import { toggleTheme } from '../Redux/theme/theme.actions'
 import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
+import { userTokenType } from '../dataTypes'
 const Navbar = () => {
-
     const dispatch:Dispatch<any> = useDispatch()
-    let {token,isAuth,myData} = useSelector((val:rootReducertype)=>val.auth)
+    let {isAuth,myData} = useSelector((val:rootReducertype)=>val.auth)
     let {drk_theme} = useSelector((val:rootReducertype)=>val.theme);
     const nav = useNavigate()
     const [dropdown,setDropdown] = useState(false);
-    useEffect(() => {
-        let interval = setInterval(() => {
-            if (token) {
-                dispatch(updateToken());
-            }
-        }, 3 * 60 * 1000);
-        return () => clearInterval(interval);
-  }, [dispatch, token]);
   const toggleDropdown = ()=>{
     setDropdown(!dropdown)
   }
+  useEffect(()=>{
+    let id=setInterval(() => {
+          let tokenAll:any = localStorage.getItem("authTokens");
+          let authToken:userTokenType = JSON.parse(tokenAll);
+          let token = authToken.access;
+          if (token) {
+              dispatch(updateToken())
+            }
+        }, 1 * 60 * 1000);
+    return ()=>{
+        clearInterval(id)
+    }
+    },[dispatch])
   const handleLogout = ()=>{
     dispatch(logoutUser())
     toggleDropdown()

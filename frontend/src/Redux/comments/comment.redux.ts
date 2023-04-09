@@ -56,7 +56,7 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 ...state, get_recent_comments_loading: false,
                 get_recent_comments_error: false,
                 get_recent_comments_success: true,
-                allComments: payload
+                recentComments: payload
             }
         }
         case GET_RECENT_COMMENTS_ERROR: {

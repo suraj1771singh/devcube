@@ -18,14 +18,13 @@ export const loginUserApi = async (data: loginUserDataType) => {
     } catch (err) {
         throw err
     }
-}
-
+} 
 export const updateTokenApi = async () => {
-    let token: any = localStorage.getItem("authTokens");
     try {
-        let authToken:userTokenType = JSON.parse(token);
-        let data = authToken.refresh;
-            let res = await axios.post(`${baseUrl}/token/refresh/`, { refresh: data });
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.refresh;
+            let res = await axios.post(`${baseUrl}/token/refresh/`, { refresh: token });
             return res.data;
         } catch (err) {
             console.log('error')
