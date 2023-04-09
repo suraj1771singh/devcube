@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineLike } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { Dispatch } from 'redux'
+import {getRecentComments } from '../Redux/comments/comments.actions'
 
 const Comment = () => {
+  const dispatch:Dispatch<any>=useDispatch()
+  useEffect(() => {
+    dispatch(getRecentComments())
+  }, [dispatch])
+  
   return (
     <div>
          <div className='flex items-center'>
@@ -18,7 +26,6 @@ const Comment = () => {
             <AiOutlineLike className='mx-2 text-xl cursor-pointer'/>
             </div>
         </div>
-
     </div>
   )
 }
