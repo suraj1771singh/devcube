@@ -1,3 +1,4 @@
+import { roomInitialDataType } from "../../dataTypes";
 import {
     CREATE_ROOM_LOADING,
     CREATE_ROOM_SUCCESS,
@@ -24,7 +25,7 @@ import {
 GET_ROOM_BY_ID_ERROR,
 GET_ROOM_BY_ID_SUCCESS,
 } from "./room.action.type";
-let initialData = {
+let initialData:roomInitialDataType = {
     allRooms: [],
     create_loading: false,
     create_error: false,
@@ -117,8 +118,17 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state,join_error:true,join_loading:false,join_success:false, }
         }
         case JOIN_ROOM_SUCCESS: {
-            // update all rooms participents here 
-            return { ...state,join_error:false,join_loading:false,join_success:true, }
+            // eslint-disable-next-line array-callback-return
+         let addParticipantArray = state.allRooms?.map((el)=>{
+                if(el.id===payload.id){
+                    el.participants.push(payload.user)
+                }
+                return el
+            })
+        if(state.roomData){
+            state.roomData.participants.push(payload.user)
+        }  
+            return { ...state,join_error:false,join_loading:false,join_success:true,allRooms:addParticipantArray }
         }
         case LEAVE_ROOM_LOADING: {
             return { ...state,leave_loading:true,leave_error:false,leave_success:false, }
@@ -127,6 +137,15 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state,leave_loading:false,leave_error:true,leave_success:false, }
         }
         case LEAVE_ROOM_SUCCESS: {
+            if(state.roomData){
+              // eslint-disable-next-line array-callback-return
+              let updatedParticipants=state.roomData.participants.filter((el)=>{
+                    if(el.id!==payload.user.id){
+                        return el
+                    }
+                })
+                state.roomData.participants=updatedParticipants;
+            }
             return { ...state,leave_loading:false,leave_error:false,leave_success:true, }
         }
         case GET_ROOM_BY_ID_LOADING:{

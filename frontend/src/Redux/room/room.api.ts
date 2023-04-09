@@ -16,6 +16,7 @@ export const getRoomsApi = async()=>{
 
 export const createRoomApi = async(data:createRoomDataType)=>{
      try{
+
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
@@ -61,8 +62,6 @@ try{
     let tokenAll:any = localStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
-    console.log(`Bearer ${token}`);
-    
     let res = await axios({
         method: "PATCH",
         url: `${baseUrl}/room-add-participant/${id}/`,
@@ -82,7 +81,14 @@ try{
     let tokenAll:any = localStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
-    let res = axios.patch(`${baseUrl}/room-add-participant/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
+    let res = await axios({
+        method: "PATCH",
+        url: `${baseUrl}/room-remove-participant/${id}/`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
     return res
 }catch(err){
     throw err

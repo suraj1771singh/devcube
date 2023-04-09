@@ -9,11 +9,12 @@ import { toggleTheme } from '../Redux/theme/theme.actions'
 import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
 const Navbar = () => {
+
     const dispatch:Dispatch<any> = useDispatch()
     let {token,isAuth,myData} = useSelector((val:rootReducertype)=>val.auth)
     let {drk_theme} = useSelector((val:rootReducertype)=>val.theme);
-    const [dropdown,setDropdown] = useState(false);
     const nav = useNavigate()
+    const [dropdown,setDropdown] = useState(false);
     useEffect(() => {
         let interval = setInterval(() => {
             if (token) {

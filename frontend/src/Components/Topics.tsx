@@ -1,9 +1,14 @@
+import { topicDataType } from "../dataTypes"
 
-const Topics = ({data,handleTopic}:any) => {
-  
+export interface topicComponentType{
+  data:topicDataType;
+  handleTopic:(data:topicDataType)=>void;
+  limit:boolean
+}
+const Topics = ({data,handleTopic,limit}:topicComponentType) => {
   return (
-        <button onClick={()=>handleTopic(data)} className='flex font-semibold items-center justify-between my-3 hover:text-third_color cursor-pointer mx-10'>
-            <p  >{data.name}</p>
+        <button disabled={limit} onClick={()=>handleTopic(data)} className={`flex font-semibold items-center justify-between my-3 ${limit?"":"hover:text-third_color"} mx-10`}>
+            <p>{data.name}</p>
         </button>
   )
 }

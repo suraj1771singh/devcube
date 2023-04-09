@@ -30,7 +30,7 @@ const Room = () => {
                 <RoomData data={roomData} />
                 </div>
                 {/* right section => recent acitivies  */}
-                <Participants data={roomData?.Participants} />
+                <Participants data={roomData?.participants} />
             </div>
   )
 }
