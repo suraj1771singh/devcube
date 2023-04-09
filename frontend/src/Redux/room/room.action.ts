@@ -25,7 +25,7 @@ GET_ROOM_BY_ID_LOADING,
 GET_ROOM_BY_ID_ERROR,
 GET_ROOM_BY_ID_SUCCESS,
 }from "./room.action.type";
-import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, joinRoomApi, updateRoomApi } from "./room.api";
+import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_LOADING})
@@ -79,19 +79,25 @@ export const getRoomByUserId = (id:string)=>async(dispatch: (arg0: { type: strin
     }
 } 
 
-export const joinRoom = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const joinRoom = (id:string|number,user:{id:string|number,email:string})=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:JOIN_ROOM_LOADING})
 try{
-    let res = await joinRoomApi(id);
-    console.log(res)
-    dispatch({type:JOIN_ROOM_SUCCESS,payload:id})
+    await joinRoomApi(id);
+    dispatch({type:JOIN_ROOM_SUCCESS,payload:{id,user}})
 }catch(err){
     dispatch({type:JOIN_ROOM_ERROR})
 }
 }
 
-export const leaveRoom = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const leaveRoom = (id:string|number,user:{id:string|number,email:string})=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+    dispatch({type:LEAVE_ROOM_LOADING})
+try{
+    await leaveRoomApi(id)
+    dispatch({type:LEAVE_ROOM_SUCCESS,payload:{id,user}})
 
+}catch(err){
+    dispatch({type:LEAVE_ROOM_ERROR})
+}
 }
 export const getRoombyId = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
 dispatch({type:GET_ROOM_BY_ID_LOADING})

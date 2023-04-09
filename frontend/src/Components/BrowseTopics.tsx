@@ -4,28 +4,37 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { CiSearch } from 'react-icons/ci'
 import { Dispatch, useEffect, useState } from 'react'
-import { getTopics } from '../Redux/topic/topic.actions'
+import { addTopicTag, getTopics } from '../Redux/topic/topic.actions'
+import { topicDataType } from '../dataTypes'
 
-const BrowseTopics = ({isCreate=false,getTags=(tagName:string)=>{}}) => {
-  const { allTopics } = useSelector((val: rootReducertype) => val.topics)
+const BrowseTopics = ({isCreate=false}) => {
+  const { allTopics,topicTags} = useSelector((val: rootReducertype) => val.topics)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const [more,setMore] = useState(false);
-  const [topics, setTopics] = useState([])
+  const [topics, setTopics] = useState<any>([])
+  const [limit,setLimit] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
   useEffect(() => {
     dispatch(getTopics())
   }, [dispatch])
+  useEffect(() => {
+    if(topicTags.length===5){
+      setLimit(true)
+    }
+  }, [topicTags])
   useEffect(()=>{
     if(!more){
-    let tpcs = allTopics?.slice(0,6);
-    setTopics(tpcs)
+        let tpcs = allTopics.slice(0,6);
+        setTopics(tpcs)
     }else{
       setTopics(allTopics)
     }
   },[allTopics, more])
-  const handleTopics = (el:any)=>{
+
+  const handleTopics = (el:topicDataType)=>{
     if(isCreate){
-      getTags(el.name)
+      dispatch(addTopicTag(el))
+
     }else{
       // dispatch(getroomsbytopic)
     }
@@ -40,8 +49,8 @@ const BrowseTopics = ({isCreate=false,getTags=(tagName:string)=>{}}) => {
           <CiSearch className='cursor-pointer text-3xl'/>
         </div>
       </div>
-      {topics?.map((el: any)=> <Topics key={el.id} data={el} handleTopic={handleTopics} />)}
-      {more?<button onClick={()=>setMore(false)} className='cursor-pointer flex font-semibold items-center justify-between my-3 mx-8 hover:text-third_color '>
+      {topics?.map((el: any)=> <Topics key={el.id} data={el} limit={limit} handleTopic={handleTopics} />)}
+      {more?<button onClick={()=>setMore(false)} className='flex font-semibold items-center justify-between my-3 mx-8 hover:text-third_color '>
         <p className='font-semibold'>Less</p>
         <AiOutlineUp className='font-bold mx-2' />
       </button>:<button onClick={()=>setMore(true)} className='cursor-pointer flex font-semibold items-center justify-between my-3 mx-8 hover:text-third_color '>

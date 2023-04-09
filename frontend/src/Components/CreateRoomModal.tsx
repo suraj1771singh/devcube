@@ -5,44 +5,61 @@ import { createRoom } from '../Redux/room/room.action';
 import { rootReducertype } from '../Redux/Store';
 import { AiOutlineClose } from 'react-icons/ai';
 import Alert from './Alert';
+import { topicDataType } from '../dataTypes';
+import { removeTopicTag } from '../Redux/topic/topic.actions';
+import { useNavigate } from 'react-router-dom';
 
-const CreateRoomModal = ({tags,removeTag}:any) => {
+const CreateRoomModal = () => {
+  // Redux hooks for state management 
   const dispatch:Dispatch<any> = useDispatch()
-  const [limit,setLimit] = useState(false)
-  const [exist,setExists] = useState(false)
-  const [addTags,setAddTags]= useState([""])
-  useEffect(()=>{
-    if(tags.length>=6){
-      setLimit(true)
-    }else{
-      setAddTags(tags)
-    }
-  },[tags])
-//  const {allTopics} =  useSelector((val:rootReducertype)=>val.topics)
-  const [roomData,setRoomData] = useState({name:"",description:""})
-
+  const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)
   let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
+  // React hoooks for state change:
+  const nav = useNavigate()
+    //hook to toggle alert message
+  const [noTagAlert,setNotagAlert]= useState(false)
+    // hook to update the tags
+  const [addTags,setAddTags]= useState<topicDataType[]>([])
+    // hook to handle the input data in form
+  const [roomData,setRoomData] = useState({name:"",description:""})
+    // update tags
+  useEffect(()=>{
+    setAddTags(topicTags)
+  },[topicTags])
+  // functions for various events:
+  // changing input for controlled components
   const handleChange = (e: { target: { name: any; value: any; }; })=>{
     setRoomData({...roomData,[e.target.name]:e.target.value})
   }
+  // on Create Room Button click
   const handleRoomData = (e:FormEvent)=>{
     e.preventDefault();
     if(addTags.length===0){
-      
+      setNotagAlert(true)
     }else{
-      let room = {...roomData,tags:addTags}
-
-      console.log(room)
+      let tags = addTags.map((el:topicDataType)=>{
+        return el.id
+      })
+      if(roomData.name.trim()&&roomData.description.trim()){
+        let data = {...roomData,topic:tags}
+        dispatch(createRoom(data))
+      }
     }
-        // dispatch(createRoom(roomData))
   }
+  // on Cancel button click
   const handleClose = ()=>{
     setRoomData({name:"",description:""})
+    nav("/")
   }
+  // alert message auto disappear (auto invoked function)
   const closeAlert = ()=>{
-    setLimit(false)
+    setNotagAlert(false)
   }
-  
+  // remove added tags while creating room
+  const handleRemoveTag = (el:topicDataType)=>{
+    dispatch(removeTopicTag(el))
+  }
+
   return (
     <>
     <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl`}>
@@ -57,7 +74,7 @@ const CreateRoomModal = ({tags,removeTag}:any) => {
             <p> {addTags.length}/5 </p>
             </div>
             <div className='flex'>
-           { addTags.map((el:string,id:number)=><p key={id} className='border-2 px-4 py-2 mx-2 flex items-center rounded-full'>{el} <span><AiOutlineClose onClick={()=>removeTag(el)} className='ml-2 cursor-pointer'/> </span> </p> )}
+           {(addTags.length===0)?<p className="text-gray-500 mx-2">Select Tags From Menu at left (min:1 max:5) </p>:addTags?.map((el:topicDataType,id:number)=><p key={id} className='border-2 px-4 py-2 mx-2 flex items-center rounded-full'>{el.name} <span><AiOutlineClose onClick={()=>handleRemoveTag(el)} className='ml-2 cursor-pointer'/> </span> </p> )}
             </div>
           </div>
 
@@ -68,7 +85,7 @@ const CreateRoomModal = ({tags,removeTag}:any) => {
 
         </form>
         </div>
-        {limit&&<Alert text='Tags cannot Exceed 5 elements' type="error" closeAlert={closeAlert} />}
+        {noTagAlert&&<Alert text='Please Select Atleast 1 tag' type="error" closeAlert={closeAlert} />}
 </>
   )
 }

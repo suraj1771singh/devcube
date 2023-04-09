@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect, useState} from 'react'
 import RoomCard from '../Components/RoomCard'
 import { IoAddSharp } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,9 +12,14 @@ const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
+    const [roomsArray,setRoomsArray] = useState<any>([])
+    // console.log(allRooms)
     useEffect(() => {
         dispatch(getRooms())
     }, [ dispatch])
+    useEffect(()=>{
+        setRoomsArray(allRooms)
+    },[allRooms])
     return (
         <> 
             <div className='w-11/12 m-auto flex flex-col md:flex-row justify-between'>
@@ -35,7 +40,7 @@ const Home = () => {
                         <NavLink to='/create_room' className='text-sm bg-third_color text-bg_pri font-semibold md:px-4 p-2 md:py-2 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
-                    {allRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                    {roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
                     </div>
                 </div>
                 {/* right section => recent acitivies  */}

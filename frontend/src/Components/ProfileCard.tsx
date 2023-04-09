@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { BiEdit } from 'react-icons/bi'
 import { Dispatch, useState } from 'react'
-import EditProfileModal from './EditProfileModal'
 import { AiOutlineInstagram, AiOutlineLinkedin, AiOutlineTwitter } from 'react-icons/ai'
 import { followUser } from '../Redux/user/user.actions'
+import EditProfileModal from './EditProfileModal'
 const ProfileCard = ({ id }: any) => {
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
