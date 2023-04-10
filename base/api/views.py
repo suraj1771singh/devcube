@@ -1,3 +1,4 @@
+import random
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +11,10 @@ from django.contrib.auth import authenticate, login, logout
 from base.models import Room, Topic, User, UserRelationship, Message
 from .serializers import RoomSerializer, UserSerializer, TopicSerializer, MsgSerializer
 from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 @api_view(['GET'])
@@ -26,11 +31,24 @@ def getRoutes(request):
 
 @api_view(['POST'])
 def registerUser(request):
-    form = MyUserCreationForm(request.data)
+    form = MyUserCreationForm(request.data, request.FILES)
+    photo_urls = ['studybud/avatars/avatar10_swt0xw.jpg', 'studybud/avatars/avatar1_tbo8of.jpg',
+                  'studybud/avatars/avatar3_jelyev.webp', 'studybud/avatars/avatar2_jjpgon.jpg',
+                  'media/studybud/avatars/avatar4_se2glk.webp', 'studybud/avatars/avatar5_d1d0bm.webp',
+                  'studybud/avatars/avatar6_b75dd5.jpg', 'studybud/avatars/avatar7_tzai7t.jpg',
+                  'studybud/avatars/avatar8_x7n5hi.jpg', 'studybud/avatars/avatar9_itibsx.jpg']
+    print("--------------", request.FILES)
+    random_index = random.randrange(len(photo_urls))
+    photo = photo_urls[random_index]
+    if request.data.get('photo') is not None:
+        # uploadling photo
+        photo = request.data.get('photo')
+
     if form.is_valid():
         user = form.save(commit=False)
         user.email = user.email.lower()
         user.username = user.email.lower()
+        user.photo = photo
         user.save()
         return Response({'msg': "New user created successfully !"}, status=status.HTTP_201_CREATED)
     else:
@@ -55,10 +73,22 @@ def getUserProfile(request, pk):
 @permission_classes([IsAuthenticated])
 def createRoom(request):
     form = RoomForm(request.data)
+    topic = request.data.get("topic")
+    # check for valid topic id's
+    topic_list = []
+    try:
+        for i in range(0, len(topic)):
+            t = Topic.objects.get(id=topic[i])
+            topic_list.append(t)
+    except Topic.DoesNotExist:
+        return Response({'msg': "Invalid Topic list."}, status=status.HTTP_400_BAD_REQUEST)
+    print(topic_list)
     if form.is_valid():
         room = form.save(commit=False)
         room.host = request.user
         room.save()
+        for topic in topic_list:
+            room.topic.add(topic)
         return Response({'msg': "Created room successfully !"}, status=status.HTTP_200_OK)
     else:
         return Response({'msg': "Invalid form Details!"}, status=status.HTTP_400_BAD_REQUEST)
@@ -80,6 +110,7 @@ def getAllRooms(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getRoomsByUser(request, pk):
+    print("---------------------", pk)
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
     # many is set to true, to serialize many objects
@@ -320,14 +351,11 @@ def getMsgsByUser(request, pk):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getMsgsByRoom(request, pk):
     room = Room.objects.get(id=pk)
     msgs = room.message_set.all()
     sl = MsgSerializer(msgs, many=True)
-    for data in sl.data:
-        user = User.objects.get(id=data['user'])
-        data["username"] = user.username
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
