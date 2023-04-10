@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'base.apps.BaseConfig'  # setting base app
+    'base.apps.BaseConfig',
+    'cloudinary',
+    'cloudinary_storage'  # setting base app
 ]
 
 AUTH_USER_MODEL = 'base.User'
@@ -171,8 +174,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dqgdv4w05',
+    'API_KEY': '349287919356185',
+    'API_SECRET': 'JgqH2PumUr_ZnNl-0wa_AAzqrj4',
+}
 STATIC_URL = 'static/'
-
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

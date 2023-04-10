@@ -13,12 +13,19 @@ class UserSerializer(ModelSerializer):
         exclude = ('password', "last_login")
 
 
+class TopicSerializer(ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = '__all__'
+
+
 class RoomSerializer(ModelSerializer):
     # username = serializers.SerializerMethodField()
     # host_profile_photo = serializers.SerializerMethodField()
     # user_profile_photo = serializers.ImageField(source='user.profile_photo')
     host = UserSerializer()
     participants = UserSerializer(many=True)
+    topic = TopicSerializer(many=True)
 
     class Meta:
         model = Room
@@ -29,13 +36,14 @@ class RoomSerializer(ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         host_data = representation.pop('host')
-
+        
         host_email = host_data.get('email')
         host_first_name = host_data.get('first_name')
         host_last_name = host_data.get('last_name')
         host_id = host_data.get('id')
+        host_photo = host_data.get('photo')
         representation['host'] = {'email': host_email, 'id': host_id,
-                                  'first_name': host_first_name, 'last_name': host_last_name}
+                                  'first_name': host_first_name, 'last_name': host_last_name, "photo": host_photo}
 
         participants_data = representation.pop('participants')
         representation['participants'] = [
@@ -59,12 +67,13 @@ class MsgSerializer(ModelSerializer):
         user_email = user_data.get('email')
         user_first_name = user_data.get('first_name')
         user_last_name = user_data.get('last_name')
+        user_photo = user_data.get('photo')
         room_data = representation.pop('room')
         room_id = room_data.get('id')
         room_name = room_data.get('name')
 
         representation['user'] = {'id': user_id, 'email': user_email,
-                                  'first_name': user_first_name, 'last_name': user_last_name}
+                                  'first_name': user_first_name, 'last_name': user_last_name, 'photo': user_photo}
         representation['room'] = {'id': room_id, 'name': room_name}
         return representation
 
@@ -75,12 +84,6 @@ class MsgSerializer(ModelSerializer):
     #     serializer = self.__class__(children, many=True)
     #     # Call the serializer's data property to get the serialized data
     #     return serializer.data
-
-
-class TopicSerializer(ModelSerializer):
-    class Meta:
-        model = Topic
-        fields = '__all__'
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

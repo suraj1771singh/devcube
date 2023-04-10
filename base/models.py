@@ -7,6 +7,7 @@ from .userManager import MyUserManager
 class User(AbstractUser):
     # Username = None
     email = models.EmailField(unique=True)
+    photo = models.ImageField(upload_to="studybud")
     first_name = models.CharField(max_length=100, blank=False)
     last_name = models.CharField(
         max_length=100, null=True, blank=True, default=None)
@@ -33,7 +34,8 @@ class Topic (models.Model):
 
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+    topic = models.ManyToManyField(
+        Topic,  symmetrical=False)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     participants = models.ManyToManyField(
