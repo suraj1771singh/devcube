@@ -8,13 +8,13 @@ import UpdateRoomModal from "../Components/UpdateRoomModal";
 import { rootReducertype } from "../Redux/Store";
 const UpdateRoom = () => {
     const {id}=useParams();
+    const data = useSelector((val:rootReducertype)=>val?.rooms?.roomData)
     const dispatch:Dispatch<any> = useDispatch()
     useEffect(() => {
         if(id){
             dispatch(getRoombyId(id))
         }
     }, [id,dispatch])
-    const data = useSelector((val:rootReducertype)=>val?.rooms?.roomData)
     console.log(data)
   return (
     <div className="w-11/12 m-auto flex flex-col md:flex-row justify-between">

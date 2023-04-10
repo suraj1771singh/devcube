@@ -7,6 +7,7 @@ import Alert from './Alert';
 import { topicDataType } from '../dataTypes';
 import { removeTopicTag } from '../Redux/topic/topic.actions';
 import { useNavigate } from 'react-router-dom';
+import { updateRoom } from '../Redux/room/room.action';
 
 const UpdateRoomModal = ({data}:any) => {
   // Redux hooks for state management 
@@ -41,8 +42,7 @@ const UpdateRoomModal = ({data}:any) => {
       })
       if(roomData.name.trim()&&roomData.description.trim()){
         let data = {...roomData,topic:tags}
-
-        // dispatch(updateroom(data))
+        dispatch(updateRoom(data))
         
       }
     }

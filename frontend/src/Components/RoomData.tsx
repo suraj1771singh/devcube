@@ -46,7 +46,7 @@ const RoomData = ({data}:any) => {
       setToggle(!toggle)
     }
     const editRoomModal = (data:any)=>{
-      // dispatch(updateTopicTag(data.topics))
+      dispatch(updateTopicTag(data.topic))
       nav(`/update_room/:${data.id}`)
     }
     const deleteRoomModal = ()=>{

@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { createRoomDataType } from "../../dataTypes";
 import{
     CREATE_ROOM_LOADING,
@@ -23,9 +24,11 @@ LEAVE_ROOM_ERROR,
 LEAVE_ROOM_SUCCESS,
 GET_ROOM_BY_ID_LOADING,
 GET_ROOM_BY_ID_ERROR,
-GET_ROOM_BY_ID_SUCCESS,
+GET_ROOM_BY_ID_SUCCESS,GET_ROOMS_JOINED_BY_USER_LOADING,
+GET_ROOMS_JOINED_BY_USER_ERROR,
+GET_ROOMS_JOINED_BY_USER_SUCCESS,
 }from "./room.action.type";
-import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
+import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsJoinedByUserApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_LOADING})
@@ -47,10 +50,10 @@ export const createRoom = (data:createRoomDataType)=>async(dispatch: (arg0: { ty
         dispatch({type:CREATE_ROOM_ERROR})
     }
 }
-export const updateRoom = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const updateRoom = (data:any)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:UPDATE_ROOM_LOADING})
     try{
-        let res = updateRoomApi()
+        let res = updateRoomApi(data)
         console.log(res)
         dispatch({type:UPDATE_ROOM_SUCCESS})
     }catch(err){
@@ -69,7 +72,7 @@ export const deleteRoom = (id:string)=>async(dispatch: (arg0: { type: string; pa
     }
 }
 
-export const getRoomByUserId = (id:string)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const getRoomByUserId = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_BY_USER_LOADING})
     try{
         let res = await getRoomByUserIdApi(id)
@@ -108,3 +111,15 @@ try{
     dispatch({type:GET_ROOM_BY_ID_ERROR})
 }
 }
+
+
+ export const getRoomsJoinedByUser = (id:number|string)=>async(dispatch:Dispatch)=>{
+    dispatch({type:GET_ROOMS_JOINED_BY_USER_LOADING})
+    try{
+        let res = await getRoomsJoinedByUserApi(id)
+        console.log(res)
+        dispatch({type:GET_ROOMS_JOINED_BY_USER_SUCCESS})
+    }catch(err){
+        dispatch({type:GET_ROOMS_JOINED_BY_USER_ERROR})
+    }
+ }
