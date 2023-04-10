@@ -1,4 +1,4 @@
-import { dispatchType, loginUserDataType, registerUserDataType } from "../../dataTypes";
+import { dispatchType, loginUserDataType, registerUserDataType} from "../../dataTypes";
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
@@ -53,4 +53,3 @@ export const updateToken = () => async (dispatch: (arg: dispatchType) => void) =
         dispatch({type:USER_REFRESH_FAILURE})
     }
 };
-

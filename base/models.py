@@ -23,8 +23,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
-
-
 class Topic (models.Model):
     name = models.CharField(max_length=200)
 

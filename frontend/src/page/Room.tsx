@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoombyId } from '../Redux/room/room.action'
 import { rootReducertype } from '../Redux/Store'
+import { getRecentComments, getRoomComments } from '../Redux/comments/comments.actions'
 
 const Room = () => {
     const {id} = useParams()
@@ -14,6 +15,8 @@ const Room = () => {
     useEffect(()=>{
         if(id){
             dispatch(getRoombyId(id))
+            dispatch(getRoomComments(id))
+            dispatch(getRecentComments())
         }
     },[dispatch, id])
   return (
@@ -26,11 +29,11 @@ const Room = () => {
                     <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Recent Activites</button>
                 </div>
                 {/* middle section => Room's Data  */}
-                <div className='md:w-[62%] mx-[20%] '>
+                <div className='md:w-[62%] mx-[20%]'>
                 <RoomData data={roomData} />
                 </div>
                 {/* right section => recent acitivies  */}
-                <Participants data={roomData?.Participants} />
+                <Participants data={roomData?.participants} />
             </div>
   )
 }

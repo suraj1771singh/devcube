@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
-import { createRoom } from '../Redux/room/room.action';
 import { rootReducertype } from '../Redux/Store';
 import { AiOutlineClose } from 'react-icons/ai';
 import Alert from './Alert';
@@ -9,7 +8,7 @@ import { topicDataType } from '../dataTypes';
 import { removeTopicTag } from '../Redux/topic/topic.actions';
 import { useNavigate } from 'react-router-dom';
 
-const CreateRoomModal = () => {
+const UpdateRoomModal = ({data}:any) => {
   // Redux hooks for state management 
   const dispatch:Dispatch<any> = useDispatch()
   const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)
@@ -21,7 +20,7 @@ const CreateRoomModal = () => {
     // hook to update the tags
   const [addTags,setAddTags]= useState<topicDataType[]>([])
     // hook to handle the input data in form
-  const [roomData,setRoomData] = useState({name:"",description:""})
+  const [roomData,setRoomData] = useState(data)
     // update tags
   useEffect(()=>{
     setAddTags(topicTags)
@@ -42,7 +41,9 @@ const CreateRoomModal = () => {
       })
       if(roomData.name.trim()&&roomData.description.trim()){
         let data = {...roomData,topic:tags}
-        dispatch(createRoom(data))
+
+        // dispatch(updateroom(data))
+        
       }
     }
   }
@@ -90,4 +91,4 @@ const CreateRoomModal = () => {
   )
 }
 
-export default CreateRoomModal
+export default UpdateRoomModal
