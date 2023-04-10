@@ -11,6 +11,8 @@ import { joinRoom, leaveRoom } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
 import { createComments } from '../Redux/comments/comments.actions'
 import Alert from './Alert'
+import { useNavigate } from 'react-router-dom'
+import { updateTopicTag } from '../Redux/topic/topic.actions'
 const RoomData = ({data}:any) => {
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const{myData} =  useSelector((val:rootReducertype)=>val?.auth)
@@ -26,7 +28,7 @@ const RoomData = ({data}:any) => {
   let date = data?.created;
   let createdTime = new Date(date).getTime()
   let updatedTime = new Date(data?.updated).getTime()
-
+  const nav = useNavigate()
   useEffect(()=>{
     setIsParticipant(data?.participants.some((el:any)=>el.id===myData?.user_id))
   },[data?.participants,data?.participants.length, myData?.user_id])
@@ -43,8 +45,9 @@ const RoomData = ({data}:any) => {
     e.stopPropagation()
       setToggle(!toggle)
     }
-    const editRoomModal = ()=>{
-      console.log('hello')
+    const editRoomModal = (data:any)=>{
+      // dispatch(updateTopicTag(data.topics))
+      nav(`/update_room/:${data.id}`)
     }
     const deleteRoomModal = ()=>{
       console.log('delete butn clicked')
@@ -86,7 +89,7 @@ const RoomData = ({data}:any) => {
             <div>
             <FiMoreHorizontal className='text-2xl cursor-pointer hover:text-third_color mx-8' onClick={(e)=>toggleMoreInfo(e)} />
            {owner?toggle&&<div className='py-4 absolute w-fit top-[10%] right-[2%] p-2 font-semibold rounded-xl shadow-md'>
-              <div onClick={editRoomModal} className='text-third_color mb-2 cursor-pointer flex items-center'>
+              <div onClick={()=>editRoomModal(data)} className='text-third_color mb-2 cursor-pointer flex items-center'>
                 <AiFillEdit className='mx-2'/>
                <span className='mx-2'>
                 Edit

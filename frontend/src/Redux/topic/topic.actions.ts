@@ -34,4 +34,11 @@ export const removeTopicTag = (data:topicDataType)=>async(dispatch: (arg0: { typ
         dispatch({type:REMOVE_TOPIC_TAGS_ERROR})
     }
 }
+export const updateTopicTag = (data:topicDataType[])=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
+    try{
+        dispatch({type:REMOVE_TOPIC_TAGS_SUCCESS,payload:data})
+    }catch(err){
+        dispatch({type:REMOVE_TOPIC_TAGS_ERROR})
+    }
+}
 

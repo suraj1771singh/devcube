@@ -7,6 +7,7 @@ import PrivateRoutes from './PrivateRoutes'
 import Profile from '../page/Profile'
 import Room from '../page/Room'
 import CreateRoom from '../page/CreateRoom'
+import UpdateRoom from '../page/UpdateRoom'
 const AllRoutes = () => {
   return (
     <div>
@@ -16,7 +17,8 @@ const AllRoutes = () => {
         <Route path='/' element={<PrivateRoutes><Home/></PrivateRoutes>}/>
         <Route path='/profile/:id' element={<PrivateRoutes><Profile/></PrivateRoutes>}/>
         <Route path='/room/:id' element={<PrivateRoutes><Room/></PrivateRoutes>}/>
-        <Route path='/create_room' element={<PrivateRoutes><CreateRoom/></PrivateRoutes>}/>
+        <Route path='/create_room/' element={<PrivateRoutes><CreateRoom/></PrivateRoutes>}/>
+        <Route path='/update_room/:id' element={<PrivateRoutes><UpdateRoom/></PrivateRoutes>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
         </Routes>
