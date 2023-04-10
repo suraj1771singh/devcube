@@ -18,7 +18,9 @@ const BrowseTopics = ({isCreate=false}) => {
     dispatch(getTopics())
   }, [dispatch])
   useEffect(() => {
-    if(topicTags.length===5){
+    if(topicTags.length<5){
+      setLimit(false)
+    }else{
       setLimit(true)
     }
   }, [topicTags])
@@ -34,7 +36,6 @@ const BrowseTopics = ({isCreate=false}) => {
   const handleTopics = (el:topicDataType)=>{
     if(isCreate){
       dispatch(addTopicTag(el))
-
     }else{
       // dispatch(getroomsbytopic)
     }
