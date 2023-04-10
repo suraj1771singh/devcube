@@ -27,7 +27,7 @@ export const createRoomApi = async(data:createRoomDataType)=>{
     }
 }
 
-export const updateRoomApi = ()=>{
+export const updateRoomApi = (data:any)=>{
     try{
 
     }catch(err){
@@ -45,7 +45,7 @@ export const deleteRoomApi = async(id:string)=>{
 }
 
 
-export const getRoomByUserIdApi = async(id:string)=>{
+export const getRoomByUserIdApi = async(id:string|number)=>{
     try{
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
@@ -105,4 +105,16 @@ export const getRoomByIdApi = async(id:string|number)=>{
     }catch(err){
         throw err
     } 
+}
+
+export const getRoomsJoinedByUserApi = async(id:string|number)=>{
+    try{
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+            let res = await axios.get(`${baseUrl}/rooms-joined/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
+            return res;
+        }catch(err){
+            throw err
+        } 
 }

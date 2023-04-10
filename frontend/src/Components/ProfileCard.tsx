@@ -6,12 +6,14 @@ import { Dispatch, useState } from 'react'
 import { AiOutlineInstagram, AiOutlineLinkedin, AiOutlineTwitter } from 'react-icons/ai'
 import { followUser } from '../Redux/user/user.actions'
 import EditProfileModal from './EditProfileModal'
-const ProfileCard = ({ id }: any) => {
+import { getRoomByUserId, getRoomsJoinedByUser } from '../Redux/room/room.action'
+const ProfileCard = ({ id }:any) => {
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const { userData } = useSelector((val: rootReducertype) => val.user)
     let { myData } = useSelector((val: rootReducertype) => val.auth)
     const [editModal, setEditModal] = useState(false)
+    const [hosted,setHosted] = useState(true)
     let userId = myData.user_id;
     const dispatch: Dispatch<any> = useDispatch()
     const handleProfileEdit = () => {
@@ -22,6 +24,14 @@ const ProfileCard = ({ id }: any) => {
     }
     const handleFollow = (id: string | number) => {
         dispatch(followUser(id))
+    } 
+    const handleHostedRooms =  (id:string|number)=>{
+        dispatch(getRoomByUserId(id))
+        setHosted(true)
+    }
+    const handleJoinedRooms = (id:string|number)=>{
+        dispatch(getRoomsJoinedByUser(id))
+        setHosted(false)
     }
     return (
         <>
@@ -62,13 +72,13 @@ const ProfileCard = ({ id }: any) => {
                             </div>
                         </div>
                         <div className='text-center'>
-                            <button className={`mx-3 bg-third_color font-semibold p-2 px-5 rounded-full text-white`} >Hosted</button>
-                            <button className={`mx-3 ${drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} rounded-full p-2 px-5`}>Joined</button>
+                            <button onClick={()=>handleHostedRooms(id)} className={`mx-3 ${hosted?"bg-third_color text-white":drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} font-semibold p-2 px-5 rounded-full`} >Hosted</button>
+                            <button onClick={()=>handleJoinedRooms(id)} className={`mx-3 ${!hosted?"bg-third_color text-white":drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} font-semibold p-2 px-5 rounded-full`}>Joined</button>
                         </div>
                     </div>
                 </div>
                 {allRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
-                {(allRooms.length === 0) ? <h2 className='text-gray-500 text-center my-10 text-xl'>No Rooms Hosted</h2> : ""}
+                {(allRooms.length === 0) ? <h2 className='text-gray-500 text-center my-10 text-xl'>No Records found </h2> : ""}
             </div>
             {editModal && <EditProfileModal data={userData} closeModal={closeEditModal} />}
         </>

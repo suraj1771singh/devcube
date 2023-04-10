@@ -29,3 +29,8 @@ export const LEAVE_ROOM_SUCCESS="leave/room/success"
 export const GET_ROOM_BY_ID_LOADING="get/room/id/loading"
 export const GET_ROOM_BY_ID_ERROR="get/room/id/error"
 export const GET_ROOM_BY_ID_SUCCESS="get/room/id/success"
+
+export const GET_ROOMS_JOINED_BY_USER_LOADING="get/room/id/loading"
+export const GET_ROOMS_JOINED_BY_USER_ERROR="get/room/id/error"
+export const GET_ROOMS_JOINED_BY_USER_SUCCESS="get/room/id/success"
+

@@ -1,6 +1,10 @@
 export const GET_USER_LOADING = "get/user/loadinng"
-export const GET_USER_SUCCESS = "get/user/success"
 export const GET_USER_ERROR = "get/user/error"
+export const GET_USER_SUCCESS = "get/user/success"
+
+export const UPDATE_USER_SUCCESS = "update/user/success"
+export const UPDATE_USER_ERROR = "update/user/error"
+export const UPDATE_USER_LOADING = "update/user/loading"
 
 export const GET_USER_NAME_LOADING = "get/user/name/loadinng"
 export const GET_USER_NAME_SUCCESS = "get/user/name/success"

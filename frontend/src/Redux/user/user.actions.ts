@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import{GET_USER_LOADING,
     GET_USER_SUCCESS,
     GET_USER_ERROR,FOLLOW_USER_LOADING,
@@ -5,10 +6,13 @@ import{GET_USER_LOADING,
     FOLLOW_USER_ERROR,
     UNFOLLOW_USER_LOADING,
     UNFOLLOW_USER_SUCCESS,
+    UPDATE_USER_SUCCESS,
+UPDATE_USER_ERROR,
+UPDATE_USER_LOADING,
     UNFOLLOW_USER_ERROR,} from "./user.actions.type"
-import { followUserApi, getUserByIdApi, unfollowUserApi } from "./user.api"
+import { followUserApi, getUserByIdApi, unfollowUserApi, updateUserApi } from "./user.api"
 
-export const getUserById = (id:number)=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
+export const getUserById = (id:number)=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_USER_LOADING})
     try{
         let res = await getUserByIdApi(id)
@@ -17,6 +21,17 @@ export const getUserById = (id:number)=>async(dispatch: (arg0: { type: string; p
     }catch(err){
         dispatch({type:GET_USER_ERROR})
     }
+}
+
+export const updateUser = (data:any)=>async(dispatch:Dispatch)=>{
+    dispatch({type:UPDATE_USER_LOADING})
+try{
+    let res = await updateUserApi(data)
+    console.log(res)
+    dispatch({type:UPDATE_USER_SUCCESS})
+}catch(err){
+    dispatch({type:UPDATE_USER_ERROR})
+}
 }
 
 export const followUser = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
