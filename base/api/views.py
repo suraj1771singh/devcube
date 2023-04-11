@@ -362,8 +362,11 @@ def getMsgsByUser(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMsgsByRoom(request, pk):
-    room = Room.objects.get(id=pk)
-    msgs = room.message_set.all()
+    try:
+        room = Room.objects.get(id=pk)
+    except Room.DoesNotExist:
+        return Response({'msg': "Room doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+    msgs = room.message_set.filter(parent=request.data.get("parent"))
     sl = MsgSerializer(msgs, many=True)
     return Response(sl.data, status=status.HTTP_200_OK)
 
