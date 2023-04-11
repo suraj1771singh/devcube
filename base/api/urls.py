@@ -39,6 +39,7 @@ urlpatterns = [
     #----------- USER
     path('user/<str:pk>/', views.getUserProfile),
     path('register/', views.registerUser),
+    path('update/', views.updateUser),
 
     #----------- TOKEN
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
