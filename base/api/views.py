@@ -129,6 +129,21 @@ def getRoomsByUser(request, pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def getRoomByTopics(request):
+    topics = request.data.get('topics')
+    rooms = set()
+    for i in range(0, len(topics)):
+        topic = Topic.objects.get(id=topics[i])
+        rm = topic.room_set.all()
+        if len(rm) is not 0:
+            for r in rm:
+                rooms.add(r)
+    serializer = RoomSerializer(rooms, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getRoomsById(request, pk):
     try:
         room = Room.objects.get(id=pk)

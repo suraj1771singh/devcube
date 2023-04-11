@@ -17,6 +17,7 @@ urlpatterns = [
     path('room-add-participant/<str:pk>/', views.addParticipant),
     path('room-remove-participant/<str:pk>/', views.removeParticipant),
     path('rooms-joined/<str:pk>/', views.getJoinedRoomsByUser),
+    path('rooms-topic/', views.getRoomByTopics),
 
     # ---------FOLLOWER AND FOLLOWING
     path('follow/<str:pk>/', views.follow),

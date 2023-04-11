@@ -23,6 +23,8 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
 class Topic (models.Model):
     name = models.CharField(max_length=200)
 
@@ -32,8 +34,7 @@ class Topic (models.Model):
 
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ManyToManyField(
-        Topic,  symmetrical=False)
+    topic = models.ManyToManyField(Topic, blank=False)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     participants = models.ManyToManyField(
