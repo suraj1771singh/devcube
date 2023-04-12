@@ -11,10 +11,9 @@ const ProfileCard = ({ id }:any) => {
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const { userData } = useSelector((val: rootReducertype) => val.user)
-    let { myData } = useSelector((val: rootReducertype) => val.auth)
+    let { myId } = useSelector((val: rootReducertype) => val.auth)
     const [editModal, setEditModal] = useState(false)
     const [hosted,setHosted] = useState(true)
-    let userId = myData.user_id;
     const dispatch: Dispatch<any> = useDispatch()
     const handleProfileEdit = () => {
         setEditModal(true)
@@ -42,8 +41,8 @@ const ProfileCard = ({ id }:any) => {
                         <div className='absolute left-0 top-0 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-32'></div>
                         <div className={`flex pb-4 px-4 items-center justify-between mt-28 `}>
                             <div className={`flex z-20 mt-[-10px]`}>
-                                <div className={` border-4 ${drk_theme ? "border-bg_dark_sec" : "border-bg_light_sec"} w-[120px] h-[120px] rounded-full z-20`}>
-                                    <img src="/profile.svg" alt="profile" className='w-full' />
+                                <div className={` border-4 ${drk_theme ? "border-bg_dark_sec" : "border-bg_light_sec"} w-[120px] h-[120px] overfhow-hidden rounded-full z-20`}>
+                                    <img src={userData.photo} alt="profile" className='w-full rounded-full' />
                                 </div>
                                 <div className='mx-4 pt-7'>
                                     <h2 className='text-2xl font-bold'>{userData.first_name} {userData.last_name} </h2>
@@ -60,7 +59,7 @@ const ProfileCard = ({ id }:any) => {
                                 </div>
                             </div>
                             <div className="mt-10 mr-10">
-                                {userId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : <button onClick={() => handleFollow(id)} className='text-xl bg-third_color text-font_dark_pri px-4 py-1 rounded-full'>Follow</button>}
+                                {myId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : <button onClick={() => handleFollow(id)} className='text-xl bg-third_color text-font_dark_pri px-4 py-1 rounded-full'>Follow</button>}
                             </div>
                         </div>
                     </div>

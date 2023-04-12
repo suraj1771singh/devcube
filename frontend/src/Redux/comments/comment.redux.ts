@@ -78,6 +78,7 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 ...state, get_rooms_comments_loading: false,
                 get_rooms_comments_error: false,
                 get_rooms_comments_success: true,
+                usersComments:payload
             }
         }
         case GET_ROOM_COMMENTS_ERROR: {

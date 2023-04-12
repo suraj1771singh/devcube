@@ -31,3 +31,15 @@ export const updateTokenApi = async () => {
         throw err
     }
 }
+
+export const getLoggedinUserProfileApi = async (id: number|string) => {
+    let tokenAll: any = localStorage.getItem("authTokens");
+    let authToken: userTokenType = JSON.parse(tokenAll);
+    let token = authToken.access;
+    try {
+        let res = await axios.get(`${baseUrl}/user/${id}/`, { headers: { Authorization: `Bearer ${token}` } })
+        return res
+    } catch (err) {
+        throw err
+    }
+}

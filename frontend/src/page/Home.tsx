@@ -13,7 +13,6 @@ const Home = () => {
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const [roomsArray,setRoomsArray] = useState<any>([])
-    // console.log(allRooms)
     useEffect(() => {
         dispatch(getRooms())
     }, [ dispatch])

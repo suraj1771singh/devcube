@@ -12,7 +12,7 @@ UPDATE_USER_LOADING,
     UNFOLLOW_USER_ERROR,} from "./user.actions.type"
 import { followUserApi, getUserByIdApi, unfollowUserApi, updateUserApi } from "./user.api"
 
-export const getUserById = (id:number)=>async(dispatch:Dispatch)=>{
+export const getUserById = (id:number|string)=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_USER_LOADING})
     try{
         let res = await getUserByIdApi(id)
@@ -39,7 +39,7 @@ export const followUser = (id:string|number)=>async(dispatch: (arg0: { type: str
     try{
         let res = await followUserApi(id)
         console.log(res)
-        dispatch({type:FOLLOW_USER_SUCCESS})
+        dispatch({type:FOLLOW_USER_SUCCESS,})
         }catch(err){
         dispatch({type:FOLLOW_USER_ERROR})
     }

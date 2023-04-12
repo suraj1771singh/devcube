@@ -35,8 +35,7 @@ export const getRoomComments = (id:string|number)=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_ROOM_COMMENTS_LOADING})
 try{
     let res = await getRoomCommentsApi(id)
-    console.log(res)
-    dispatch({type:GET_ROOM_COMMENTS_SUCCESS})
+    dispatch({type:GET_ROOM_COMMENTS_SUCCESS,payload:res.data})
 }catch(err){
     dispatch({type:GET_ROOM_COMMENTS_ERROR})
 }
