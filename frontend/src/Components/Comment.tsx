@@ -11,7 +11,7 @@ import { MdOutlineReport } from 'react-icons/md'
 
 const Comment = ({ data }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
-  const { myData } = useSelector((val: rootReducertype) => val?.auth)
+  const { myData, myId } = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
 
   const [commentModal, setcommentModal] = useState(false)
@@ -27,10 +27,10 @@ const Comment = ({ data }: any) => {
     // dispatch  
   }
   useEffect(() => {
-    if (data.user.id === myData.user_id) {
+    if (data.user.id === myId) {
       setYourComment(true)
     }
-  }, [data.user.id, myData.user_id])
+  }, [data.user.id, myId])
   const handleEditModal= (e:any)=>{
     e.stopPropagation()
     setcommentModal(true)
@@ -56,14 +56,13 @@ const Comment = ({ data }: any) => {
               Delete
             </span>
           </div>
-        </div>:
-         <div className='py-4 absolute w-fit top-[60%] bg-white right-[2%] p-2 font-semibold rounded-xl shadow-md'>
-          {commentModal&&<div className='text-red-400 mb-2 cursor-pointer flex items-center'>
+        </div>:commentModal&&<div className='py-4 absolute w-fit top-[60%] bg-white right-[2%] p-2 font-semibold rounded-xl shadow-md'>
+          <div className='text-red-400 mb-2 cursor-pointer flex items-center'>
               <MdOutlineReport className='mx-2'/>
                <span className='mx-2'>
                 Report
                 </span>  
-            </div>}
+            </div>
         </div>
         }
       </div>
@@ -76,7 +75,7 @@ const Comment = ({ data }: any) => {
         {reply && (data.height<4)?<div className={` px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
           <input onChange={(e) => setCommentBody(e.target.value)} value={commentBody} type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='reply here' />
           <TbSend onClick={() => handleComment(data?.id)} className='cursor-pointer text-3xl' />
-        </div>:"no"}
+        </div>:<div></div>}
       </div>
       {data.replies?.map((el: any, id: number) => <Comment key={id} data={el} />)}
     </div>

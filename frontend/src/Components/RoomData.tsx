@@ -13,66 +13,83 @@ import { createComments } from '../Redux/comments/comments.actions'
 import Alert from './Alert'
 import { useNavigate } from 'react-router-dom'
 import { updateTopicTag } from '../Redux/topic/topic.actions'
+import { topicDataType } from '../dataTypes'
 const RoomData = ({data}:any) => {
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-  const{myData} =  useSelector((val:rootReducertype)=>val?.auth)
-  const allComments = useSelector((val:rootReducertype)=>val.comments.recentComments)
+  const{myData,myId} =  useSelector((val:rootReducertype)=>val?.auth)
+  const userComments = useSelector((val:rootReducertype)=>val.comments.usersComments)
   const dispatch:Dispatch<any> = useDispatch()
   const [toggle,setToggle] = useState(false)
   const [owner,setOwner] = useState(false)
   const [isParticipant, setIsParticipant] = useState(false);
   const [showComments,setShowComments] = useState(true)
-  const [commentBody,setCommentBody] = useState("")
   const [alertModal, setAlertModal] = useState(false)
-  let topic=[1,2,3,4,2]
   let date = data?.created;
   let createdTime = new Date(date).getTime()
   let updatedTime = new Date(data?.updated).getTime()
   const nav = useNavigate()
-  useEffect(()=>{
-    setIsParticipant(data?.participants.some((el:any)=>el.id===myData?.user_id))
-  },[data?.participants,data?.participants.length, myData?.user_id])
+  const [commentBody,setCommentBody] = useState("")
 
-    useEffect(()=>{
-      if(data?.host.id===myData?.user_id){
+  useEffect(()=>{
+    setIsParticipant(data?.participants.some((el:any)=>el.id===myId))
+    if(data?.host.id==='sdfk'){
+      console.log('owner')
+    }
+  },[data?.host.id, data?.participants, data?.participants.length, myId])
+    
+  useEffect(()=>{
+      if(data?.host.id===myId){
         setOwner(true)
       }else{
         setOwner(false)
       }
-    },[data?.host.id, myData?.user_id])
+    },[data?.host.id, myId])
     
     const toggleMoreInfo = (e:any)=>{
     e.stopPropagation()
       setToggle(!toggle)
     }
+
     const editRoomModal = (data:any)=>{
       dispatch(updateTopicTag(data.topic))
       nav(`/update_room/:${data.id}`)
     }
+
     const deleteRoomModal = ()=>{
       console.log('delete butn clicked')
     }
+
     const reportRoomModal = ()=>{
       console.log('report room was clicked')
     }
+
     const handleLeaveRoom = (id:string|number)=>{
-      let user = {id:myData.user_id,email:myData.username}
-      dispatch(leaveRoom(id,user))
+      if(myId){
+        let user = {id:myId,email:myData?.username}
+        dispatch(leaveRoom(id,user))
+      }
     }
+
     const handleJoinRoom = (id:number|string)=>{
-      let user = {id:myData.user_id,email:myData.username}
-      dispatch(joinRoom(id,user))
+      if(myId){
+        let user = {id:myId,email:myData?.username}
+        dispatch(joinRoom(id,user))
+      }
    }
 
    const handleComment = (id:string|number)=>{
-    if(isParticipant){
-      if(commentBody.length>4){
+         if(commentBody.length>4){
         let msg = {body:commentBody} 
         dispatch(createComments(msg,id))
         setCommentBody("")
       }else{
         console.log('empty')
       }
+   }
+
+   const handleauthOnchange = (e:any)=>{
+    if(isParticipant||(myData.id===data.host.id) ){
+      setCommentBody(e.target.value)
     }else{
       setAlertModal(!alertModal)
     }
@@ -116,12 +133,11 @@ const RoomData = ({data}:any) => {
             </div>:<div onClick={()=>handleJoinRoom(data.id)} className='text-red-400 cursor-pointer flex items-center'>
               <MdOutlineReport className='mx-2'/>
                <span className='mx-2'>
-                Join Room
+                Join Room 
                 </span>  
             </div>}
               </div>
               }
-
             </div>
           </div>
         <p className='text-sm font-semibold my-2'>Hosted by</p> 
@@ -134,19 +150,19 @@ const RoomData = ({data}:any) => {
         <div className='m-6'>
           <p>{data?.description}</p>
         </div>
-        <h4 className='font-semibold my-2' >Topic Tages</h4>
-        <div className='mr-6 my-4'> 
-        {topic?.map((el,id)=><button key={id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full`} >TagName</button>)}
+        <h4 className='mx-5 font-semibold my-2'>Topic Tages</h4>
+        <div className='mx-5 my-4'> 
+        {data?.topic?.map((el:topicDataType)=><button key={el.id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full`} >{el.name}</button>)}
         </div>
         <div className={`px-2 py-3 rounded-xl hidden md:flex items-center justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
-                    <textarea rows={5} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>
+                    {(isParticipant||(myData?.id===data?.host?.id))? <textarea rows={5} onChange={handleauthOnchange} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
                     <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
                 </div>
       </div>
       <div className='mt-12'>
         <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
-       {showComments&&<div className='border-2 mx-4'>
-         {allComments?.map((el:any,id:string|number)=><Comment key={id} data={el} />)}
+       {showComments&&<div className=''>
+         {userComments?.map((el:any,id:string|number)=><Comment key={id} data={el} />)}
         </div>}
       </div>
     </div>

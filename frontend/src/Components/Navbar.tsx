@@ -4,20 +4,26 @@ import {CgProfile} from 'react-icons/cg'
 import {CiSearch} from 'react-icons/ci'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
-import { logoutUser, updateToken } from '../Redux/auth/auth.actions'
+import { getLoggedinUserProfile, logoutUser, updateToken } from '../Redux/auth/auth.actions'
 import { toggleTheme } from '../Redux/theme/theme.actions'
 import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
 import { userTokenType } from '../dataTypes'
 const Navbar = () => {
     const dispatch:Dispatch<any> = useDispatch()
-    let {isAuth,myData} = useSelector((val:rootReducertype)=>val.auth)
+    let {isAuth,myData,myId} = useSelector((val:rootReducertype)=>val.auth)
     let {drk_theme} = useSelector((val:rootReducertype)=>val.theme);
     const nav = useNavigate()
     const [dropdown,setDropdown] = useState(false);
+    
   const toggleDropdown = ()=>{
     setDropdown(!dropdown)
   }
+  useEffect(()=>{
+    if(myId){
+        dispatch(getLoggedinUserProfile(myId))
+    }
+  },[dispatch, isAuth, myId])
   useEffect(()=>{
     let id=setInterval(() => {
           let tokenAll:any = localStorage.getItem("authTokens");
@@ -35,8 +41,8 @@ const Navbar = () => {
     dispatch(logoutUser())
     toggleDropdown()
   }
-  const handleProfile = (myData:any)=>{
-    nav(`/profile/${myData.user_id}`)
+  const handleProfile = ()=>{
+    nav(`/profile/${myId}`)
     toggleDropdown()
   }
     return (
@@ -54,7 +60,7 @@ const Navbar = () => {
                 <div className='flex items-center relative' >
             
                 <div onClick={toggleDropdown} className='flex justify-center mx-6 items-center cursor-pointer px-4'>
-                   {isAuth?<div className='h-14 w-14 rounded-full'><img src="/profile.svg" alt=""/></div>
+                   {isAuth?<div className='h-14 w-14 rounded-full'><img src={myData?.photo} alt=""/></div>
                     :<CgProfile className='text-3xl '/>}
                     {dropdown?<AiOutlineCaretUp className='font-bold text-2xl ml-3 text-third_color'/>:<AiOutlineCaretDown className='text-2xl ml-3'/>}
                 </div>
@@ -62,7 +68,7 @@ const Navbar = () => {
                 { dropdown&&<div className='absolute top-[100%] w-full shadow-lg animate-in slide-in-from-top-5 duration-300 '>
                     <div className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} text-center px-2 py-3 rounded-2xl `}>
 
-                        {isAuth?<button onClick={()=>handleProfile(myData)} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 font-semibold`}> <AiOutlineUser className='mr-2 text-xl'/> Profile</button>:<NavLink to="/signup" onClick={toggleDropdown} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 px-2 font-semibold`}> <AiOutlineUser className='mr-2 text-xl'/> Register</NavLink>}
+                        {isAuth?<button onClick={handleProfile} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 font-semibold`}> <AiOutlineUser className='mr-2 text-xl'/> Profile</button>:<NavLink to="/signup" onClick={toggleDropdown} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 px-2 font-semibold`}> <AiOutlineUser className='mr-2 text-xl'/> Register</NavLink>}
 
                         {isAuth?<button onClick={handleLogout} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 font-semibold`}> <AiOutlinePoweroff className='mr-2 text-xl'/> Logout</button>:<NavLink to='/login' onClick={toggleDropdown} className={`my-3 w-11/12 mx-auto flex justify-evenly items-center ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} rounded-full py-2 px-2 font-semibold`}> <AiOutlineLogin className='mr-2 text-xl'/> Login</NavLink>}
 

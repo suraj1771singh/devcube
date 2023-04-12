@@ -58,7 +58,7 @@ const EditProfileModal = (props:editmodalProps) => {
           <input className={`bg-bg_sec outline-none p-2 rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"}`} name="twitter_url" value={update.twitter_url} onChange={handleChange} type="text" placeholder='url'/>
 
           <div className='mt-4 flex flex-row-reverse items-center'>
-          <input type="submit" className='py-2 px-4 rounded-md text-right w-fit mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer'value={"Create Room"}/>
+          <input type="submit" className='py-2 px-4 rounded-md text-right w-fit mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer text-white'value={"Save Changes"}/>
             <button onClick={()=>closeModal()} className='bg-bg_sec py-2 px-4 rounded-md' >Cancel</button>
           </div>
         </form>
