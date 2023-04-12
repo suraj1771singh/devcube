@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from base.models import Room, Topic, User, UserRelationship, Message
 from .serializers import RoomSerializer, UserSerializer, TopicSerializer, MsgSerializer
-from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm
+from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm, MyUserUpdateForm
 
 import cloudinary
 import cloudinary.uploader
@@ -37,7 +37,6 @@ def registerUser(request):
                   'media/studybud/avatars/avatar4_se2glk.webp', 'studybud/avatars/avatar5_d1d0bm.webp',
                   'studybud/avatars/avatar6_b75dd5.jpg', 'studybud/avatars/avatar7_tzai7t.jpg',
                   'studybud/avatars/avatar8_x7n5hi.jpg', 'studybud/avatars/avatar9_itibsx.jpg']
-    print("--------------", request.FILES)
     random_index = random.randrange(len(photo_urls))
     photo = photo_urls[random_index]
     if request.data.get('photo') is not None:
@@ -53,6 +52,17 @@ def registerUser(request):
         return Response({'msg': "New user created successfully !"}, status=status.HTTP_201_CREATED)
     else:
         return Response({'msg': "All fields are not filled"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUser(request):
+    form = MyUserUpdateForm(request.data, instance=request.user)
+    if form.is_valid():
+        user = form.save()
+        return Response({"msg": "User profile updated successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"msg": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -110,10 +120,24 @@ def getAllRooms(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getRoomsByUser(request, pk):
-    print("---------------------", pk)
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
     # many is set to true, to serialize many objects
+    serializer = RoomSerializer(rooms, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getRoomByTopics(request):
+    topics = request.data.get('topics')
+    rooms = set()
+    for i in range(0, len(topics)):
+        topic = Topic.objects.get(id=topics[i])
+        rm = topic.room_set.all()
+        if len(rm) is not 0:
+            for r in rm:
+                rooms.add(r)
     serializer = RoomSerializer(rooms, many=True)
     return Response(serializer.data)
 
@@ -351,10 +375,13 @@ def getMsgsByUser(request, pk):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getMsgsByRoom(request, pk):
-    room = Room.objects.get(id=pk)
-    msgs = room.message_set.all()
+    try:
+        room = Room.objects.get(id=pk)
+    except Room.DoesNotExist:
+        return Response({'msg': "Room doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+    msgs = room.message_set.filter(parent=request.data.get("parent"))
     sl = MsgSerializer(msgs, many=True)
     return Response(sl.data, status=status.HTTP_200_OK)
 

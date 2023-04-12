@@ -17,6 +17,7 @@ urlpatterns = [
     path('room-add-participant/<str:pk>/', views.addParticipant),
     path('room-remove-participant/<str:pk>/', views.removeParticipant),
     path('rooms-joined/<str:pk>/', views.getJoinedRoomsByUser),
+    path('rooms-topic/', views.getRoomByTopics),
 
     # ---------FOLLOWER AND FOLLOWING
     path('follow/<str:pk>/', views.follow),
@@ -39,6 +40,7 @@ urlpatterns = [
     #----------- USER
     path('user/<str:pk>/', views.getUserProfile),
     path('register/', views.registerUser),
+    path('update/', views.updateUser),
 
     #----------- TOKEN
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
