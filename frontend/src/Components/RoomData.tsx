@@ -17,7 +17,7 @@ import { topicDataType } from '../dataTypes'
 const RoomData = ({data}:any) => {
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const{myData,myId} =  useSelector((val:rootReducertype)=>val?.auth)
-  const userComments = useSelector((val:rootReducertype)=>val.comments.usersComments)
+  const {roomComments} = useSelector((val:rootReducertype)=>val.comments)
   const dispatch:Dispatch<any> = useDispatch()
   const [toggle,setToggle] = useState(false)
   const [owner,setOwner] = useState(false)
@@ -32,11 +32,8 @@ const RoomData = ({data}:any) => {
 
   useEffect(()=>{
     setIsParticipant(data?.participants.some((el:any)=>el.id===myId))
-    if(data?.host.id==='sdfk'){
-      console.log('owner')
-    }
   },[data?.host.id, data?.participants, data?.participants.length, myId])
-    
+
   useEffect(()=>{
       if(data?.host.id===myId){
         setOwner(true)
@@ -154,15 +151,15 @@ const RoomData = ({data}:any) => {
         <div className='mx-5 my-4'> 
         {data?.topic?.map((el:topicDataType)=><button key={el.id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full`} >{el.name}</button>)}
         </div>
-        <div className={`px-2 py-3 rounded-xl hidden md:flex items-center justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
-                    {(isParticipant||(myData?.id===data?.host?.id))? <textarea rows={5} onChange={handleauthOnchange} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
+        <div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+                    {(isParticipant||owner)? <textarea rows={2} onChange={handleauthOnchange} value={commentBody} className={`w-[80%] h-fit overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
                     <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
                 </div>
       </div>
       <div className='mt-12'>
         <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
        {showComments&&<div className=''>
-         {userComments?.map((el:any,id:string|number)=><Comment key={id} data={el} />)}
+         {roomComments?.map((el:any,id:string|number)=><Comment canReply={isParticipant||owner} key={id} data={el} />)}
         </div>}
       </div>
     </div>

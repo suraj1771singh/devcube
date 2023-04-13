@@ -19,6 +19,7 @@ import {
 import jwt_decode from "jwt-decode"
 
 let authTokens: string | null = localStorage.getItem("authTokens");
+console.log(authTokens)
 let authToken: userTokenType = authTokens ? (JSON.parse(authTokens)) : null
 const data: loggedinUserType | null = authToken ? jwt_decode(authToken.access) : null;
 const initialState: authUserDataType = {
