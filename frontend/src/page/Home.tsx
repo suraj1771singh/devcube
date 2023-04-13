@@ -7,15 +7,21 @@ import { getRooms } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
 import BrowseTopics from '../Components/BrowseTopics'
 import RecentActivites  from '../Components/RecentActivites'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
+    let {isAuth} = useSelector((val:rootReducertype)=>val.auth)
+    const nav = useNavigate()
     const [roomsArray,setRoomsArray] = useState<any>([])
     useEffect(() => {
-        dispatch(getRooms())
-    }, [ dispatch])
+        if(isAuth){
+            dispatch(getRooms())
+        }else{
+            nav("/login")
+        }
+    }, [dispatch, isAuth, nav])
     useEffect(()=>{
         setRoomsArray(allRooms)
     },[allRooms])

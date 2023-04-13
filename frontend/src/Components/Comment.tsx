@@ -2,29 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { AiFillDelete, AiFillEdit, AiOutlineLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
-import { deleteComments, getRecentComments } from '../Redux/comments/comments.actions'
+import { createComments, deleteComments, getRecentComments } from '../Redux/comments/comments.actions'
 import { CalcTime } from './time'
 import { TbSend } from 'react-icons/tb'
 import { rootReducertype } from '../Redux/Store'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { MdOutlineReport } from 'react-icons/md'
 
-const Comment = ({ data }: any) => {
+const Comment = ({ data,canReply }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
-  const { myData, myId } = useSelector((val: rootReducertype) => val?.auth)
+  const {myId } = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-
   const [commentModal, setcommentModal] = useState(false)
   const [yourComment, setYourComment] = useState(false)
   const [commentBody, setCommentBody] = useState("")
   const [reply, setReply] = useState(false)
 
-  useEffect(() => {
+  useEffect(() => { 
     dispatch(getRecentComments())
   }, [dispatch])
   let dynamicTime = new Date(data.created).getTime()
-  const handleComment = (id: string | number) => {
-    // dispatch  
+  const handleComment = (id: string | number) => {    
+    if(commentBody.length>4){
+     const data = {parent:id,body:commentBody}
+     dispatch(createComments(data,id))
+    setCommentBody("")
+  }else{
+    
+  }
   }
   useEffect(() => {
     if (data.user.id === myId) {
@@ -34,6 +39,10 @@ const Comment = ({ data }: any) => {
   const handleEditModal= (e:any)=>{
     e.stopPropagation()
     setcommentModal(true)
+  }
+  const handleReplybtn = (data:any)=>{
+    setReply(!reply)
+    console.log(data)
   }
   return (
     <div onClick={()=>setcommentModal(false)} className=''>
@@ -69,13 +78,14 @@ const Comment = ({ data }: any) => {
       <div className={`m-3 px-[40px] ${reply ? "border-l-2" : ""} border-gray-400`}>
         <p>{data.body}</p>
         <div className='flex items-center'>
-          <button onClick={() => setReply(!reply)} className='my-2 font-bold'>Reply</button>
+          <button onClick={()=>handleReplybtn(data)} className='my-2 font-bold'>Reply</button>
           <AiOutlineLike className='mx-2 text-xl cursor-pointer' />
         </div>
-        {reply && (data.height<4)?<div className={` px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
-          <input onChange={(e) => setCommentBody(e.target.value)} value={commentBody} type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='reply here' />
-          <TbSend onClick={() => handleComment(data?.id)} className='cursor-pointer text-3xl' />
-        </div>:<div></div>}
+        {reply && (data.height<4)?<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+        {(canReply)? <textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
+        <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
+        </div>:<div>
+          </div>}
       </div>
       {data.replies?.map((el: any, id: number) => <Comment key={id} data={el} />)}
     </div>

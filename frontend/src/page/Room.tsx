@@ -30,7 +30,7 @@ const Room = () => {
                 </div>
                 {/* middle section => Room's Data  */}
                 <div className='md:w-[62%] mx-[20%]'>
-                <RoomData data={roomData} />
+               {roomData&&<RoomData data={roomData} />}
                 </div>
                 {/* right section => recent acitivies  */}
                 <Participants data={roomData?.participants} />

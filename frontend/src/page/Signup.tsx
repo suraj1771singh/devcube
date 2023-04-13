@@ -5,12 +5,15 @@ import { registerUser } from '../Redux/auth/auth.actions'
 import { rootReducertype } from '../Redux/Store'
 import Loader from '../Components/Loader'
 import Alert from '../Components/Alert'
+import { BiHide, BiShow } from 'react-icons/bi'
 const Signup = () => {
   const nav = useNavigate()
   let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
-  const {isAuth,signup_error,signup_loading,signup_success}  = useSelector((val:rootReducertype)=>val?.auth)
+  const {isAuth,signup_error,signup_loading,signup_success}  = useSelector((val:rootReducertype)=>val?.auth);
+  const [passMissmatchAlert,setPassMissmatchAlert] = useState(false)
   const dispatch:Dispatch<any> = useDispatch()
   const [newUserData,setNewUserData]= useState({first_name:"",last_name:"",email:"",password1:"",password2:""})
+  const [showPass,setShowPass] = useState(false)
   useEffect(() => {
     if(isAuth){
       nav("/")
@@ -27,7 +30,7 @@ const Signup = () => {
     if(newUserData.password1===newUserData.password2){
       dispatch(registerUser(newUserData))
     }else{
-     <Loader text="helo"/>
+     setPassMissmatchAlert(true)
     }
   } 
   return (
@@ -48,11 +51,11 @@ const Signup = () => {
       <label htmlFor="email" className='my-4 my-4 border-[1px] rounded-md border-gray-700 p-3'>Email
       <input required type="email" name="email" value={newUserData.email} onChange={handleChange} placeholder='valid_email@example.com' className='bg-transparent w-3/4 outline-none px-2' />
       </label>
-      <label htmlFor="password" className='my-4 border-[1px] rounded-md border-gray-700 p-3'>Password
-      <input required type="password" name="password1" value={newUserData.password1} onChange={handleChange} placeholder='create a strong password' className='bg-transparent w-2/3 outline-none px-2 mx-2' />
+      <label htmlFor="password" className='my-4 border-[1px] rounded-md border-gray-700 p-3 flex items-center'>Password
+      <input required type={`${showPass?"text":"password"}`} name="password1" value={newUserData.password1} onChange={handleChange} placeholder='create a strong password' className='bg-transparent w-2/3 outline-none px-2 mx-2' />{showPass?<span><BiShow onClick={()=>setShowPass(false)} className='text-2xl cursor-pointer'/></span>:<span><BiHide onClick={()=>setShowPass(true)} className='text-2xl cursor-pointer'/></span>}
       </label>
       <label htmlFor="c_password" className='my-4 border-[1px] rounded-md border-gray-700 p-3'>Confrm Password
-      <input required type="text" name='password2' value={newUserData.password2} onChange={handleChange} id='c_password' placeholder='password (Same as Above)' className='bg-transparent outline-none px-2 mx-2' />
+      <input required type="password" name='password2' value={newUserData.password2} onChange={handleChange} id='c_password' placeholder='password (Same as Above)' className='bg-transparent outline-none px-2 mx-2' />
       </label>
       {signup_loading?<button disabled className='border-[1px] w-fit border-gray-700 py-2 px-4 cursor-pointer m-auto rounded-md' >Loading...</button>:<input type="submit" value='Signup' className='border-[1px] w-fit border-gray-700 py-2 px-4 cursor-pointer m-auto rounded-md'/>}
       <p className='text-sm text-gray-500 mt-4'>Are You a New User? <span className='text-blue-500 underline cursor-pointer' onClick={()=>nav('/login')}>Login here</span> </p>
@@ -63,6 +66,7 @@ const Signup = () => {
   {signup_loading&&<Loader text={"Signup in Process...."} />}
   {signup_error&&<Alert text='Signup Error! All Checks are not followed' type='error' />}
   {signup_success&&<Alert text='User Registration Success full. Login Now' type="success" />}
+  {passMissmatchAlert&&<Alert text='password and confrm-password should be same' type="error" />}
   </>
   )
 }
