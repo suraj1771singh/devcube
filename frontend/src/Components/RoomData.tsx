@@ -76,7 +76,7 @@ const RoomData = ({data}:any) => {
 
    const handleComment = (id:string|number)=>{
          if(commentBody.length>4){
-        let msg = {body:commentBody} 
+        let msg = {body:commentBody,parent:null} 
         dispatch(createComments(msg,id))
         setCommentBody("")
       }else{
@@ -159,7 +159,7 @@ const RoomData = ({data}:any) => {
       <div className='mt-12'>
         <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
        {showComments&&<div className=''>
-         {roomComments?.map((el:any,id:string|number)=><Comment canReply={isParticipant||owner} key={id} data={el} />)}
+         {roomComments?.map((el:any)=><Comment canReply={isParticipant||owner} key={el.id} data={el} roomId={data.id} />)}
         </div>}
       </div>
     </div>
