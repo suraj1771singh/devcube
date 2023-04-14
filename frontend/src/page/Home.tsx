@@ -10,18 +10,18 @@ import RecentActivites  from '../Components/RecentActivites'
 import { NavLink, useNavigate } from 'react-router-dom'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
-    let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
+    let {get_error, allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     let {isAuth} = useSelector((val:rootReducertype)=>val.auth)
     const nav = useNavigate()
     const [roomsArray,setRoomsArray] = useState<any>([])
     useEffect(() => {
-        if(isAuth){
+        if(isAuth&&!get_error){
             dispatch(getRooms())
         }else{
             nav("/login")
         }
-    }, [dispatch, isAuth, nav])
+    }, [dispatch, isAuth, nav,get_error])
     useEffect(()=>{
         setRoomsArray(allRooms)
     },[allRooms])

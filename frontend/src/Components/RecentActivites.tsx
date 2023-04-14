@@ -4,6 +4,7 @@ import { rootReducertype } from '../Redux/Store'
 import RecentCards from './RecentCards'
 
 const RecentActivites = () => {
+
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const rec = [1, 2, 3, 4, 5]
   return (
@@ -17,5 +18,4 @@ const RecentActivites = () => {
 </div>
   )
 }
- 
 export default RecentActivites

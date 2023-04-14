@@ -123,3 +123,12 @@ try{
         dispatch({type:GET_ROOMS_JOINED_BY_USER_ERROR})
     }
  }
+
+ export const getRoomsByTopic = (data:any)=>async(dispatch:Dispatch)=>{
+    
+    try{
+
+    }catch(err){
+        
+    }
+ }

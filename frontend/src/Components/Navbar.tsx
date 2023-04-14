@@ -28,7 +28,7 @@ const Navbar = () => {
       if(isAuth){
         dispatch(updateToken())
       }else{
-        console.log('checking for auth')
+        console.log('you are not authorized')
       }
         }, 1 * 60 * 1000);
         return ()=>{
@@ -58,7 +58,7 @@ const Navbar = () => {
                 <div className='flex items-center relative' >
             
                 <div onClick={toggleDropdown} className='flex justify-center mx-6 items-center cursor-pointer px-4'>
-                   {isAuth?<div className='h-14 w-14 rounded-full'><img src={myData?.photo} alt=""/></div>
+                   {isAuth?<div className='h-14 w-14 rounded-full'><img src={myData?.photo} alt="" className='rounded-full'/></div>
                     :<CgProfile className='text-3xl '/>}
                     {dropdown?<AiOutlineCaretUp className='font-bold text-2xl ml-3 text-third_color'/>:<AiOutlineCaretDown className='text-2xl ml-3'/>}
                 </div>
