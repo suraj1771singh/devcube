@@ -25,6 +25,17 @@ export const getRoomCommentsApi = async(id:string|number)=>{
         throw err
     }
 }
+export const getrepliesOfCommentApi = async(parentId:string|number,id:string|number)=>{
+    try{
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.get(`${baseUrl}/msgs-room/${id}/`,{params:{parent:parentId},headers:{Authorization:`Bearer ${token}`}})
+       return res
+    }catch(err){
+        throw err
+    }
+} 
 
 export const getUserCommentsApi = async(id:string|number)=>{
     try{
@@ -39,6 +50,7 @@ export const getUserCommentsApi = async(id:string|number)=>{
 }
 
 export const createCommentsApi = async(data:any,id:string|number)=>{
+    console.log(data)
     try{
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);

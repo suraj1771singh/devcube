@@ -10,4 +10,9 @@ export const USER_LOGOUT_LOADING = 'user/logout/loading';
 export const USER_REFRESH_LOADING = 'user/refresh/loading';
 export const USER_REFRESH_SUCCESS = 'user/refresh/success';
 export const USER_REFRESH_FAILURE = 'user/refresh/failure';
+export const LOGGED_IN_USER_DATA_LOADING = 'loggedin/user/data/loading';
+export const LOGGED_IN_USER_DATA_SUCCESS = 'loggedin/user/data/success';
+export const LOGGED_IN_USER_DATA_FAILURE = 'loggedin/user/data/failure';
+
+
 

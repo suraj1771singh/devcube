@@ -14,6 +14,14 @@ export interface loginUserDataType{
     email:string;
     password:string;
 }
+export interface loggedinUserType{
+    exp:number|string,
+    iat:string|number,
+    jti:number|string,
+    token_type:string,
+    username:string,
+    user_id:string|number
+}
 export interface authUserDataType{
     login_loading:boolean,
         login_error:boolean,
@@ -24,6 +32,7 @@ export interface authUserDataType{
         myData:any,
         logout_loading:boolean,
         logout_error:boolean,
+        myId:string|number|null
 }
 export interface userTokenType {
     access:string,
