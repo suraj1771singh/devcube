@@ -36,11 +36,7 @@ const RoomCard = ({ data }: any) => {
         nav(`/room/${id}`)
     }
     return (
-<<<<<<< HEAD
-        <div className={`my-3 ${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6  hover:shadow-xl`} >
-=======
-        <div className={`my-3 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md hover:shadow-xl`} >
->>>>>>> d108c9dc0c9b3de177615ecafce278dacf3dbe1c
+        <div className={`my-3 ${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md hover:shadow-xl`} >
             <div className='flex justify-between items-center'>
                 <div className='flex items-center'>
                     <div className='border-2 relative border-third_color w-[50px]  h-[50px] rounded-full'>
