@@ -30,7 +30,7 @@ export const getrepliesOfCommentApi = async(parentId:string|number,id:string|num
         let tokenAll:any = localStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.get(`${baseUrl}/msgs-room/${id}/`,{params:{parent:parentId},headers:{Authorization:`Bearer ${token}`}})
+        let res = await axios.get(`${baseUrl}/msgs-room/${id}/`,{params:{parent:11},headers:{Authorization:`Bearer ${token}`}})
        return res
     }catch(err){
         throw err

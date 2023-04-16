@@ -18,6 +18,9 @@ import {
     DELETE_COMMENTS_LOADING,
     DELETE_COMMENTS_SUCCESS,
     DELETE_COMMENTS_ERROR,
+    GET_REPLY_MSGS_LOADING,
+GET_REPLY_MSGS_SUCCESS,
+GET_REPLY_MSGS_ERROR,
 } from './comments.action.types'
 import { createCommentsApi, deleteCommentsApi, getRecentCommentsApi, getRoomCommentsApi, getUserCommentsApi, getrepliesOfCommentApi, updateCommentsApi } from './comments.api'
 
@@ -42,14 +45,12 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
     }
 }
     export const getrepliesOfComment = (pId: string | number, roomId: string | number) => async (dispatch: Dispatch) => {
-        console.log(pId,roomId)
-        // dispatch({type:GET_ROOM_COMMENTS_LOADING})
+        dispatch({type:GET_REPLY_MSGS_LOADING })
         try {
             let res = await getrepliesOfCommentApi(pId, roomId)
-            // dispatch({type:GET_ROOM_COMMENTS_SUCCESS,payload:res.data})
-            console.log(res.data)
+            dispatch({type:GET_REPLY_MSGS_SUCCESS ,payload:res.data})
         } catch (err) {
-            // dispatch({type:GET_ROOM_COMMENTS_ERROR})
+            dispatch({type:GET_REPLY_MSGS_ERROR })
         }
     }
     export const getUserComments = (id: string | number) => async (dispatch: Dispatch) => {

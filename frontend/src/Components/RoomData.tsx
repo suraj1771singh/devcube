@@ -13,7 +13,7 @@ import { createComments } from '../Redux/comments/comments.actions'
 import Alert from './Alert'
 import { useNavigate } from 'react-router-dom'
 import { updateTopicTag } from '../Redux/topic/topic.actions'
-import { topicDataType } from '../dataTypes'
+import { loggedinUserType, topicDataType } from '../dataTypes'
 const RoomData = ({data}:any) => {
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const{myData,myId} =  useSelector((val:rootReducertype)=>val?.auth)
@@ -29,7 +29,6 @@ const RoomData = ({data}:any) => {
   let updatedTime = new Date(data?.updated).getTime()
   const nav = useNavigate()
   const [commentBody,setCommentBody] = useState("")
-
   useEffect(()=>{
     setIsParticipant(data?.participants.some((el:any)=>el.id===myId))
   },[data?.host.id, data?.participants, data?.participants.length, myId])
@@ -60,16 +59,16 @@ const RoomData = ({data}:any) => {
       console.log('report room was clicked')
     }
 
-    const handleLeaveRoom = (id:string|number)=>{
+    const handleLeaveRoom = (myData:loggedinUserType,id:string|number)=>{
       if(myId){
-        let user = {id:myId,email:myData?.username}
+        let user = {id:myId,email:myData?.email}
         dispatch(leaveRoom(id,user))
       }
     }
-
-    const handleJoinRoom = (id:number|string)=>{
+    
+    const handleJoinRoom = (myData:loggedinUserType,id:number|string)=>{
       if(myId){
-        let user = {id:myId,email:myData?.username}
+        let user = {id:myId,email:myData.email}
         dispatch(joinRoom(id,user))
       }
    }
@@ -84,8 +83,8 @@ const RoomData = ({data}:any) => {
       }
    }
 
-   const handleauthOnchange = (e:any)=>{
-    if(isParticipant||(myData.id===data.host.id) ){
+   const handleauthOnchange = (myData:loggedinUserType,e:any)=>{
+    if(isParticipant||(myData?.id===data.host.id) ){
       setCommentBody(e.target.value)
     }else{
       setAlertModal(!alertModal)
@@ -122,12 +121,12 @@ const RoomData = ({data}:any) => {
                 Report
                 </span>  
             </div>
-           { isParticipant?<div onClick={()=>handleLeaveRoom(data.id)} className='text-red-400 cursor-pointer flex items-center'>
+           { isParticipant?<div onClick={()=>handleLeaveRoom(myData,data.id)} className='text-red-400 cursor-pointer flex items-center'>
               <MdOutlineReport className='mx-2'/>
                <span className='mx-2'>
                 Leave Room
                 </span>  
-            </div>:<div onClick={()=>handleJoinRoom(data.id)} className='text-red-400 cursor-pointer flex items-center'>
+            </div>:<div onClick={()=>handleJoinRoom(myData,data.id)} className='text-red-400 cursor-pointer flex items-center'>
               <MdOutlineReport className='mx-2'/>
                <span className='mx-2'>
                 Join Room 
@@ -152,10 +151,10 @@ const RoomData = ({data}:any) => {
         {data?.topic?.map((el:topicDataType)=><button key={el.id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full`} >{el.name}</button>)}
         </div>
         <div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
-                    {(isParticipant||owner)? <textarea rows={2} onChange={handleauthOnchange} value={commentBody} className={`w-[80%] h-fit overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
+                    {(isParticipant||owner)? <textarea rows={2} onChange={(e:any)=>handleauthOnchange(myData,e)} value={commentBody} className={`w-[80%] h-fit overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
                     <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
                 </div>
-      </div>
+      </div> 
       <div className='mt-12'>
         <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
        {showComments&&<div className=''>

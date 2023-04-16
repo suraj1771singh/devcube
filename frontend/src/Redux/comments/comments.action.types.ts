@@ -22,6 +22,10 @@ export const DELETE_COMMENTS_LOADING = 'room/comments/update/loading'
 export const DELETE_COMMENTS_SUCCESS = 'room/comments/update/success'
 export const DELETE_COMMENTS_ERROR = 'room/comments/update/error'
 
+export const GET_REPLY_MSGS_LOADING = 'comments/reply/loading'
+export const GET_REPLY_MSGS_SUCCESS = 'comments/reply/success'
+export const GET_REPLY_MSGS_ERROR = 'comments/reply/get/error'
+
 // like will same as update 
 export const LIKE_COMMENTS_LOADING = 'room/comments/like/loading'
 export const LIKE_COMMENTS_SUCCESS = 'room/comments/like/success'

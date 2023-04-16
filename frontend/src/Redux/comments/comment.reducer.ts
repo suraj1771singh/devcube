@@ -17,6 +17,9 @@ import {
     DELETE_COMMENTS_LOADING,
     DELETE_COMMENTS_SUCCESS,
     DELETE_COMMENTS_ERROR,
+    GET_REPLY_MSGS_LOADING,
+    GET_REPLY_MSGS_SUCCESS,
+    GET_REPLY_MSGS_ERROR,
 } from './comments.action.types'
 const initialComments = {
     get_recent_comments_loading: false,
@@ -37,9 +40,12 @@ const initialComments = {
     delete_comment_loading: false,
     delete_comment_error: false,
     delete_comment_success: false,
+    get_reply_msg_loading:false,
+    get_reply_msg_error:false,
     recentComments: [],
     roomComments: [],
-    usersComments: []
+    usersComments: [],
+    msgReplyes: []
 }
 
 export const commentReducer = (state = initialComments, { type, payload }: { type: string, payload?: any }) => {
@@ -78,9 +84,9 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 ...state, get_rooms_comments_loading: false,
                 get_rooms_comments_error: false,
                 get_rooms_comments_success: true,
-                roomComments:payload
+                roomComments: payload
             }
-        } 
+        }
         case GET_ROOM_COMMENTS_ERROR: {
             return {
                 ...state, get_rooms_comments_loading: false,
@@ -100,7 +106,7 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 ...state, get_user_comments_loading: false,
                 get_user_comments_error: false,
                 get_user_comments_success: true,
-                usersComments:payload
+                usersComments: payload
             }
         }
         case GET_USER_COMMENTS_ERROR: {
@@ -172,6 +178,18 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 delete_comment_error: true,
                 delete_comment_success: false,
             }
+        }
+        case GET_REPLY_MSGS_LOADING: {
+            return { ...state,get_reply_msg_loading:true,
+                get_reply_msg_error:false, }
+        }
+        case GET_REPLY_MSGS_SUCCESS: {
+            return { ...state,msgReplyes:payload, get_reply_msg_loading:false,
+                get_reply_msg_error:false,}
+        }
+        case GET_REPLY_MSGS_ERROR: {
+            return { ...state,get_reply_msg_loading:false,
+                get_reply_msg_error:true}
         }
         default: {
             return { ...state }

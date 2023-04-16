@@ -14,9 +14,11 @@ const BrowseTopics = ({isCreate=false}) => {
   const [topics, setTopics] = useState<any>([])
   const [limit,setLimit] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
+
   useEffect(() => {
     dispatch(getTopics())
   }, [dispatch])
+
   useEffect(() => {
     if(topicTags.length<5){
       setLimit(false)
@@ -24,6 +26,7 @@ const BrowseTopics = ({isCreate=false}) => {
       setLimit(true)
     }
   }, [topicTags])
+
   useEffect(()=>{
     if(!more){
         let tpcs = allTopics.slice(0,6);
@@ -31,7 +34,7 @@ const BrowseTopics = ({isCreate=false}) => {
     }else{
       setTopics(allTopics)
     }
-  },[allTopics, more])
+  },[])
 
   const handleTopics = (el:topicDataType)=>{
     if(isCreate){
