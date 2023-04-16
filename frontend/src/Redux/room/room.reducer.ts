@@ -96,7 +96,6 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state, get_loading: true }
         }
         case GET_ROOM_ERROR: {
-            localStorage.removeItem("authTokens")
             return { ...state, get_loading: false, get_error: true }
         }
         case GET_ROOM_SUCCESS: {
