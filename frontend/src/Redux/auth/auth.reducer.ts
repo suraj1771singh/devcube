@@ -1,4 +1,4 @@
-import { authUserDataType, loggedinUserType, userTokenType } from "../../dataTypes";
+import { authUserDataType, jwtTokenType, userTokenType } from "../../dataTypes";
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
@@ -16,11 +16,11 @@ import {
     LOGGED_IN_USER_DATA_FAILURE,
     USER_REFRESH_FAILURE,
 } from "./auth.actions.types";
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
 
 let authTokens: string | null = localStorage.getItem("authTokens");
 let authToken: userTokenType = authTokens ? (JSON.parse(authTokens)) : null
-const data: loggedinUserType | null = authToken ? jwt_decode(authToken.access) : null;
+const data: jwtTokenType | null = authToken ? jwt_decode(authToken.access) : null;
 const initialState: authUserDataType = {
     login_loading: false,
     login_error: false,
@@ -41,7 +41,7 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
         }
         case USER_LOGIN_SUCCESS: {
             localStorage.setItem("authTokens", JSON.stringify(payload))
-            return { ...state, isAuth: true, myData: jwt_decode(payload.access) }
+            return { ...state, isAuth: true, myId: data?.user_id }
         }
         case USER_LOGIN_FAILURE: {
             return { ...state, login_error: true, login_loading: false }
@@ -76,20 +76,20 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
         }
         case USER_REFRESH_SUCCESS: {
             localStorage.setItem("authTokens", JSON.stringify(payload))
-            return { ...state, isAuth: true, myData: jwt_decode(payload.access) }
+            return { ...state, isAuth: true }
         }
         case USER_REFRESH_FAILURE: {
             return { ...state, isAuth: false }
         }
-        case LOGGED_IN_USER_DATA_LOADING:{
-            return{...state}
+        case LOGGED_IN_USER_DATA_LOADING: {
+            return { ...state }
         }
-case LOGGED_IN_USER_DATA_SUCCESS:{
-    return {...state,myData:payload}
-}
-case LOGGED_IN_USER_DATA_FAILURE:{
-    return {...state,}
-}
+        case LOGGED_IN_USER_DATA_SUCCESS: {
+            return { ...state, myData: payload }
+        }
+        case LOGGED_IN_USER_DATA_FAILURE: {
+            return { ...state, }
+        }
         default: {
             return { ...state }
         }

@@ -10,7 +10,7 @@ import { roomReducer } from './room/room.reducer';
 import { themeReducer } from './theme/theme.reducer';
 import { topicsReducer } from './topic/topics.reducer';
 import { userReducer } from './user/user.reducer';
-import { commentReducer } from './comments/comment.redux';
+import { commentReducer } from './comments/comment.reducer';
 
 const rootReducer = combineReducers({
     auth:authReducer,
