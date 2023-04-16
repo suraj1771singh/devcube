@@ -105,7 +105,7 @@ def createRoom(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getAllRooms(request):
     rooms = Room.objects.all()
     # many is set to true, to serialize many objects
