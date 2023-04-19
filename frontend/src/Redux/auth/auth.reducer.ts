@@ -41,7 +41,9 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
         }
         case USER_LOGIN_SUCCESS: {
             localStorage.setItem("authTokens", JSON.stringify(payload))
-            return { ...state, isAuth: true, myId: data?.user_id }
+            let userId:any = jwt_decode(payload.access)
+            let myId = userId.user_id
+            return { ...state, isAuth: true, myId:myId}
         }
         case USER_LOGIN_FAILURE: {
             return { ...state, login_error: true, login_loading: false }
@@ -57,7 +59,7 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
         }
         case USER_LOGOUT_SUCCESS: {
             localStorage.removeItem("authTokens")
-            return { ...state, isAuth: false, login_loading: false, login_error: false }
+            return { ...state, isAuth: false, login_loading: false, login_error: false, myId:null,myData:null}
         }
         case USER_LOGOUT_FAILURE: {
             return {

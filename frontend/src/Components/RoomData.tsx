@@ -139,7 +139,7 @@ const RoomData = ({data}:any) => {
         <p className='text-sm font-semibold my-2'>Hosted by</p> 
         </div>
         <div className='flex items-center'>
-          <img src="/profile.svg" alt="pp" className='w-[40px] mr-2'/>
+          <img src={data?.host.photo} alt="pp" className='w-[50px] h-[50px] rounded-full mr-2'/>
           <h3 className='mx-2 font-semibold '>{data?.host.first_name} {data?.host.last_name}</h3>
           <p className='text-sm'> {createdTime&&CalcTime(createdTime)}</p>
         </div>

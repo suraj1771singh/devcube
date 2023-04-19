@@ -1,9 +1,4 @@
 
-export interface dispatchType {
-    type: string;
-    payload?: any
-}
-
 export interface registerUserDataType {
     first_name: string;
     email: string;
