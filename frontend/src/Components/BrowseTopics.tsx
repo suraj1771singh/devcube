@@ -6,6 +6,7 @@ import { CiSearch } from 'react-icons/ci'
 import { Dispatch, useEffect, useState } from 'react'
 import { addTopicTag, getTopics } from '../Redux/topic/topic.actions'
 import { topicDataType } from '../dataTypes'
+import { getRoomsByTopic } from '../Redux/room/room.action'
 
 const BrowseTopics = ({isCreate=false}) => {
   const { allTopics,topicTags} = useSelector((val: rootReducertype) => val.topics)
@@ -14,11 +15,9 @@ const BrowseTopics = ({isCreate=false}) => {
   const [topics, setTopics] = useState<any>([])
   const [limit,setLimit] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
-
   useEffect(() => {
     dispatch(getTopics())
   }, [dispatch])
-
   useEffect(() => {
     if(topicTags.length<5){
       setLimit(false)
@@ -26,7 +25,6 @@ const BrowseTopics = ({isCreate=false}) => {
       setLimit(true)
     }
   }, [topicTags])
-
   useEffect(()=>{
     if(!more){
         let tpcs = allTopics.slice(0,6);
@@ -34,13 +32,14 @@ const BrowseTopics = ({isCreate=false}) => {
     }else{
       setTopics(allTopics)
     }
-  },[])
+  },[allTopics, more])
 
   const handleTopics = (el:topicDataType)=>{
     if(isCreate){
       dispatch(addTopicTag(el))
     }else{
-      // dispatch(getroomsbytopic)
+
+      dispatch(getRoomsByTopic(el.id))
     }
   }
   return (

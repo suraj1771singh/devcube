@@ -19,7 +19,7 @@ const Signup = () => {
       nav("/")
     }
     if(signup_success){
-      nav("/login")
+      window.location.href="/login"
     }
   }, [isAuth, nav,signup_success])
   const handleChange = (e: { target: { name: any; value: any } })=>{

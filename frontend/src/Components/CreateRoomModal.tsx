@@ -43,6 +43,7 @@ const CreateRoomModal = () => {
       if(roomData.name.trim()&&roomData.description.trim()){
         let data = {...roomData,topic:tags}
         dispatch(createRoom(data))
+        nav("/")
       }
     }
   }

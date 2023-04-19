@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { dispatchType, loginUserDataType, registerUserDataType } from "../../dataTypes";
+import { loginUserDataType, registerUserDataType } from "../../dataTypes";
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
@@ -19,7 +19,7 @@ import {
 } from "./auth.actions.types"
 import { getLoggedinUserProfileApi, loginUserApi, registerUserApi, updateTokenApi } from "./auth.api";
 
-export const registerUser = (data: registerUserDataType) => async (dispatch: (arg: dispatchType) => void) => {
+export const registerUser = (data: registerUserDataType) => async (dispatch:Dispatch) => {
     dispatch({ type: USER_SIGNUP_LOADING })
     try {
         let res = await registerUserApi(data)
@@ -29,7 +29,7 @@ export const registerUser = (data: registerUserDataType) => async (dispatch: (ar
     }
 };
 
-export const loginUser = (data: loginUserDataType) => async (dispatch: (arg: dispatchType) => void) => {
+export const loginUser = (data: loginUserDataType) => async (dispatch:Dispatch) => {
     dispatch({ type: USER_LOGIN_LOADING })
     try {
         let res = await loginUserApi(data)
@@ -38,7 +38,7 @@ export const loginUser = (data: loginUserDataType) => async (dispatch: (arg: dis
         dispatch({ type: USER_LOGIN_FAILURE })
     }
 }
-export const logoutUser = () => (dispatch: (arg: dispatchType) => void) => {
+export const logoutUser = () => (dispatch:Dispatch) => {
     dispatch({ type: USER_LOGOUT_LOADING })
     try {
         dispatch({ type: USER_LOGOUT_SUCCESS })
@@ -47,7 +47,8 @@ export const logoutUser = () => (dispatch: (arg: dispatchType) => void) => {
     }
 }
 
-export const updateToken = () => async (dispatch: (arg: dispatchType) => void) => {
+export const updateToken = () => async (dispatch:Dispatch) => {
+    
     try {
         dispatch({ type: USER_REFRESH_LOADING })
         let res = await updateTokenApi()

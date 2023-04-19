@@ -118,3 +118,16 @@ export const getRoomsJoinedByUserApi = async(id:string|number)=>{
             throw err
         } 
 }
+export const getRoomsByTopicApi = async(id:string|number)=>{
+    console.log(id)
+    try{
+        let tokenAll:any = localStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        // Problems while sending body in get request
+            let res = await axios.get(`${baseUrl}/rooms-topic/`,{data:{topics:[id]},headers:{Authorization:`Bearer ${token}`}})
+            return res;
+    }catch(err){
+        throw err
+    }
+} 

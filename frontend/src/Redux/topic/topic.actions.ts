@@ -14,9 +14,7 @@ export const getTopics = ()=>async(dispatch: (arg0: { type: string; payload?: an
     dispatch({type:GET_TOPICS_LOADING})
     try{
         let res = await getTopicsApi()
-        // console.log(res)
-        // dispatch({type:GET_TOPICS_SUCCESS,payload:res.data})
-
+        dispatch({type:GET_TOPICS_SUCCESS,payload:res.data})
     }catch(err){
         dispatch({type:GET_TOPICS_ERROR})
     }

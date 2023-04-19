@@ -28,7 +28,7 @@ GET_ROOM_BY_ID_SUCCESS,GET_ROOMS_JOINED_BY_USER_LOADING,
 GET_ROOMS_JOINED_BY_USER_ERROR,
 GET_ROOMS_JOINED_BY_USER_SUCCESS,
 }from "./room.action.type";
-import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsJoinedByUserApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
+import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsByTopicApi, getRoomsJoinedByUserApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:GET_ROOM_LOADING})
@@ -124,10 +124,11 @@ try{
     }
  }
 
- export const getRoomsByTopic = (data:any)=>async(dispatch:Dispatch)=>{
+ export const getRoomsByTopic = (id:string|number)=>async(dispatch:Dispatch)=>{
     
     try{
-
+        let res = await getRoomsByTopicApi(id)
+        console.log(res)
     }catch(err){
         
     }
