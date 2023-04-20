@@ -21,7 +21,7 @@ export const loginUserApi = async (data: loginUserDataType) => {
 } 
 export const updateTokenApi = async () => {
     try {
-        let tokenAll:any = localStorage.getItem("authTokens");
+        let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.refresh;
             let res = await axios.post(`${baseUrl}/token/refresh/`, { refresh: token });
@@ -33,7 +33,7 @@ export const updateTokenApi = async () => {
 }
 
 export const getLoggedinUserProfileApi = async (id: number|string) => {
-    let tokenAll: any = localStorage.getItem("authTokens");
+    let tokenAll: any = sessionStorage.getItem("authTokens");
     let authToken: userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     try {

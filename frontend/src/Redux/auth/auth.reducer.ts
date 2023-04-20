@@ -18,7 +18,7 @@ import {
 } from "./auth.actions.types";
 import jwt_decode from "jwt-decode";
 
-let authTokens: string | null = localStorage.getItem("authTokens");
+let authTokens: string | null = sessionStorage.getItem("authTokens");
 let authToken: userTokenType = authTokens ? (JSON.parse(authTokens)) : null
 const data: jwtTokenType | null = authToken ? jwt_decode(authToken.access) : null;
 const initialState: authUserDataType = {
@@ -40,7 +40,7 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
             return { ...state, login_loading: true, login_error: false }
         }
         case USER_LOGIN_SUCCESS: {
-            localStorage.setItem("authTokens", JSON.stringify(payload))
+            sessionStorage.setItem("authTokens", JSON.stringify(payload))
             let userId:any = jwt_decode(payload.access)
             let myId = userId.user_id
             return { ...state, isAuth: true, myId:myId}
@@ -58,7 +58,7 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
             return { ...state, signup_loading: false, signup_error: false, signup_success: true }
         }
         case USER_LOGOUT_SUCCESS: {
-            localStorage.removeItem("authTokens")
+            sessionStorage.removeItem("authTokens")
             return { ...state, isAuth: false, login_loading: false, login_error: false, myId:null,myData:null}
         }
         case USER_LOGOUT_FAILURE: {
@@ -77,7 +77,7 @@ export const authReducer = (state = initialState, actions: { type: string, paylo
             return { ...state }
         }
         case USER_REFRESH_SUCCESS: {
-            localStorage.setItem("authTokens", JSON.stringify(payload))
+            sessionStorage.setItem("authTokens", JSON.stringify(payload))
             return { ...state, isAuth: true }
         }
         case USER_REFRESH_FAILURE: {

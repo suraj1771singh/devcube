@@ -4,7 +4,7 @@ let baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const getRoomsApi = async()=>{
     try {
-        let token:any = localStorage.getItem("authTokens");
+        let token:any = sessionStorage.getItem("authTokens");
             let authToken:userTokenType = JSON.parse(token);
             let data = authToken.access;
         const res = await axios.get(`${baseUrl}/rooms/`,{headers:{Authorization:`Bearer ${data}`}});
@@ -17,7 +17,7 @@ export const getRoomsApi = async()=>{
 export const createRoomApi = async(data:createRoomDataType)=>{
      try{
 
-        let tokenAll:any = localStorage.getItem("authTokens");
+        let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
         let res = await axios.post(`${baseUrl}/createroom/`,data,{headers:{Authorization:`Bearer ${token}`}})
@@ -47,7 +47,7 @@ export const deleteRoomApi = async(id:string)=>{
 
 export const getRoomByUserIdApi = async(id:string|number)=>{
     try{
-        let tokenAll:any = localStorage.getItem("authTokens");
+        let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
         let res = await axios.get(`${baseUrl}/rooms-user/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
@@ -59,7 +59,7 @@ export const getRoomByUserIdApi = async(id:string|number)=>{
 
 export const joinRoomApi = async(id:string|number)=>{
 try{
-    let tokenAll:any = localStorage.getItem("authTokens");
+    let tokenAll:any = sessionStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     let res = await axios({
@@ -78,7 +78,7 @@ try{
 
 export const leaveRoomApi = async(id:string|number)=>{
 try{
-    let tokenAll:any = localStorage.getItem("authTokens");
+    let tokenAll:any = sessionStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     let res = await axios({
@@ -97,7 +97,7 @@ try{
 
 export const getRoomByIdApi = async(id:string|number)=>{
     try{
-    let tokenAll:any = localStorage.getItem("authTokens");
+    let tokenAll:any = sessionStorage.getItem("authTokens");
     let authToken:userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
         let res = await axios.get(`${baseUrl}/room/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
@@ -109,7 +109,7 @@ export const getRoomByIdApi = async(id:string|number)=>{
 
 export const getRoomsJoinedByUserApi = async(id:string|number)=>{
     try{
-        let tokenAll:any = localStorage.getItem("authTokens");
+        let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
             let res = await axios.get(`${baseUrl}/rooms-joined/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
@@ -121,7 +121,7 @@ export const getRoomsJoinedByUserApi = async(id:string|number)=>{
 export const getRoomsByTopicApi = async(id:string|number)=>{
     console.log(id)
     try{
-        let tokenAll:any = localStorage.getItem("authTokens");
+        let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
         // Problems while sending body in get request
