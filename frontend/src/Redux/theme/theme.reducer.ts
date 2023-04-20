@@ -1,4 +1,4 @@
-const theme = localStorage.getItem("theme");
+const theme = sessionStorage.getItem("theme");
 const initialTheme = {
     theme_loading:false,
     theme_error:false,
@@ -11,13 +11,13 @@ switch (type) {
         return{...state,theme_loading:true,theme_error:false}
     }
     case "THEME_SUCCESS":{
-        let theme = localStorage.getItem("theme");
+        let theme = sessionStorage.getItem("theme");
         let setTheme;
         if(theme==="dark"){
-            localStorage.setItem("theme","light")
+            sessionStorage.setItem("theme","light")
             setTheme=false;
         }else{
-            localStorage.setItem("theme","dark")
+            sessionStorage.setItem("theme","dark")
             setTheme=true;
         }
         return{...state,theme_loading:false,theme_error:false,drk_theme:setTheme}

@@ -23,7 +23,6 @@ const Navbar = () => {
   }
   useEffect(() => {
     if (myId) {
-      console.log("my id is:",myId)
       dispatch(getLoggedinUserProfile(myId))
     }
   }, [dispatch,myId])

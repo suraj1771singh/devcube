@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { TbSend } from 'react-icons/tb'
-import Comment from './Comment'
 import { CalcTime } from './time'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
@@ -14,10 +13,10 @@ import Alert from './Alert'
 import { useNavigate } from 'react-router-dom'
 import { updateTopicTag } from '../Redux/topic/topic.actions'
 import { loggedinUserType, topicDataType } from '../dataTypes'
+import Comments from './Comments'
 const RoomData = ({data}:any) => {
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const{myData,myId} =  useSelector((val:rootReducertype)=>val?.auth)
-  const {roomComments} = useSelector((val:rootReducertype)=>val.comments)
   const dispatch:Dispatch<any> = useDispatch()
   const [toggle,setToggle] = useState(false)
   const [owner,setOwner] = useState(false)
@@ -158,7 +157,7 @@ const RoomData = ({data}:any) => {
       <div className='mt-12'>
         <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
        {showComments&&<div className=''>
-         {roomComments?.map((el:any)=><Comment canReply={isParticipant||owner} key={el.id} data={el} roomId={data.id} />)}
+        <Comments canReply={isParticipant||owner} roomId={data.id} />
         </div>}
       </div>
     </div>

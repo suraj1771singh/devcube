@@ -45,7 +45,6 @@ const initialComments = {
     recentComments: [],
     roomComments: [],
     usersComments: [],
-    msgReplyes: []
 }
 
 export const commentReducer = (state = initialComments, { type, payload }: { type: string, payload?: any }) => {
@@ -184,7 +183,8 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 get_reply_msg_error:false, }
         }
         case GET_REPLY_MSGS_SUCCESS: {
-            return { ...state,msgReplyes:payload, get_reply_msg_loading:false,
+
+            return { ...state,roomComments:[...payload,...state.roomComments], get_reply_msg_loading:false,
                 get_reply_msg_error:false,}
         }
         case GET_REPLY_MSGS_ERROR: {

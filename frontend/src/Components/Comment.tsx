@@ -8,13 +8,17 @@ import { TbSend } from 'react-icons/tb'
 import { rootReducertype } from '../Redux/Store'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { MdOutlineReport } from 'react-icons/md'
-import Replyes from './Replyes'
 
 const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
   const {myId } = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-  const {msgReplyes} = useSelector((val:rootReducertype)=>val.comments)
+
+  const {roomComments} = useSelector((val:rootReducertype)=>val.comments)
+
+  const [commentReplyes, setCommentReplyes] = useState([])
+
+  const [replyCalled, setReplyCalled] = useState(true)
   const [commentModal, setcommentModal] = useState(false)
   const [yourComment, setYourComment] = useState(false)
   const [commentBody, setCommentBody] = useState("")
@@ -25,9 +29,18 @@ const Comment = ({ data,canReply,roomId }: any) => {
       setReply(false)
     }
   }, [dispatch])
-  let dynamicTime = new Date(data.created).getTime()
+  useEffect(()=>{
+    // eslint-disable-next-line array-callback-return
+    setCommentReplyes(roomComments.filter((el:any)=>{
+        if(el.parent===data.id){
+            return el
+        }
+    }))
+  },[data.id, roomComments.length,roomComments])
+//   console.log(data)
+  let dynamicTime = new Date(data?.created).getTime()
   useEffect(() => {
-    if (data.user.id === myId) {
+    if (data?.user?.id === myId) {
       setYourComment(true)
     }
   }, [data?.user?.id, myId])
@@ -37,7 +50,10 @@ const Comment = ({ data,canReply,roomId }: any) => {
   }
   const handleReplybtn = (id:string|number)=>{
     //dispatch for getting all the comments of the parent
-    dispatch(getrepliesOfComment(id,roomId))
+    if(replyCalled){
+        dispatch(getrepliesOfComment(id,roomId))
+    }
+    setReplyCalled(false)
     setReply(!reply)
   }
   const handleComment = (id: string | number) => {    
@@ -85,9 +101,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
           <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:underline hover:text-blue-500'>{data?.replies?.length} Replie(s) </button>
           <AiOutlineLike className='mx-2 text-xl cursor-pointer' />
         </div>
-        
-      {reply&&msgReplyes?.map((el: any, id: number) => <Replyes key={id} data={el} />)}
-
+      {data.height<4&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
         {reply && (data?.height<4)?<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
         {(canReply)? <textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
         <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />

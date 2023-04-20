@@ -64,6 +64,7 @@ export const getLoggedinUserProfile = (id: string | number) => async (dispatch: 
         let res = await getLoggedinUserProfileApi(id)
         dispatch({ type: LOGGED_IN_USER_DATA_SUCCESS,payload:res.data })
     } catch (err) {
+        console.log(err)
         dispatch({ type: LOGGED_IN_USER_DATA_FAILURE })
     }
 }
