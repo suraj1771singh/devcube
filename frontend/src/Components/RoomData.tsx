@@ -81,7 +81,6 @@ const RoomData = ({data}:any) => {
         console.log('empty')
       }
    }
-
    const handleauthOnchange = (myData:loggedinUserType,e:any)=>{
     if(isParticipant||(myData?.id===data.host.id) ){
       setCommentBody(e.target.value)
