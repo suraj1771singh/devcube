@@ -16,7 +16,7 @@ urlpatterns = [
     path('room-update/<str:pk>/', views.updateRoom),
     path('room-add-participant/<str:pk>/', views.addParticipant),
     path('room-remove-participant/<str:pk>/', views.removeParticipant),
-    path('rooms-joined/<str:pk>/', views.getJoinedRoomsByUser),
+    path('rooms-joined/', views.getJoinedRoomsByUser),
     path('rooms-topic/', views.getRoomByTopics),
 
     # ---------FOLLOWER AND FOLLOWING
