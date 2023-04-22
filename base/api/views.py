@@ -219,19 +219,10 @@ def removeParticipant(request, pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getJoinedRoomsByUser(request, pk):
-
-    user = User.objects.get(id=pk)
-    rooms = Room.objects.filter(participants=user)
+def getJoinedRoomsByUser(request):
+    rooms = Room.objects.filter(participants=request.user)
     serializer = RoomSerializer(rooms, many=True)
-    try:
-        for room in serializer.data:
-            user = User.objects.get(id=room['host'])
-            room['hostname'] = user.username
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except:
-        Response({'msg': "Something went wrong !"},
-                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 # ------------------------ FOLLOWER AND FOLLOWING
 
