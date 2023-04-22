@@ -30,8 +30,8 @@ export const getrepliesOfCommentApi = async(parentId:string|number,id:string|num
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.get(`${baseUrl}/msgs-room/${id}/`,{data:{parent:parentId},headers:{Authorization:`Bearer ${token}`}})
-       return res
+        let res = await axios.get(`${baseUrl}/msgs-room/${id}/?parent=${parentId}`,{headers:{Authorization:`Bearer ${token}`}})
+       return res 
     }catch(err){
         throw err
     }
@@ -50,7 +50,6 @@ export const getUserCommentsApi = async(id:string|number)=>{
 }
 
 export const createCommentsApi = async(data:any,id:string|number)=>{
-    console.log(data)
     try{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);

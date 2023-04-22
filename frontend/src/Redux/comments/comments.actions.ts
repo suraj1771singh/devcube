@@ -58,7 +58,7 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
         try {
             let res = await getUserCommentsApi(id)
             console.log(res)
-            dispatch({ type: GET_USER_COMMENTS_SUCCESS })
+            // dispatch({ type: GET_USER_COMMENTS_SUCCESS,payload:res.data })
         } catch (err) {
             dispatch({ type: GET_USER_COMMENTS_ERROR })
         }
