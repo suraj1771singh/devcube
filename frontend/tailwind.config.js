@@ -13,6 +13,7 @@ module.exports = {
         'font_light_pri':"#00000",
         'font_light_sec':"#436086",
 
+        "fade_font":"#808080",
         "bg_dark_pri":"#011022",
         'bg_dark_sec':"#000000",
         'font_dark_pri':"#EAEDF1",

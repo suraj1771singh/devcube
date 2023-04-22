@@ -20,5 +20,4 @@ const Comments = ({canReply,roomId}:any) => {
     </>
   )
 }
-
 export default Comments
