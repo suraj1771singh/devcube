@@ -56,20 +56,18 @@ export const createRoom = (data:createRoomDataType)=>async(dispatch: Dispatch)=>
 export const updateRoom = (data:any)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:UPDATE_ROOM_LOADING})
     try{
-        let res = updateRoomApi(data)
-        console.log(res)
-        dispatch({type:UPDATE_ROOM_SUCCESS})
+        await updateRoomApi(data)
+        dispatch({type:UPDATE_ROOM_SUCCESS,payload:data})
     }catch(err){
         dispatch({type:UPDATE_ROOM_ERROR})
     }
 }
 
-export const deleteRoom = (id:string)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const deleteRoom = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
     dispatch({type:DELETE_ROOM_LOADING})
     try{
-        let res = deleteRoomApi(id)
-        console.log(res)
-        dispatch({type:DELETE_ROOM_SUCCESS})
+        await deleteRoomApi(id)
+        dispatch({type:DELETE_ROOM_SUCCESS,payload:id})
     }catch(err){
         dispatch({type:DELETE_ROOM_ERROR})
     }

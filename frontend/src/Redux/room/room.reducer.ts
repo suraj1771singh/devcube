@@ -32,6 +32,7 @@ import {
 } from "./room.action.type";
 let initialData: roomInitialDataType = {
     allRooms: [],
+    userRooms:[],
     create_loading: false,
     create_error: false,
     create_success: false,
@@ -83,7 +84,7 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state, update_loading: true }
         }
         case UPDATE_ROOM_SUCCESS: {
-            return { ...state, update_loading: false, update_success: true } // if needed, update the rooms
+            return { ...state, update_loading: false, update_success: true}
         }
         case UPDATE_ROOM_ERROR: {
             return { ...state, update_loading: false, update_error: true }
@@ -95,7 +96,13 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state, delete_loading: false, delete_error: true }
         }
         case DELETE_ROOM_SUCCESS: {
-            return { ...state, delete_loading: false, delete_error: false, delete_success: true } // if needed update the rooms here
+            // eslint-disable-next-line array-callback-return
+            let newRooms = state.allRooms.filter((el:any)=>{
+                if(el.id!==payload){
+                    return el
+                }
+            })
+            return { ...state, delete_loading: false, delete_error: false, delete_success: true,allRooms:newRooms } // if needed update the rooms here
         }
         case GET_ROOM_LOADING: {
             return { ...state, get_loading: true }
@@ -113,7 +120,7 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state }
         }
         case GET_ROOM_BY_USER_SUCCESS: {
-            return { ...state, allRooms: payload }
+            return { ...state, userRooms: payload }
         }
         case JOIN_ROOM_LOADING: {
             return { ...state, join_error: false, join_loading: true, join_success: false, }
@@ -174,16 +181,13 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             }
         }
         case GET_ROOMS_JOINED_BY_USER_LOADING: {
-            console.log('loading')
             return { ...state }
         }
         case GET_ROOMS_JOINED_BY_USER_ERROR: {
-            console.log('error')
             return { ...state }
         }
         case GET_ROOMS_JOINED_BY_USER_SUCCESS: {
-            console.log('hello world')
-            return { ...state, allRooms: [] }
+            return { ...state, userRooms: payload }
         }
         case GET_ROOMS_BY_TOPICS_LOADING: {
             return { ...state }

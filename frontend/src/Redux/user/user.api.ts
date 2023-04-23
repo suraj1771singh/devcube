@@ -42,7 +42,6 @@ export const followUserApi = async (id: string | number) => {
     } catch (err) {
         throw err
     }
-
 }
 
 export const unfollowUserApi = async (id: string | number) => {

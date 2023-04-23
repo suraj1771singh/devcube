@@ -16,7 +16,7 @@ const RoomCard = ({ data }: any) => {
     const [owner, setOwner] = useState(false)
     const { join_loading } = useSelector((val: rootReducertype) => val.rooms)
     const nav = useNavigate()
-
+    let desc = data?.description.split(' ').slice(0,40).join(" ")
     useEffect(() => {
         setJoined(data?.participants.some((el: any) => el.id === myId))
         if (data.host.id === myId) {
@@ -55,7 +55,7 @@ const RoomCard = ({ data }: any) => {
             </div>
             <div onClick={() => handleGotoRoom(data?.id)} className='text-left mt-2 mb-2 cursor-pointer'>
                 <h3 className='font-semibold text-xl my-2'>{data?.name}</h3>
-                <p className=''>{data?.description}</p>
+                <p className=''>{desc}...</p>
             </div>
             <div className='flex justify-between mt-6' >
                 <div className='flex items-center'>

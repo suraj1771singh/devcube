@@ -61,9 +61,13 @@ const Comment = ({ data,canReply,roomId }: any) => {
     if(commentBody.length>4){
       let msg = {body:commentBody,parent:id} 
      dispatch(createComments(msg,roomId))
-    setCommentBody("")
+    setCommentBody("");
+    window.location.reload()
   }else{
   }
+  }
+  const handleEditComment = (data:any)=>{
+    console.log(data)
   }
   return (
     <div onClick={()=>setcommentModal(false)} className=''>
@@ -74,7 +78,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
         <p className='text-sm text-fade_font'>{CalcTime(dynamicTime)}</p>
         {yourComment&&<FiMoreHorizontal onClick={handleEditModal} className='text-xl cursor-pointer hover:text-third_color mx-8' />}
         {yourComment?commentModal&& <div className='py-4 absolute w-fit top-[60%] bg-white right-[2%] p-2 font-semibold rounded-xl shadow-md'>
-          <div className='text-third_color my-2 cursor-pointer flex items-center'>
+          <div onClick={()=>handleEditComment(data)} className='text-third_color my-2 cursor-pointer flex items-center'>
             <AiFillEdit className='mx-2' />
             <span className='mx-2'>
               Edit
