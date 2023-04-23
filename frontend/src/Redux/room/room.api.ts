@@ -107,25 +107,23 @@ export const getRoomByIdApi = async(id:string|number)=>{
     } 
 }
 
-export const getRoomsJoinedByUserApi = async(id:string|number)=>{
+export const getRoomsJoinedByUserApi = async()=>{
     try{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-            let res = await axios.get(`${baseUrl}/rooms-joined/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
+            let res = await axios.get(`${baseUrl}/rooms-joined/`,{headers:{Authorization:`Bearer ${token}`}})
             return res;
         }catch(err){
             throw err
         } 
 }
-export const getRoomsByTopicApi = async(id:string|number)=>{
-    console.log(id)
+export const getRoomsByTopicApi = async(id:number[])=>{
     try{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        // Problems while sending body in get request
-            let res = await axios.get(`${baseUrl}/rooms-topic/`,{data:{topics:[id]},headers:{Authorization:`Bearer ${token}`}})
+            let res = await axios.get(`${baseUrl}/rooms-topic/?ids=${id.join(",")} `,{headers:{Authorization:`Bearer ${token}`}})
             return res;
     }catch(err){
         throw err

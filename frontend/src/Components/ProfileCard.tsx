@@ -32,8 +32,8 @@ const ProfileCard = ({ id }:any) => {
         dispatch(getRoomByUserId(id))
         setHosted(true)
     }
-    const handleJoinedRooms = (id:string|number)=>{
-        dispatch(getRoomsJoinedByUser(id))
+    const handleJoinedRooms = ()=>{
+        dispatch(getRoomsJoinedByUser())
         setHosted(false)
     }
 
@@ -60,9 +60,9 @@ const ProfileCard = ({ id }:any) => {
                                     <h2 className='text-2xl font-bold'>{userData?.first_name} {userData?.last_name} </h2>
                                     <p className='font-semibold'>{userData?.username}</p>
                                     <div className='flex justify-between pt-2'>
-                                        <a href={`${(userData.insta_url) ? userData.insta_url : "#"}`} target='_blank' rel="noreferrer" ><AiOutlineInstagram className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>
-                                        <a href={`${(userData.linkedin_url) ? userData.insta_url : "#"}`} target='_blank' rel="noreferrer"><AiOutlineLinkedin className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>
-                                        <a href={`${(userData.twitter_url) ? userData.insta_url : "#"}`} target='_blank' rel="noreferrer">< AiOutlineTwitter className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>
+                                        {userData?.insta_url&&<a href={`${userData.insta_url}`} target='_blank' rel="noreferrer" ><AiOutlineInstagram className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>}
+                                       {userData?.linkedin_url&&<a href={`${userData.linkedin_url}`} target='_blank' rel="noreferrer"><AiOutlineLinkedin className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>}
+                                       {userData?.twitter_url&&<a href={`${userData.twitter_url}`} target='_blank' rel="noreferrer">< AiOutlineTwitter className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>}
                                     </div>
                                     <div className='flex itemx-center'>
                                         <p className='font-semibold mr-3 text-sm'><span className='text-lg font-bold'>{}</span> Followers</p>
@@ -84,7 +84,7 @@ const ProfileCard = ({ id }:any) => {
                         </div>
                         <div className='text-center'>
                             <button onClick={()=>handleHostedRooms(id)} className={`mx-3 ${hosted?"bg-third_color text-white":drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} font-semibold p-2 px-5 rounded-full`} >Hosted</button>
-                            <button onClick={()=>handleJoinedRooms(id)} className={`mx-3 ${!hosted?"bg-third_color text-white":drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} font-semibold p-2 px-5 rounded-full`}>Joined</button>
+                            <button onClick={()=>handleJoinedRooms()} className={`mx-3 ${!hosted?"bg-third_color text-white":drk_theme ? "bg-bg_dark_pri" : "bg-bg_light_pri"} font-semibold p-2 px-5 rounded-full`}>Joined</button>
                         </div>
                     </div>
                 </div>

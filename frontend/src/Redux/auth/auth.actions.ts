@@ -24,8 +24,9 @@ export const registerUser = (data: registerUserDataType) => async (dispatch:Disp
     try {
         let res = await registerUserApi(data)
         dispatch({ type: USER_SIGNUP_SUCCESS, payload: res })
-    } catch (err) {
-        dispatch({ type: USER_SIGNUP_FAILURE })
+    } catch (err:any) {
+        const msg:string=err.response.data.detail
+        dispatch({ type: USER_SIGNUP_FAILURE,payload:msg})
     }
 };
 
@@ -34,8 +35,9 @@ export const loginUser = (data: loginUserDataType) => async (dispatch:Dispatch) 
     try {
         let res = await loginUserApi(data)
         dispatch({ type: USER_LOGIN_SUCCESS, payload: res?.data })
-    } catch (err) {
-        dispatch({ type: USER_LOGIN_FAILURE })
+    } catch (err:any) {
+    let msg = err.response.data.detail
+        dispatch({ type: USER_LOGIN_FAILURE,payload:msg})
     }
 }
 export const logoutUser = () => (dispatch:Dispatch) => {

@@ -8,6 +8,7 @@ import { TbSend } from 'react-icons/tb'
 import { rootReducertype } from '../Redux/Store'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { BiMessageDetail } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom'
 
 const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
@@ -16,7 +17,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const {roomComments} = useSelector((val:rootReducertype)=>val.comments)
 
   const [commentReplyes, setCommentReplyes] = useState([])
-
+  const nav = useNavigate()
   const [replyCalled, setReplyCalled] = useState(true)
   const [commentModal, setcommentModal] = useState(false)
   const [yourComment, setYourComment] = useState(false)
@@ -58,7 +59,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
   }
   const handleComment = (id: string | number) => {    
     if(commentBody.length>4){
-      let msg = {body:commentBody,parent:data.id} 
+      let msg = {body:commentBody,parent:id} 
      dispatch(createComments(msg,roomId))
     setCommentBody("")
   }else{
@@ -67,8 +68,8 @@ const Comment = ({ data,canReply,roomId }: any) => {
   return (
     <div onClick={()=>setcommentModal(false)} className=''>
       <div className='flex items-center relative w-fit'>
-        <img src="/profile.svg" alt="pp" className='w-[40px] mr-2' />
-        <h3 className='mx-2 font-semibold '>{data?.user?.first_name} {data?.user?.last_name}</h3>
+        <img src={data?.user?.photo} alt="pp" className='w-[40px] mr-2 rounded-full' />
+        <h3 className='mx-2 font-semibold hover:text-third_color cursor-pointer' onClick={()=>nav(`/profile/${data.user.id}`)}>{data?.user?.first_name} {data?.user?.last_name}</h3>
         {yourComment && <span className='mr-3 text-sm'>(You)</span>}
         <p className='text-sm text-fade_font'>{CalcTime(dynamicTime)}</p>
         {yourComment&&<FiMoreHorizontal onClick={handleEditModal} className='text-xl cursor-pointer hover:text-third_color mx-8' />}
@@ -92,11 +93,11 @@ const Comment = ({ data,canReply,roomId }: any) => {
         <p className=''>{data?.body}</p>
         <div className='flex items-center'>
           <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:underline hover:text-blue-500'>{(data?.replies?.length!==0)&& <div className=' mr-4'>{data?.replies?.length} Reply</div>}</button>
-          <BiMessageDetail className='ml-0 mr-4 text-xl cursor-pointer text-fade_font mt-2' onClick={()=>setShowWriteComment(!showWriteComment)} />
+         {data.height<2&&<BiMessageDetail className='ml-0 mr-4 text-xl cursor-pointer text-fade_font mt-2' onClick={()=>setShowWriteComment(!showWriteComment)} />}
           <AiOutlineLike className='mx-4 text-xl cursor-pointer text-fade_font m-2' />
         </div>
-      {data.height<5&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
-        {showWriteComment && (data?.height<4)?<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+      {data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
+        {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
         {(canReply)?<textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
         <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
         </div>:<div>

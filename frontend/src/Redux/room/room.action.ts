@@ -27,10 +27,13 @@ GET_ROOM_BY_ID_ERROR,
 GET_ROOM_BY_ID_SUCCESS,GET_ROOMS_JOINED_BY_USER_LOADING,
 GET_ROOMS_JOINED_BY_USER_ERROR,
 GET_ROOMS_JOINED_BY_USER_SUCCESS,
+GET_ROOMS_BY_TOPICS_LOADING,
+GET_ROOMS_BY_TOPICS_ERROR,
+GET_ROOMS_BY_TOPICS_SUCCESS,
 }from "./room.action.type";
 import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsByTopicApi, getRoomsJoinedByUserApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
-export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const getRooms = ()=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_ROOM_LOADING})
     try{
         let res = await getRoomsApi()
@@ -40,7 +43,7 @@ export const getRooms = ()=>async(dispatch: (arg0: { type: string; payload?: any
     }
 }
 
-export const createRoom = (data:createRoomDataType)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const createRoom = (data:createRoomDataType)=>async(dispatch: Dispatch)=>{
     dispatch({type:CREATE_ROOM_LOADING})
     try{
         let res = await createRoomApi(data)
@@ -72,7 +75,7 @@ export const deleteRoom = (id:string)=>async(dispatch: (arg0: { type: string; pa
     }
 }
 
-export const getRoomByUserId = (id:string|number)=>async(dispatch: (arg0: { type: string; payload?: any; }) => void)=>{
+export const getRoomByUserId = (id:string|number)=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_ROOM_BY_USER_LOADING})
     try{
         let res = await getRoomByUserIdApi(id)
@@ -113,23 +116,22 @@ try{
 }
 
 
- export const getRoomsJoinedByUser = (id:number|string)=>async(dispatch:Dispatch)=>{
+ export const getRoomsJoinedByUser = ()=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_ROOMS_JOINED_BY_USER_LOADING})
     try{
-        let res = await getRoomsJoinedByUserApi(id)
-        console.log(res)
-        dispatch({type:GET_ROOMS_JOINED_BY_USER_SUCCESS})
+        let res = await getRoomsJoinedByUserApi()
+        dispatch({type:GET_ROOMS_JOINED_BY_USER_SUCCESS,payload:res.data})
     }catch(err){
         dispatch({type:GET_ROOMS_JOINED_BY_USER_ERROR})
     }
  }
 
- export const getRoomsByTopic = (id:string|number)=>async(dispatch:Dispatch)=>{
-    
+ export const getRoomsByTopic = (id:number[])=>async(dispatch:Dispatch)=>{
+    dispatch({type:GET_ROOMS_BY_TOPICS_LOADING})
     try{
         let res = await getRoomsByTopicApi(id)
-        console.log(res)
+        dispatch({type:GET_ROOMS_BY_TOPICS_SUCCESS,payload:res.data})
     }catch(err){
-        
+        dispatch({type:GET_ROOMS_BY_TOPICS_ERROR})
     }
  }

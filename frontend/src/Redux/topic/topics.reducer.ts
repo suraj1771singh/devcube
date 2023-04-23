@@ -7,7 +7,9 @@ import{GET_TOPICS_LOADING,
     REMOVE_TOPIC_TAGS_SUCCESS,
     UPDATE_TOPIC_TAGS_SUCCESS,
 UPDATE_TOPIC_TAGS_ERROR,
-    REMOVE_TOPIC_TAGS_ERROR,} from "./topic.actions.type"
+    REMOVE_TOPIC_TAGS_ERROR,
+    RESET_TOPIC_TAGS_ERROR,
+    RESET_TOPIC_TAGS_SUCCESS,} from "./topic.actions.type"
 
 
 const initialTopics:topicDataInitialDatatype = {
@@ -62,6 +64,12 @@ export const topicsReducer = (state = initialTopics, actions: { type: string; pa
         }
 case UPDATE_TOPIC_TAGS_ERROR:{
     return{...state}
+}
+case RESET_TOPIC_TAGS_ERROR:{
+    return {...state}
+}
+case RESET_TOPIC_TAGS_SUCCESS:{
+    return {...state,topicTags:[]}
 }
         default:
             return { ...state }

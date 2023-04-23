@@ -53,7 +53,7 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className={`w-[50%] px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
-          <input type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..' />
+          <input type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Search here..' />
           <CiSearch className='cursor-pointer text-3xl' />
         </div>
         <div className='flex items-center relative' >
