@@ -2,22 +2,36 @@ import RoomCard from '../Components/RoomCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { BiEdit } from 'react-icons/bi'
-import { Dispatch, useState } from 'react'
+import { Dispatch, useEffect, useState } from 'react'
 import { AiOutlineInstagram, AiOutlineLinkedin, AiOutlineTwitter } from 'react-icons/ai'
-import { followUser } from '../Redux/user/user.actions'
+import { followUser, unfollowUser } from '../Redux/user/user.actions'
 import EditProfileModal from './EditProfileModal'
 import { getRoomByUserId, getRoomsJoinedByUser } from '../Redux/room/room.action'
 import ProfilePhotoModal from './ProfilePhotoModal'
 const ProfileCard = ({ id }:any) => {
     let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-    const { userData } = useSelector((val: rootReducertype) => val.user)
+    const { userData,followers,following } = useSelector((val: rootReducertype) => val.user)
     let { myId } = useSelector((val: rootReducertype) => val.auth)
     const [editModal, setEditModal] = useState(false)
     const [hosted,setHosted] = useState(true)
     const [profileHover,setProfileHover] = useState(false)
     const [profilePhotoModal, setProfilePhotoModal] = useState(false)
     const [photo, setPhoto] = useState({owner:false, pic:''})
+    const [isfollowing,setIsFollowing] = useState(false);
+    useEffect(() => {
+     let youFollowing = followers.filter((el:any)=>{
+        if(el.id===myId){
+            return el
+        }
+      })
+      if(youFollowing.length===0){
+        setIsFollowing(false)
+      }else{
+        setIsFollowing(true)
+      }
+    }, [followers, myId])
+    
     const dispatch: Dispatch<any> = useDispatch()
     const handleProfileEdit = () => {
         setEditModal(true)
@@ -27,6 +41,9 @@ const ProfileCard = ({ id }:any) => {
     }
     const handleFollow = (id: string | number) => {
         dispatch(followUser(id))
+    } 
+    const handleUnfollow = (id: string | number) => {
+        dispatch(unfollowUser(id))
     } 
     const handleHostedRooms =  (id:string|number)=>{
         dispatch(getRoomByUserId(id))
@@ -65,13 +82,13 @@ const ProfileCard = ({ id }:any) => {
                                        {userData?.twitter_url&&<a href={`${userData.twitter_url}`} target='_blank' rel="noreferrer">< AiOutlineTwitter className='text-3xl text-blue-500 cursor-pointer my-2 mr-3' /></a>}
                                     </div>
                                     <div className='flex itemx-center'>
-                                        <p className='font-semibold mr-3 text-sm'><span className='text-lg font-bold'>{}</span> Followers</p>
-                                        <p className='font-semibold ml-3 text-sm'><span className='text-lg font-bold'>{userData?.following?.length}</span> Following</p>
+                                        <p className='font-semibold mr-3 text-sm'><span className='text-lg font-bold'>{followers.length}</span> Followers</p>
+                                        <p className='font-semibold ml-3 text-sm'><span className='text-lg font-bold'>{following?.length}</span> Following</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="mt-10 mr-10">
-                                {myId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : <button onClick={() => handleFollow(id)} className='text-xl bg-third_color text-font_dark_pri px-4 py-1 rounded-full'>Follow</button>}
+                                {myId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : isfollowing?<button onClick={() => handleUnfollow(id)} className='text-xl bg-bg_light_pri px-4 py-1 rounded-full'>Unfollow</button>:<button onClick={() => handleFollow(id)} className='text-xl bg-blue-400 text-font_dark_pri px-4 py-1 rounded-full'>Follow</button>}
                             </div>
                         </div>
                     </div>

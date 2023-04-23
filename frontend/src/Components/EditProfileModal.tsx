@@ -30,6 +30,7 @@ const EditProfileModal = (props:editmodalProps) => {
     const handleUserDetailsUpdate =(e:any)=>{
       e.preventDefault()
         dispatch(updateUser(update))
+        window.location.reload()
     }
   return (
     <div className='z-50 fixed flex justify-center items-center bg-black/50 top-0 bottom-0 left-0 right-0'>

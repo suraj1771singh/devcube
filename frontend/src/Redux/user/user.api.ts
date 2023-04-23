@@ -18,7 +18,7 @@ export const updateUserApi = async (data: any) => {
     let authToken: userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     try {
-        let res = await axios.patch(`${baseUrl}/update-user/${data.id}/`, { headers: { Authorization: `Bearer ${token}` } })
+        let res = await axios.put(`${baseUrl}/update/`,data, { headers: { Authorization: `Bearer ${token}` } })
         return res
     } catch (err) {
         throw err
@@ -50,10 +50,41 @@ export const unfollowUserApi = async (id: string | number) => {
         let tokenAll: any = sessionStorage.getItem("authTokens");
         let authToken: userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.post(`${baseUrl}/unfollow/${id}/`, { headers: { Authorization: `Bearer ${token}` } })
+        let res = await axios({
+            method: "POST",
+            url: `${baseUrl}/unfollow/${id}/`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
         return res
     } catch (err) {
         throw err
     }
 
+}
+
+
+export const getFollowersApi= async(id:string|number)=>{
+    try{
+        let tokenAll: any = sessionStorage.getItem("authTokens");
+        let authToken: userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.get(`${baseUrl}/followers/${id}/`, { headers: { Authorization: `Bearer ${token}` } })
+        return res
+    }catch(err){
+        throw err
+    }
+}
+export const getFollowingApi= async(id:string|number)=>{
+    try{
+        let tokenAll: any = sessionStorage.getItem("authTokens");
+        let authToken: userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.get(`${baseUrl}/following/${id}/`, { headers: { Authorization: `Bearer ${token}` } })
+        return res
+    }catch(err){
+        throw err
+    }
 }
