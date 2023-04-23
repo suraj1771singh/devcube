@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 # from django.contrib.auth.models import User
 
 from base.models import Room, Topic, User, UserRelationship, Message
@@ -105,9 +106,15 @@ def createRoom(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getAllRooms(request):
-    rooms = Room.objects.all()
+    q = request.query_params.get("search")
+    if q is not None:
+        rooms = Room.objects.filter(Q(host__username__icontains=q) | Q(topic__name__icontains=q) | Q(
+            name__icontains=q) | Q(description__icontains=q))
+
+    else:
+        rooms = Room.objects.all()
     # many is set to true, to serialize many objects
     serializer = RoomSerializer(rooms, many=True)
     try:
