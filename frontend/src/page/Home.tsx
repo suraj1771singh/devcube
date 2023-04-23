@@ -58,7 +58,7 @@ const Home = () => {
                         <TagsDiv isCreate={false} />
                         </div>
 
-                        <NavLink to='/create_room' className='text-sm bg-third_color text-bg_pri font-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
+                        <NavLink to='/create_room' className='text-sm bg-third_color text-white text-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
                     {roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
