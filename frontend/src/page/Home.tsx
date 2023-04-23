@@ -52,7 +52,7 @@ const Home = () => {
                             <p className='text-fade_font text-sm font-semibold'>38 Rooms Available</p>
                         </div>
 
-                        <div className={`flex items-center p-3 rounded-xl overflow-y-auto w-1/2 scrollbar-hide`} >
+                        <div className={`flex items-center p-3 rounded-xl overflow-y-auto w-1/2 scrollbar-hide box-border`} >
                         <TagsDiv isCreate={false} />
                         </div>
 

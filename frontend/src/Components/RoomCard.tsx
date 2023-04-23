@@ -64,8 +64,8 @@ const RoomCard = ({ data }: any) => {
                     <GrGroup className='text-sm mx-2 text-gray-600' />
                     <p className='text-sm text-gray-600'> {data?.participants.length} Joined</p>
                 </div>
-                <div className='flex w-[60%] overflow-x-auto scrollbar-hide justify-end'>
-                    {data?.topic?.slice(0,3).map((el: topicDataType) => <div key={el.id} className={`flex justify-center items-center px-6 py-2 font-semibold rounded-full mx-2 ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} >{el.name}</div>)}
+                <div className='flex max-w-[60%] overflow-auto scrollbar-hide'>
+                    {data?.topic?.map((el: topicDataType) => <div key={el.id} className={`flex justify-center items-center px-6 py-2 font-semibold rounded-full mx-2 whitespace-nowrap ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} >{el.name}</div>)}
                 </div>
             </div>
         </div>

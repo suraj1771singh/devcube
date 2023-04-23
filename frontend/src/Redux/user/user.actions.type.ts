@@ -18,3 +18,10 @@ export const UNFOLLOW_USER_LOADING = "unfollow/user/loadinng"
 export const UNFOLLOW_USER_SUCCESS = "unfollow/user/success"
 export const UNFOLLOW_USER_ERROR = "unfollow/user/error"
 
+export const GET_FOLLOWERS_LOADING = "get/followers/loadinng"
+export const GET_FOLLOWERS_SUCCESS = "get/follwers/success"
+export const GET_FOLLOWERS_ERROR = "get/followers/user/error"
+
+export const GET_FOLLOWING_LOADING = "get/following/loadinng"
+export const GET_FOLLOWING_SUCCESS = "get/following/success"
+export const GET_FOLLOWING_ERROR = "get/following/user/error"

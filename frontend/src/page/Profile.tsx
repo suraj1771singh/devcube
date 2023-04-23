@@ -2,12 +2,11 @@ import { useEffect} from 'react'
 import { useDispatch} from 'react-redux'
 import { getRoomByUserId} from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
-import { getTopics } from '../Redux/topic/topic.actions'
 import BrowseTopics from '../Components/BrowseTopics'
 import RecentActivites  from '../Components/RecentActivites'
 import ProfileCard from '../Components/ProfileCard'
 import { useParams } from 'react-router-dom'
-import { getUserById } from '../Redux/user/user.actions'
+import { getFollowers, getFollowing, getUserById } from '../Redux/user/user.actions'
 const Profile = () => {
     const {id} = useParams()
     const dispatch: Dispatch<any> = useDispatch()
@@ -15,7 +14,8 @@ const Profile = () => {
         if(id){
             dispatch(getUserById((+id)))
             dispatch(getRoomByUserId(id))
-            dispatch(getTopics())
+            dispatch(getFollowers(+id))
+            dispatch(getFollowing(+id))
         }
     }, [dispatch, id])
     return (
