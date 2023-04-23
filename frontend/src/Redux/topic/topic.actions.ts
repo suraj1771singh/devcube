@@ -7,7 +7,9 @@ import{GET_TOPICS_LOADING,
     UPDATE_TOPIC_TAGS_SUCCESS,
 UPDATE_TOPIC_TAGS_ERROR,
     REMOVE_TOPIC_TAGS_SUCCESS,
-    REMOVE_TOPIC_TAGS_ERROR,} from "./topic.actions.type"
+    REMOVE_TOPIC_TAGS_ERROR,
+    RESET_TOPIC_TAGS_ERROR,
+    RESET_TOPIC_TAGS_SUCCESS} from "./topic.actions.type"
 import { getTopicsApi } from "./topics.api"
 
 export const getTopics = ()=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
@@ -33,6 +35,13 @@ export const removeTopicTag = (data:topicDataType)=>async(dispatch: (arg0: { typ
         dispatch({type:REMOVE_TOPIC_TAGS_SUCCESS,payload:data})
     }catch(err){
         dispatch({type:REMOVE_TOPIC_TAGS_ERROR})
+    }
+}
+export const resetTopicTag = ()=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
+    try{
+        dispatch({type:RESET_TOPIC_TAGS_SUCCESS})
+    }catch(err){
+        dispatch({type:RESET_TOPIC_TAGS_ERROR})
     }
 }
 export const updateTopicTag = (data:topicDataType[])=>async(dispatch: (arg0: { type: string; payload?: any }) => void)=>{
