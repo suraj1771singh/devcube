@@ -25,3 +25,7 @@ export const GET_FOLLOWERS_ERROR = "get/followers/user/error"
 export const GET_FOLLOWING_LOADING = "get/following/loadinng"
 export const GET_FOLLOWING_SUCCESS = "get/following/success"
 export const GET_FOLLOWING_ERROR = "get/following/user/error"
+
+export const PROFILE_PHOTO_LOADING = "get/profile/photo/loadinng"
+export const PROFILE_PHOTO_SUCCESS = "get/profile/photo/success"
+export const PROFILE_PHOTO_ERROR = "get/profile/photo/user/error"

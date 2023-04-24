@@ -16,6 +16,9 @@ GET_FOLLOWERS_SUCCESS,
 GET_FOLLOWERS_ERROR,
 GET_FOLLOWING_LOADING,
 GET_FOLLOWING_SUCCESS,
+PROFILE_PHOTO_LOADING,
+PROFILE_PHOTO_SUCCESS,
+PROFILE_PHOTO_ERROR,
 GET_FOLLOWING_ERROR,
 } from "./user.actions.type"
 import { followUserApi, getUserByIdApi, unfollowUserApi, updateUserApi, getFollowersApi, getFollowingApi, updateUserProfileApi } from "./user.api"
@@ -85,10 +88,13 @@ export const getFollowing = (id: string | number) => async (dispatch: Dispatch) 
 }
 
 export const updateUserProfile = (data:any)=>async(dispatch:Dispatch)=>{
+    dispatch({type:PROFILE_PHOTO_LOADING})
     try{
 let res = await updateUserProfileApi(data);
-console.log(res.data)
+if(res){
+    dispatch({type:PROFILE_PHOTO_SUCCESS,payload:res.data.url})
+}
     }catch(err){
-
+        dispatch({type:PROFILE_PHOTO_ERROR})
     }
 }
