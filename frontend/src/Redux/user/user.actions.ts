@@ -18,7 +18,7 @@ GET_FOLLOWING_LOADING,
 GET_FOLLOWING_SUCCESS,
 GET_FOLLOWING_ERROR,
 } from "./user.actions.type"
-import { followUserApi, getUserByIdApi, unfollowUserApi, updateUserApi, getFollowersApi, getFollowingApi } from "./user.api"
+import { followUserApi, getUserByIdApi, unfollowUserApi, updateUserApi, getFollowersApi, getFollowingApi, updateUserProfileApi } from "./user.api"
 
 export const getUserById = (id: number | string) => async (dispatch: Dispatch) => {
     dispatch({ type: GET_USER_LOADING })
@@ -81,5 +81,14 @@ export const getFollowing = (id: string | number) => async (dispatch: Dispatch) 
         dispatch({type:GET_FOLLOWING_SUCCESS,payload:res.data})
     } catch (err) {
         dispatch({ type:GET_FOLLOWING_ERROR})
+    }
+}
+
+export const updateUserProfile = (data:any)=>async(dispatch:Dispatch)=>{
+    try{
+let res = await updateUserProfileApi(data);
+console.log(res.data)
+    }catch(err){
+
     }
 }

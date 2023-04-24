@@ -165,10 +165,17 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
             }
         }
         case DELETE_COMMENTS_SUCCESS: {
+            // eslint-disable-next-line array-callback-return
+            let updatedComments = state.roomComments.filter((el:any)=>{
+                if(el.id!==payload){
+                    return el
+                }
+            })
             return {
                 ...state, delete_comment_loading: false,
                 delete_comment_error: false,
                 delete_comment_success: true,
+                roomComments:updatedComments
             }
         }
         case DELETE_COMMENTS_ERROR: {
@@ -183,8 +190,10 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 get_reply_msg_error:false, }
         }
         case GET_REPLY_MSGS_SUCCESS: {
-
-            return { ...state,roomComments:[...payload,...state.roomComments], get_reply_msg_loading:false,
+            const mixedArr = [...payload,...state.roomComments];
+            const concatenatedArray:any = new Set(mixedArr.map((el:any)=>JSON.stringify(el)))
+           const uniqueArr = [...concatenatedArray].map((el:any)=>JSON.parse(el))
+            return { ...state,roomComments:uniqueArr, get_reply_msg_loading:false,
                 get_reply_msg_error:false,}
         }
         case GET_REPLY_MSGS_ERROR: {

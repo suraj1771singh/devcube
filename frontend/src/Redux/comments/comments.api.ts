@@ -66,7 +66,7 @@ export const updateCommentsApi = async(data:any)=>{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.patch(`${baseUrl}/msg-update/${data.id}`,data,{headers:{Authorization:`Bearer ${token}`}})
+        let res = await axios.put(`${baseUrl}/msg-update/${data.id}`,data,{headers:{Authorization:`Bearer ${token}`}})
         return res
     }catch(err){throw err}
 }
@@ -76,7 +76,7 @@ export const deleteCommentsApi = async(id:string|number)=>{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.post(`${baseUrl}/msg-delete/${id}`,{headers:{Authorization:`Bearer ${token}`}})
+        let res = await axios.delete(`${baseUrl}/msg-delete/${id}`,{headers:{Authorization:`Bearer ${token}`}})
         return res
     }catch(err){throw err}
 }
