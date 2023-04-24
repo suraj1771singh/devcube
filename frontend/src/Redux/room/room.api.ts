@@ -16,7 +16,6 @@ export const getRoomsApi = async()=>{
 
 export const createRoomApi = async(data:createRoomDataType)=>{
      try{
-
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
@@ -27,17 +26,25 @@ export const createRoomApi = async(data:createRoomDataType)=>{
     }
 }
 
-export const updateRoomApi = (data:any)=>{
+export const updateRoomApi = async(data:any)=>{
+    console.log(data)
     try{
-
+        let tokenAll:any = sessionStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.put(`${baseUrl}/room-update/${data.id}/`,data,{headers:{Authorization:`Bearer ${token}`}})
+        return res
     }catch(err){
         throw err
     }
 }
 
-export const deleteRoomApi = async(id:string)=>{
+export const deleteRoomApi = async(id:string|number)=>{
     try{
-        let res = await axios.delete(`${baseUrl}/rooms/${id}`)
+        let tokenAll:any = sessionStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.delete(`${baseUrl}/room-delete/${id}/`,{headers:{Authorization:`Bearer ${token}`}});
         return res
     }catch(err){
         throw err

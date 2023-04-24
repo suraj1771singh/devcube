@@ -65,7 +65,7 @@ const CreateRoomModal = () => {
 
   return (
     <>
-    <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl`}>
+    <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl animate-in slide-in-from-bottom-96 ease-in-out duration-500`}>
         <form onSubmit={handleRoomData} className='flex flex-col'>
           <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-gray-500 mb-2`} name='name' id="name" value={roomData.name} onChange={handleChange} type="text" placeholder='Room Title'/>
           

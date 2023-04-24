@@ -58,7 +58,7 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
         try {
             let res = await getUserCommentsApi(id)
             console.log(res)
-            // dispatch({ type: GET_USER_COMMENTS_SUCCESS,payload:res.data })
+            dispatch({ type: GET_USER_COMMENTS_SUCCESS,payload:res.data })
         } catch (err) {
             dispatch({ type: GET_USER_COMMENTS_ERROR })
         }
@@ -86,9 +86,8 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
     export const deleteComments = (id: string | number) => async (dispatch: Dispatch) => {
         dispatch({ type: DELETE_COMMENTS_LOADING })
         try {
-            let res = await deleteCommentsApi(id)
-            console.log(res)
-            dispatch({ type: DELETE_COMMENTS_SUCCESS })
+            await deleteCommentsApi(id)
+            dispatch({ type: DELETE_COMMENTS_SUCCESS,payload:id})
         } catch (err) {
             dispatch({ type: DELETE_COMMENTS_ERROR })
         }

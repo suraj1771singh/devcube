@@ -1,8 +1,7 @@
 import {
    GET_USER_LOADING,
    GET_USER_SUCCESS,
-   GET_USER_ERROR,
-   FOLLOW_USER_LOADING,
+   GET_USER_ERROR, FOLLOW_USER_LOADING,
    FOLLOW_USER_SUCCESS,
    FOLLOW_USER_ERROR,
    UNFOLLOW_USER_LOADING,
@@ -16,9 +15,12 @@ import {
    GET_FOLLOWERS_ERROR,
    GET_FOLLOWING_LOADING,
    GET_FOLLOWING_SUCCESS,
+   PROFILE_PHOTO_LOADING,
+   PROFILE_PHOTO_SUCCESS,
+   PROFILE_PHOTO_ERROR,
    GET_FOLLOWING_ERROR,
-   GET_USER_NAME_LOADING,
    GET_USER_NAME_SUCCESS,
+   GET_USER_NAME_LOADING,
    GET_USER_NAME_ERROR,
 } from "./user.actions.type"
 
@@ -27,8 +29,11 @@ const initialTopics = {
    get_user_error: false,
    userData: {},
    username: '',
-   followers:[],
-   following:[],
+   followers: [],
+   following: [],
+   new_photo:null,
+   get_photo_loading:false,
+   get_photo_error:false
 }
 export const userReducer = (state = initialTopics, actions: { type: string; payload: any; }) => {
    const { type, payload } = actions;
@@ -51,50 +56,59 @@ export const userReducer = (state = initialTopics, actions: { type: string; payl
       case GET_USER_NAME_ERROR: {
          return { ...state }
       }
-      case FOLLOW_USER_LOADING:{
-         return {...state, }
+      case FOLLOW_USER_LOADING: {
+         return { ...state, }
       }
-      case FOLLOW_USER_SUCCESS:{
-         return {...state, }
+      case FOLLOW_USER_SUCCESS: {
+         return { ...state, }
       }
-      case FOLLOW_USER_ERROR:{
-         return {...state, }
+      case FOLLOW_USER_ERROR: {
+         return { ...state, }
       }
-      case UNFOLLOW_USER_LOADING:{
-         return {...state, }
+      case UNFOLLOW_USER_LOADING: {
+         return { ...state, }
       }
-      case UNFOLLOW_USER_SUCCESS:{
-         return {...state, }
+      case UNFOLLOW_USER_SUCCESS: {
+         return { ...state, }
       }
-      case UPDATE_USER_SUCCESS:{
-         return {...state, }
+      case UPDATE_USER_SUCCESS: {
+         return { ...state, }
       }
-      case UPDATE_USER_ERROR:{
-         return {...state, }
+      case UPDATE_USER_ERROR: {
+         return { ...state, }
       }
-      case UPDATE_USER_LOADING:{
-         return {...state, }
+      case UPDATE_USER_LOADING: {
+         return { ...state, }
       }
-      case UNFOLLOW_USER_ERROR:{
-         return {...state, }
+      case UNFOLLOW_USER_ERROR: {
+         return { ...state, }
       }
-      case GET_FOLLOWERS_LOADING:{
-         return {...state, }
+      case GET_FOLLOWERS_LOADING: {
+         return { ...state, }
       }
-      case GET_FOLLOWERS_SUCCESS:{
-         return {...state, followers:payload}
+      case GET_FOLLOWERS_SUCCESS: {
+         return { ...state, followers: payload }
       }
-      case GET_FOLLOWERS_ERROR:{
-         return {...state, }
+      case GET_FOLLOWERS_ERROR: {
+         return { ...state, }
       }
-      case GET_FOLLOWING_LOADING:{
-         return {...state, }
+      case GET_FOLLOWING_LOADING: {
+         return { ...state, }
       }
-      case GET_FOLLOWING_SUCCESS:{
-         return {...state,following:payload}
+      case GET_FOLLOWING_SUCCESS: {
+         return { ...state, following: payload }
       }
-      case GET_FOLLOWING_ERROR:{
-         return {...state, }
+      case GET_FOLLOWING_ERROR: {
+         return { ...state, }
+      }
+      case PROFILE_PHOTO_LOADING: {
+         return { ...state, }
+      }
+      case PROFILE_PHOTO_SUCCESS: {
+         return { ...state,new_photo:payload }
+      }
+      case PROFILE_PHOTO_ERROR: {
+         return { ...state, }
       }
       default:
          return { ...state }

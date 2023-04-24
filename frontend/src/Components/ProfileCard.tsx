@@ -9,7 +9,7 @@ import EditProfileModal from './EditProfileModal'
 import { getRoomByUserId, getRoomsJoinedByUser } from '../Redux/room/room.action'
 import ProfilePhotoModal from './ProfilePhotoModal'
 const ProfileCard = ({ id }:any) => {
-    let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
+    let { userRooms } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const { userData,followers,following } = useSelector((val: rootReducertype) => val.user)
     let { myId } = useSelector((val: rootReducertype) => val.auth)
@@ -20,6 +20,7 @@ const ProfileCard = ({ id }:any) => {
     const [photo, setPhoto] = useState({owner:false, pic:''})
     const [isfollowing,setIsFollowing] = useState(false);
     useEffect(() => {
+     // eslint-disable-next-line array-callback-return
      let youFollowing = followers.filter((el:any)=>{
         if(el.id===myId){
             return el
@@ -105,13 +106,12 @@ const ProfileCard = ({ id }:any) => {
                         </div>
                     </div>
                 </div>
-                {allRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
-                {(allRooms.length === 0) ? <h2 className='text-gray-500 text-center my-10 text-xl'>No Records found </h2> : ""}
+                {userRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                {(userRooms.length === 0) ? <h2 className='text-gray-500 text-center my-10 text-xl'>No Records found </h2> : ""}
             </div>
             {editModal && <EditProfileModal data={userData} closeModal={closeEditModal} />}
             {profilePhotoModal&&<ProfilePhotoModal data={photo} closeModal={()=>setProfilePhotoModal(false)} />}
         </>
     )
 }
-
 export default ProfileCard
