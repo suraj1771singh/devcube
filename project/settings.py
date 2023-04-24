@@ -112,7 +112,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates'
+            BASE_DIR / 'frontend'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,8 +134,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'ceAVfnv8uLnsROWmf3ij',
+        'HOST': 'containers-us-west-35.railway.app',
+        'PORT': '7643',
     }
 }
 
@@ -179,7 +183,12 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '349287919356185',
     'API_SECRET': 'JgqH2PumUr_ZnNl-0wa_AAzqrj4',
 }
-STATIC_URL = 'static/'
+import os
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'frontend', "build", "static"),  # update the STATICFILES_DIRS
+)
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Default primary key field type

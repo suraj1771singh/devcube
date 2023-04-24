@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django.shortcuts import render
+
+
+def index(request):
+    return render(request, "build/index.html")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('base.urls')),
+    # path('', include('base.urls')),
+    path('', index, name="index"),
     path('api/', include('base.api.urls'))
 ]
