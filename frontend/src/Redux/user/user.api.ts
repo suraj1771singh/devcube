@@ -85,12 +85,10 @@ export const getFollowingApi= async(id:string|number)=>{
         throw err
     }
 }
-
+let cloudName = process.env.REACT_APP_CLOUDNAME;
+let preset = process.env.REACT_APP_PRESET;
 export const updateUserProfileApi = async(data:any)=>{
     try {
-        let cloudName:string|undefined = process.env.Cloud_Name;
-        let preset:string|undefined = process.env.Preset;
-        console.log(cloudName,preset)
         let imgData = new FormData()
         imgData.append("file",data)
         if(cloudName&&preset){
@@ -99,7 +97,7 @@ export const updateUserProfileApi = async(data:any)=>{
             let res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, imgData)
             return res
         }else{
-            throw data
+            throw cloudName
         }
     } catch (err) {
         throw err

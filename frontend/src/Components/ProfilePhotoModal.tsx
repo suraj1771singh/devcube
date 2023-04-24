@@ -16,8 +16,15 @@ const ProfilePhotoModal = (props: props) => {
     const { data, closeModal } = props;
     const dispatch: Dispatch<any> = useDispatch();
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
+    let {get_photo_loading, get_photo_error, new_photo} = useSelector((val:rootReducertype)=>val.user)
     const [photo, setPhoto] = useState("")
     const [profileHover, setProfileHover] = useState(false)
+    useEffect(()=>{
+        console.log(new_photo)
+        if(new_photo){
+            setPhoto(new_photo)
+        }
+    },[new_photo])
     useEffect(() => {
         setPhoto(data.pic)
         return () => {
@@ -33,7 +40,7 @@ const handleEditProfile = async (e: any) => {
             <div onClick={(e) => e.stopPropagation()} className={`${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"} md:w-[50%] overflow-hidden shadow-xl rounded-2xl animate-in zoom-in-50 ease-in-out duration-500`}>
                 <div className={`${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} p-10`}>
                     <div onMouseMove={() => setProfileHover(true)} onMouseOut={() => setProfileHover(false)} className='relative rounded-full overflow-hidden'>
-                        <img src={photo} alt="profile" className='rounded-full w-full' />
+                        <img src={photo} alt="profile" className='rounded-full w-full h-full' />
                         {data.owner ? profileHover && <div className='absolute bg-white/40 bottom-0 left-0 h-[20%] w-full flex justify-center items-center'>
                             <label>
                                 <input type="file" accept='image/png,image/jpeg' className='hidden' onChange={(e:any)=>handleEditProfile(e)} />
