@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-0xwyqn&vqx%!cq_8^3$3=kph&@a9^+s2&f5n1s+s&kf@xl%&39
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -111,7 +111,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,'frontend/build'),
+            os.path.join(BASE_DIR, 'frontend/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -182,11 +182,11 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '349287919356185',
     'API_SECRET': 'JgqH2PumUr_ZnNl-0wa_AAzqrj4',
 }
-import os
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'frontend', "build", "static"),  # update the STATICFILES_DIRS
+    # update the STATICFILES_DIRS
+    os.path.join(BASE_DIR, 'frontend', "build", "static"),
 )
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
