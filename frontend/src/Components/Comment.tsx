@@ -9,6 +9,7 @@ import { rootReducertype } from '../Redux/Store'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { BiMessageDetail } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
+import { updateComments } from '../Redux/comments/comments.actions'
 
 const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
@@ -23,6 +24,8 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const [yourComment, setYourComment] = useState(false)
   const [showWriteComment, setShowWriteComment] = useState(false)
   const [commentBody, setCommentBody] = useState("")
+  const [showUpdateComment,setShowUpdateComment] = useState(false);
+  const [updateCommentData,setUpdateCommentData] = useState("");
   const [reply, setReply] = useState(false)
   useEffect(() => { 
     dispatch(getRecentComments())
@@ -51,19 +54,34 @@ const Comment = ({ data,canReply,roomId }: any) => {
   }
   const handleReplybtn = (id:string|number)=>{
     //dispatch for getting all the comments of the parent
+    setShowUpdateComment(false)
+    setShowWriteComment(false)
     if(replyCalled){
         dispatch(getrepliesOfComment(id,roomId))
+        setReplyCalled(false)
     }
-    setReplyCalled(false)
     setReply(!reply)
   }
   const handleComment = (id: string | number) => {    
     if(commentBody.length>4){
       let msg = {body:commentBody,parent:id} 
      dispatch(createComments(msg,roomId))
-    setCommentBody("")
+    setCommentBody("");
+    window.location.reload()
   }else{
   }
+  }
+  const handleEditComment = (data:any)=>{
+    setUpdateCommentData(data.body);
+    setReply(false); 
+    setShowWriteComment(false);
+    setShowUpdateComment(!showUpdateComment)
+
+  }
+  const handleUpdateComment = (data:any)=>{
+    data.body=updateCommentData;
+    dispatch(updateComments(data))
+    setShowUpdateComment(false)
   }
   return (
     <div onClick={()=>setcommentModal(false)} className=''>
@@ -74,7 +92,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
         <p className='text-sm text-fade_font'>{CalcTime(dynamicTime)}</p>
         {yourComment&&<FiMoreHorizontal onClick={handleEditModal} className='text-xl cursor-pointer hover:text-third_color mx-8' />}
         {yourComment?commentModal&& <div className='py-4 absolute w-fit top-[60%] bg-white right-[2%] p-2 font-semibold rounded-xl shadow-md'>
-          <div className='text-third_color my-2 cursor-pointer flex items-center'>
+          <div onClick={()=>handleEditComment(data)} className='text-third_color my-2 cursor-pointer flex items-center'>
             <AiFillEdit className='mx-2' />
             <span className='mx-2'>
               Edit
@@ -93,16 +111,20 @@ const Comment = ({ data,canReply,roomId }: any) => {
         <p className=''>{data?.body}</p>
         <div className='flex items-center'>
           <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:underline hover:text-blue-500'>{(data?.replies?.length!==0)&& <div className=' mr-4'>{data?.replies?.length} Reply</div>}</button>
-         {data.height<2&&<BiMessageDetail className='ml-0 mr-4 text-xl cursor-pointer text-fade_font mt-2' onClick={()=>setShowWriteComment(!showWriteComment)} />}
+         {data.height<2&&<BiMessageDetail className='ml-0 mr-4 text-xl cursor-pointer text-fade_font mt-2' onClick={()=>{setReply(false);setShowUpdateComment(false); setShowWriteComment(!showWriteComment)}} />}
           <AiOutlineLike className='mx-4 text-xl cursor-pointer text-fade_font m-2' />
         </div>
       {data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
-        {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
-        {(canReply)?<textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
+        {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 my-2 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+        {(canReply)?<textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Reply to the message..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
         <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
         </div>:<div>
           </div>}
       </div>
+      {showUpdateComment&&<div className={`px-2 py-3 my-2 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
+        <textarea rows={2} onChange={(e)=>setUpdateCommentData(e.target.value)} value={updateCommentData} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Update your message..'></textarea>
+        <TbSend onClick={()=>handleUpdateComment(data)} className={`text-3xl ${(updateCommentData.length<4)?"text-gray-400":"cursor-pointer"}`} />
+        </div>}
     </div>
   )
 }

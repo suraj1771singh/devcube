@@ -18,9 +18,9 @@ export const UPDATE_COMMENTS_LOADING = 'room/comments/update/loading'
 export const UPDATE_COMMENTS_SUCCESS = 'room/comments/update/success'
 export const UPDATE_COMMENTS_ERROR = 'room/comments/update/error'
 
-export const DELETE_COMMENTS_LOADING = 'room/comments/update/loading'
-export const DELETE_COMMENTS_SUCCESS = 'room/comments/update/success'
-export const DELETE_COMMENTS_ERROR = 'room/comments/update/error'
+export const DELETE_COMMENTS_LOADING = 'room/comments/delete/loading'
+export const DELETE_COMMENTS_SUCCESS = 'room/comments/delete/success'
+export const DELETE_COMMENTS_ERROR = 'room/comments/delete/error'
 
 export const GET_REPLY_MSGS_LOADING = 'comments/reply/loading'
 export const GET_REPLY_MSGS_SUCCESS = 'comments/reply/success'

@@ -8,3 +8,22 @@
     line-height: 1.3;
     font-weight: 500;
 }
+
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+        /* width: 15px; */
+        height: 8px;
+    }
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #E2B714;
+        cursor: pointer;
+        border-radius: 100vh;
+    }
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #E2B714;
+        cursor: pointer;
+    }
+}

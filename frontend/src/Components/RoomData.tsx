@@ -6,7 +6,7 @@ import { CalcTime } from './time'
 import { FiMoreHorizontal } from 'react-icons/fi'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import {MdOutlineReport} from 'react-icons/md'
-import { joinRoom, leaveRoom } from '../Redux/room/room.action'
+import { deleteRoom, joinRoom, leaveRoom } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
 import { createComments } from '../Redux/comments/comments.actions'
 import Alert from './Alert'
@@ -47,11 +47,13 @@ const RoomData = ({data}:any) => {
 
     const editRoomModal = (data:any)=>{
       dispatch(updateTopicTag(data.topic))
-      nav(`/update_room/:${data.id}`)
+      nav(`/update_room/${data.id}`)
     }
 
-    const deleteRoomModal = ()=>{
-      console.log('delete butn clicked')
+    const deleteRoomModal = (id:number|string)=>{
+      //dispatch deleteroom
+      dispatch(deleteRoom(id))
+      nav("/")
     }
 
     const reportRoomModal = ()=>{
@@ -77,6 +79,7 @@ const RoomData = ({data}:any) => {
         let msg = {body:commentBody,parent:null} 
         dispatch(createComments(msg,id))
         setCommentBody("")
+        window.location.reload()
       }else{
         console.log('empty')
       }
@@ -106,7 +109,7 @@ const RoomData = ({data}:any) => {
                 Edit
                 </span>  
               </div>
-              <div onClick={deleteRoomModal} className='text-red-400 cursor-pointer flex items-center'>
+              <div onClick={()=>deleteRoomModal(data?.id)} className='text-red-400 cursor-pointer flex items-center'>
               <AiFillDelete className='mx-2'/>
                <span className='mx-2'>
                 Delete

@@ -17,6 +17,7 @@ const Home = () => {
   const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)
   let {isAuth} = useSelector((val:rootReducertype)=>val.auth)
   const nav = useNavigate()
+
   const [roomsArray,setRoomsArray] = useState<any>([])
   useEffect(() => {
       if(topicTags.length===0){
@@ -52,7 +53,8 @@ const Home = () => {
                             <p className='text-fade_font text-sm font-semibold'>38 Rooms Available</p>
                         </div>
 
-                        <div className={`flex items-center p-3 rounded-xl overflow-y-auto w-1/2 scrollbar-hide box-border`} >
+                        <p className='ml-2'>{(topicTags.length===0)?"":`${topicTags.length}/5`}</p>
+                        <div className={`flex items-center py-3 rounded-xl overflow-y-auto w-1/2 scrollbar box-border mr-2`} >
                         <TagsDiv isCreate={false} />
                         </div>
 

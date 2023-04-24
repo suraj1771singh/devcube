@@ -21,7 +21,7 @@ const TagsDiv = ({isCreate}:any) => {
     <>
             <div className='text-fade_font flex items-center mr-3'>
             {isCreate&&<p className='py-2 mx-2'> Tags </p>}
-           {isCreate?<p>{addTags.length}/5 </p>:topicTags.length>0?<p>{addTags.length}/5</p>:""}
+           {isCreate&&<p>{addTags.length}/5 </p>}
             </div>
             <div className='flex'>
            {(addTags.length===0)?isCreate&&<p className="text-fade_font mx-2">Select Tags From Menu at left (min:1 max:5) </p>:addTags?.map((el:topicDataType,id:number)=><p key={id} className={`border-[1px] px-6 py-2 mx-2 flex items-center rounded-full whitespace-nowrap inline-block ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} animate-in slide-in-from-left-96 ease-in-out duration-500`}>{el.name}<span><AiOutlineClose onClick={()=>handleRemoveTag(el)} className='ml-3 cursor-pointer hover:text-red-400 font-bold'/> </span> </p> )}

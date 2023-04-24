@@ -49,7 +49,8 @@ const Navbar = () => {
       <div className='flex m-auto justify-around md:justify-between items-center md:w-11/12 '>
         <div className=''>
           <NavLink to="/" className='text-sm  cursor-pointer md:flex'>
-            <img src="/logo.svg" alt="" className='w-8' />
+            <img src="/logo.svg" alt="" className='w-10 mr-2' />
+            <img src="/dev.svg" alt="" className='mx-2'/>
           </NavLink>
         </div>
         <div className={`w-[50%] px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
