@@ -41,9 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'base.apps.BaseConfig',
-    'cloudinary',
-    'cloudinary_storage'  # setting base app
+    'base.apps.BaseConfig',  # setting base app
 ]
 
 AUTH_USER_MODEL = 'base.User'
