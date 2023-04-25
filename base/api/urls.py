@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('', views.getRoutes),
-    #---------- ROOMS
+    # ---------- ROOMS
     path('createroom/', views.createRoom),
     path('rooms/', views.getAllRooms),
     path('room/<str:pk>/', views.getRoomsById),
@@ -18,6 +18,7 @@ urlpatterns = [
     path('room-remove-participant/<str:pk>/', views.removeParticipant),
     path('rooms-joined/', views.getJoinedRoomsByUser),
     path('rooms-topic/', views.getRoomByTopics),
+    path('rooms-count/', views.getRoomsCount),
 
     # ---------FOLLOWER AND FOLLOWING
     path('follow/<str:pk>/', views.follow),
@@ -25,7 +26,7 @@ urlpatterns = [
     path('followers/<str:pk>/', views.getFollowers),
     path('following/<str:pk>/', views.getFollowing),
 
-    #---------- TOPICS
+    # ---------- TOPICS
     path('topics/', views.getTopics),
 
     # -----------MESSAGE
@@ -37,12 +38,12 @@ urlpatterns = [
     path('msgs-room/<str:pk>/', views.getMsgsByRoom),
     path('msg-like/<str:pk>/', views.likeMsg),
 
-    #----------- USER
+    # ----------- USER
     path('user/<str:pk>/', views.getUserProfile),
     path('register/', views.registerUser),
     path('update/', views.updateUser),
 
-    #----------- TOKEN
+    # ----------- TOKEN
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
