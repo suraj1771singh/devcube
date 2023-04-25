@@ -8,6 +8,8 @@ import { getLoggedinUserProfile, logoutUser, updateToken } from '../Redux/auth/a
 import { toggleTheme } from '../Redux/theme/theme.actions'
 import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLogin, AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs'
+import Alert from './Alert'
+import { getRooms, getRoomsSearch } from '../Redux/room/room.action'
 const Navbar = () => {
   const dispatch: Dispatch<any> = useDispatch()
   let { isAuth, myData, myId } = useSelector((val: rootReducertype) => val.auth)
@@ -15,6 +17,8 @@ const Navbar = () => {
   const nav = useNavigate()
   const [dropdown, setDropdown] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [loginAlert, setLoginAlert] = useState(false)
+  const [searchValue,setSearchValue] = useState("")
   useEffect(() => {
     setData(myData)
   }, [myData])
@@ -44,7 +48,21 @@ const Navbar = () => {
     nav(`/profile/${myId}`)
     toggleDropdown()
   }
+  const handleSearchResult = ()=>{
+    if(isAuth){
+      if(searchValue.length===0){
+        dispatch(getRooms())
+      }else{
+        nav("/")
+        dispatch(getRoomsSearch(searchValue))
+        setSearchValue("")
+      }
+    }else{
+      setLoginAlert(true)
+    } 
+  }
   return (
+    <>
     <nav className={`fixed h-[80px] left-0 right-0 top-0 w-screen ${drk_theme ? "bg-bg_dark_sec" : "bg-bg_light_sec"} p-2 z-50 flex items-center px-10 `}>
       <div className='flex m-auto justify-around md:justify-between items-center md:w-11/12 '>
         <div className=''>
@@ -54,8 +72,8 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className={`w-[50%] px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
-          <input type="text" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Search here..' />
-          <CiSearch className='cursor-pointer text-3xl' />
+          <input onChange={(e)=>{setSearchValue(e.target.value)}} value={searchValue} type="search" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Search here..' />
+          <CiSearch onClick={handleSearchResult} className='cursor-pointer text-3xl' />
         </div>
         <div className='flex items-center relative' >
 
@@ -80,10 +98,12 @@ const Navbar = () => {
         </div>
       </div>
       <div className='border-2 border-bg_pri bg-bg_pri px-4 py-2 my-2 rounded-md md:hidden flex justify-around'>
-        <input type="text" className='w-[70%] bg-bg_pri outline-none' placeholder='Search' />
+        <input type="search" className='w-[70%] bg-bg_pri outline-none' placeholder='Search' />
         <CiSearch className='cursor-pointer text-2xl' />
       </div>
     </nav>
+    {loginAlert&&<Alert text='Login Required' type="error" closeAlert={()=>setLoginAlert(false)} />}
+    </>
   )
 }
 

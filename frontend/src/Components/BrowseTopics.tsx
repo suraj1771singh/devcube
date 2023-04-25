@@ -7,12 +7,14 @@ import { Dispatch, useEffect, useState } from 'react'
 import { addTopicTag, getTopics } from '../Redux/topic/topic.actions'
 import { topicDataType } from '../dataTypes'
 import { getRoomsByTopic } from '../Redux/room/room.action'
+import Loader from './Loader'
+import Error from './Error'
 
 const BrowseTopics = ({isCreate=false}) => {
-  const { allTopics,topicTags} = useSelector((val: rootReducertype) => val.topics)
+  const { allTopics,topicTags,get_topics_loading,get_topics_error,} = useSelector((val: rootReducertype) => val.topics)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const [more,setMore] = useState(false);
-  const [topics, setTopics] = useState<any>([])
+  const [topics, setTopics] = useState<any>([]) 
   const [limit,setLimit] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
   useEffect(()=>{
@@ -47,6 +49,15 @@ const BrowseTopics = ({isCreate=false}) => {
   const handleTopics = (el:topicDataType)=>{
       dispatch(addTopicTag(el))
   }
+  if(get_topics_error){
+    return (
+     <div className={`w-[18%] left-[2%] hidden md:flex flex-col ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} fixed rounded-2xl shadow-md h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-hide animate-in slide-in-from-right-96 ease-in-out duration-500`}>
+    <div className='my-10'>
+    <Error text='Error while Loading Topics !'/>
+      </div>
+     </div>
+    )
+  }
   return (
     <div className={`w-[18%] left-[2%] hidden md:flex flex-col ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} fixed rounded-2xl shadow-md h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-hide animate-in slide-in-from-right-96 ease-in-out duration-500`}>
       <div className={`sticky top-0 w-full left-0 p-6 pb-2 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"}`}>
@@ -57,7 +68,7 @@ const BrowseTopics = ({isCreate=false}) => {
           <CiSearch className='cursor-pointer text-3xl'/>
         </div>
       </div>
-      {topics?.map((el: any)=> <Topics key={el.id} data={el} limit={limit} handleTopic={handleTopics} />)}
+      {get_topics_loading? <Loader text='Fetching Topics..' />:topics?.map((el: any)=> <Topics key={el.id} data={el} limit={limit} handleTopic={handleTopics} />)}
       {more?<button onClick={()=>setMore(false)} className='flex font-semibold items-center justify-between my-3 mx-8 hover:text-third_color '>
         <p className='font-semibold'>Less</p>
         <AiOutlineUp className='font-bold mx-2' />

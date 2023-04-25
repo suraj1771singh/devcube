@@ -102,7 +102,14 @@ export interface roomDataDataType {
 
 // room reducer initial data type 
 export interface roomInitialDataType {
+    search_loading:boolean,
+    get_user_rooms_loading:boolean,
+    get_user_rooms_error:boolean,
+    get_user_joined_rooms_loading:boolean,
+    get_user_joined_rooms_error:boolean,
+    search_error:boolean,
     allRooms: roomDataDataType[],
+    allRoomsLength:number,
     userRooms:roomDataDataType[],
     create_loading?: boolean,
     create_error?: boolean,

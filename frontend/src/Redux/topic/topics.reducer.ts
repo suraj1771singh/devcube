@@ -1,76 +1,78 @@
 import { topicDataInitialDatatype, topicDataType } from "../../dataTypes";
-import{GET_TOPICS_LOADING,
+import {
+    GET_TOPICS_LOADING,
     GET_TOPICS_SUCCESS,
     GET_TOPICS_ERROR,
     ADD_TOPIC_TAGS_SUCCESS,
     ADD_TOPIC_TAGS_ERROR,
     REMOVE_TOPIC_TAGS_SUCCESS,
     UPDATE_TOPIC_TAGS_SUCCESS,
-UPDATE_TOPIC_TAGS_ERROR,
+    UPDATE_TOPIC_TAGS_ERROR,
     REMOVE_TOPIC_TAGS_ERROR,
     RESET_TOPIC_TAGS_ERROR,
-    RESET_TOPIC_TAGS_SUCCESS,} from "./topic.actions.type"
+    RESET_TOPIC_TAGS_SUCCESS,
+} from "./topic.actions.type"
 
 
-const initialTopics:topicDataInitialDatatype = {
+const initialTopics: topicDataInitialDatatype = {
     get_topics_loading: false,
     get_topics_error: false,
-    allTopics:[],
+    allTopics: [],
     topicTags: []
 }
 export const topicsReducer = (state = initialTopics, actions: { type: string; payload: any; }) => {
     const { type, payload } = actions;
     switch (type) {
         case GET_TOPICS_LOADING: {
-            return { ...state, loading: true, error: false }
+            return { ...state, get_topics_loading: true, get_topics_error: false }
         }
         case GET_TOPICS_SUCCESS: {
-            return { ...state, error: false, loading: false, allTopics: payload }
+            return { ...state, get_topics_error: false, get_topics_loading: false, allTopics: payload }
         }
         case GET_TOPICS_ERROR: {
-            return { ...state, error: true, loading: false }
+            return { ...state, get_topics_error: true, get_topics_loading: false }
         }
         case ADD_TOPIC_TAGS_SUCCESS: {
             // eslint-disable-next-line array-callback-return
-            let exist = state.topicTags.filter((el:topicDataType)=>{
-                if(el.id===payload.id){
+            let exist = state.topicTags.filter((el: topicDataType) => {
+                if (el.id === payload.id) {
                     return el
                 }
             })
-            if(exist.length===0&&state.topicTags.length<5){
-                return { ...state,topicTags:[...state.topicTags,payload] }
-            }else{
-                return{...state,}
+            if (exist.length === 0 && state.topicTags.length < 5) {
+                return { ...state, topicTags: [...state.topicTags, payload] }
+            } else {
+                return { ...state, }
             }
         }
         case ADD_TOPIC_TAGS_ERROR: {
-            return{...state}
+            return { ...state }
         }
         case REMOVE_TOPIC_TAGS_ERROR: {
-            return{...state}
+            return { ...state }
         }
         case REMOVE_TOPIC_TAGS_SUCCESS: {
 
             // eslint-disable-next-line array-callback-return
-            let updateTopicTags = state.topicTags?.filter((el:topicDataType)=>{
-                if(el.id!==payload.id){
+            let updateTopicTags = state.topicTags?.filter((el: topicDataType) => {
+                if (el.id !== payload.id) {
                     return el
                 }
             })
-            return { ...state,topicTags:updateTopicTags}
+            return { ...state, topicTags: updateTopicTags }
         }
-        case UPDATE_TOPIC_TAGS_SUCCESS:{
-            return{...state,topicTags:payload}
+        case UPDATE_TOPIC_TAGS_SUCCESS: {
+            return { ...state, topicTags: payload }
         }
-case UPDATE_TOPIC_TAGS_ERROR:{
-    return{...state}
-}
-case RESET_TOPIC_TAGS_ERROR:{
-    return {...state}
-}
-case RESET_TOPIC_TAGS_SUCCESS:{
-    return {...state,topicTags:[]}
-}
+        case UPDATE_TOPIC_TAGS_ERROR: {
+            return { ...state }
+        }
+        case RESET_TOPIC_TAGS_ERROR: {
+            return { ...state }
+        }
+        case RESET_TOPIC_TAGS_SUCCESS: {
+            return { ...state, topicTags: [] }
+        }
         default:
             return { ...state }
     }
