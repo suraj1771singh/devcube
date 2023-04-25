@@ -51,7 +51,7 @@ def registerUser(request):
         return Response({'msg': "All fields are not filled"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PUT'])
+@api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def updateUser(request):
     form = MyUserUpdateForm(request.data, instance=request.user)
@@ -371,17 +371,25 @@ def getMsgsByRoom(request, pk):
         return Response({'msg': "Room doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
     parent = request.query_params.get('parent')
     msgs = room.message_set.filter(parent=parent)
-    sl = MsgSerializer(msgs, many=True)
+    sl = MsgSerializer(msgs, many=True, context={"user": request.user})
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def likeMsg(request, pk):
+    user = request.user
     try:
         msg = Message.objects.get(id=pk)
-        msg.likes = msg.likes + 1
+        if msg.liked_by.filter(id=user.id).exists():
+            # remove like
+            msg.liked_by.remove(user)
+        else:
+            # add like
+            msg.liked_by.add(user)
         msg.save()
-        return Response({'msg': "Liked Message successfully"}, status=status.HTTP_200_OK)
+        msg = Message.objects.get(id=pk)
+        sl = MsgSerializer(msg, context={"user": user})
+        return Response({'msg': "Liked has been changed successfully", 'data': sl.data}, status=status.HTTP_200_OK)
     except Message.DoesNotExist:
         return Response({'msg': "Message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
