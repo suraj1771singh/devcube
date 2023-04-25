@@ -14,7 +14,6 @@ from .serializers import RoomSerializer, UserSerializer, TopicSerializer, MsgSer
 from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm, MyUserUpdateForm
 
 
-
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -103,22 +102,16 @@ def createRoom(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getAllRooms(request):
     q = request.query_params.get("search")
     if q is not None:
         rooms = Room.objects.filter(Q(host__username__icontains=q) | Q(topic__name__icontains=q) | Q(
             name__icontains=q) | Q(description__icontains=q))
-
     else:
         rooms = Room.objects.all()
-    # many is set to true, to serialize many objects
     serializer = RoomSerializer(rooms, many=True)
-    try:
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except:
-        Response({'msg': "Something went wrong !"},
-                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -139,7 +132,7 @@ def getRoomByTopics(request):
     for i in range(0, len(topics)):
         topic = Topic.objects.get(id=topics[i])
         rm = topic.room_set.all()
-        if len(rm) is not 0:
+        if len(rm) != 0:
             for r in rm:
                 rooms.add(r)
     serializer = RoomSerializer(rooms, many=True)
