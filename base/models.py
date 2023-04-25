@@ -58,7 +58,8 @@ class Message(models.Model):
     replies = models.ManyToManyField(
         'self', symmetrical=False, blank=True)
     height = models.IntegerField(blank=False, default=0)
-    likes = models.IntegerField(blank=False, default=0)
+    liked_by = models.ManyToManyField(
+        User, related_name="liked_by", blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -67,6 +68,9 @@ class Message(models.Model):
 
     def __str__(self):
         return self.body[0:50]
+
+    def getLikeCount(self):
+        return self.liked_by.count()
 
 
 class UserRelationship(models.Model):

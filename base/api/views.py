@@ -51,7 +51,7 @@ def registerUser(request):
         return Response({'msg': "All fields are not filled"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PUT'])
+@api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def updateUser(request):
     form = MyUserUpdateForm(request.data, instance=request.user)
@@ -105,13 +105,15 @@ def createRoom(request):
 # @permission_classes([IsAuthenticated])
 def getAllRooms(request):
     q = request.query_params.get("search")
+    count = Room.objects.count()
     if q is not None:
         rooms = Room.objects.filter(Q(host__username__icontains=q) | Q(topic__name__icontains=q) | Q(
             name__icontains=q) | Q(description__icontains=q))
+        count = rooms.count()
     else:
         rooms = Room.objects.all()
     serializer = RoomSerializer(rooms, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response({'rooms': serializer.data, 'rooms_count': count}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -119,9 +121,10 @@ def getAllRooms(request):
 def getRoomsByUser(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
+    count = rooms.count()
     # many is set to true, to serialize many objects
     serializer = RoomSerializer(rooms, many=True)
-    return Response(serializer.data)
+    return Response({'rooms': serializer.data, 'rooms_count': count}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -135,8 +138,9 @@ def getRoomByTopics(request):
         if len(rm) != 0:
             for r in rm:
                 rooms.add(r)
+    count = rooms.count()
     serializer = RoomSerializer(rooms, many=True)
-    return Response(serializer.data)
+    return Response({'rooms': serializer.data, 'rooms_count': count}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -144,11 +148,8 @@ def getRoomByTopics(request):
 def getRoomsById(request, pk):
     try:
         room = Room.objects.get(id=pk)
-        user = room.host
         serializer = RoomSerializer(room, many=False)
-        data = serializer.data
-        data["hostname"] = user.username
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response({'msg': "Something went wrong !"},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -221,6 +222,12 @@ def getJoinedRoomsByUser(request):
     serializer = RoomSerializer(rooms, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getRoomsCount(request):
+    count = Room.objects.count()
+    return Response(count, status=status.HTTP_200_OK)
 # ------------------------ FOLLOWER AND FOLLOWING
 
 
@@ -371,17 +378,25 @@ def getMsgsByRoom(request, pk):
         return Response({'msg': "Room doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
     parent = request.query_params.get('parent')
     msgs = room.message_set.filter(parent=parent)
-    sl = MsgSerializer(msgs, many=True)
+    sl = MsgSerializer(msgs, many=True, context={"user": request.user})
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def likeMsg(request, pk):
+    user = request.user
     try:
         msg = Message.objects.get(id=pk)
-        msg.likes = msg.likes + 1
+        if msg.liked_by.filter(id=user.id).exists():
+            # remove like
+            msg.liked_by.remove(user)
+        else:
+            # add like
+            msg.liked_by.add(user)
         msg.save()
-        return Response({'msg': "Liked Message successfully"}, status=status.HTTP_200_OK)
+        msg = Message.objects.get(id=pk)
+        sl = MsgSerializer(msg, context={"user": user})
+        return Response(sl.data, status=status.HTTP_200_OK)
     except Message.DoesNotExist:
         return Response({'msg': "Message doesn't exist"}, status=status.HTTP_404_NOT_FOUND)

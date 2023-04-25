@@ -36,7 +36,7 @@ class RoomSerializer(ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         host_data = representation.pop('host')
-        
+
         host_email = host_data.get('email')
         host_first_name = host_data.get('first_name')
         host_last_name = host_data.get('last_name')
@@ -54,14 +54,17 @@ class RoomSerializer(ModelSerializer):
 class MsgSerializer(ModelSerializer):
     user = UserSerializer()
     room = RoomSerializer()
-    # replies = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
+    like_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
         fields = '__all__'
+        read_only_fields = ['is_liked', 'like_count']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        representation.pop('liked_by')
         user_data = representation.pop('user')
         user_id = user_data.get('id')
         user_email = user_data.get('email')
@@ -76,6 +79,13 @@ class MsgSerializer(ModelSerializer):
                                   'first_name': user_first_name, 'last_name': user_last_name, 'photo': user_photo}
         representation['room'] = {'id': room_id, 'name': room_name}
         return representation
+
+    def get_is_liked(self, obj):
+        user = self.context.get("user")
+        return obj.liked_by.filter(id=user.id).exists()
+
+    def get_like_count(self, obj):
+        return obj.getLikeCount()
 
     # def get_replies(self, obj):
     #     # Retrieve the children of the current object

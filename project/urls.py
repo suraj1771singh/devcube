@@ -24,5 +24,5 @@ urlpatterns = [
     # path('', include('base.urls')),
     path('api/', include('base.api.urls')),
     # path('<path:my_path>/', TemplateView.as_view(template_name='index.html')),
-    re_path(r"^.*", TemplateView.as_view(template_name='index.html')),
+    # re_path(r"^.*", TemplateView.as_view(template_name='index.html')),
 ]
