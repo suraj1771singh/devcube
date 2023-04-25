@@ -30,8 +30,11 @@ GET_ROOMS_JOINED_BY_USER_SUCCESS,
 GET_ROOMS_BY_TOPICS_LOADING,
 GET_ROOMS_BY_TOPICS_ERROR,
 GET_ROOMS_BY_TOPICS_SUCCESS,
+GET_ROOMS_BY_SEARCH_LOADING,
+GET_ROOMS_BY_SEARCH_ERROR,
+GET_ROOMS_BY_SEARCH_SUCCESS,
 }from "./room.action.type";
-import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsByTopicApi, getRoomsJoinedByUserApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
+import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsByTopicApi, getRoomsJoinedByUserApi, getRoomsSearchApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch:Dispatch)=>{
     dispatch({type:GET_ROOM_LOADING})
@@ -131,5 +134,16 @@ try{
         dispatch({type:GET_ROOMS_BY_TOPICS_SUCCESS,payload:res.data})
     }catch(err){
         dispatch({type:GET_ROOMS_BY_TOPICS_ERROR})
+    }
+ }
+
+ export const getRoomsSearch = (data:string)=>async(dispatch:Dispatch)=>{
+    dispatch({type:GET_ROOMS_BY_SEARCH_LOADING})
+    try{
+        let res = await getRoomsSearchApi(data)
+        console.log(res)
+        dispatch({type:GET_ROOMS_BY_SEARCH_SUCCESS,payload:res})
+    }catch(err){
+        dispatch({type:GET_ROOMS_BY_SEARCH_ERROR})
     }
  }

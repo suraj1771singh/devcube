@@ -136,3 +136,15 @@ export const getRoomsByTopicApi = async(id:number[])=>{
         throw err
     }
 } 
+
+export const getRoomsSearchApi = async(data:string)=>{
+    try {
+        let token:any = sessionStorage.getItem("authTokens");
+            let authToken:userTokenType = JSON.parse(token);
+            let data = authToken.access;
+        const res = await axios.get(`${baseUrl}/rooms/?search=${data}`,{headers:{Authorization:`Bearer ${data}`}});
+          return res.data
+    }catch(err){
+        throw err
+    }
+} 
