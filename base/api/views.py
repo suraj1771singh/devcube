@@ -102,7 +102,7 @@ def createRoom(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getAllRooms(request):
     q = request.query_params.get("search")
     count = Room.objects.count()
@@ -138,7 +138,7 @@ def getRoomByTopics(request):
         if len(rm) != 0:
             for r in rm:
                 rooms.add(r)
-    count = rooms.count()
+    count = len(rooms)
     serializer = RoomSerializer(rooms, many=True)
     return Response({'rooms': serializer.data, 'rooms_count': count}, status=status.HTTP_200_OK)
 
@@ -356,7 +356,7 @@ def updateMsg(request, pk):
 @permission_classes([IsAuthenticated])
 def getAllMsg(request):
     msgs = Message.objects.all()
-    sl = MsgSerializer(msgs, many=True)
+    sl = MsgSerializer(msgs, many=True, context={"user": request.user})
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
@@ -365,7 +365,7 @@ def getAllMsg(request):
 def getMsgsByUser(request, pk):
     user = User.objects.get(id=pk)
     msgs = user.message_set.all()
-    sl = MsgSerializer(msgs, many=True)
+    sl = MsgSerializer(msgs, many=True, context={"user": request.user})
     return Response(sl.data, status=status.HTTP_200_OK)
 
 
