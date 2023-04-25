@@ -13,9 +13,6 @@ from base.models import Room, Topic, User, UserRelationship, Message
 from .serializers import RoomSerializer, UserSerializer, TopicSerializer, MsgSerializer
 from ..forms import RoomForm, UserForm, MyUserCreationForm, MsgForm, MyUserUpdateForm
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 
 @api_view(['GET'])

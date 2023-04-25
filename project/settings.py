@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-0xwyqn&vqx%!cq_8^3$3=kph&@a9^+s2&f5n1s+s&kf@xl%&39
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,9 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'base.apps.BaseConfig',
-    'cloudinary',
-    'cloudinary_storage'  # setting base app
+    'base.apps.BaseConfig',  # setting base app
 ]
 
 AUTH_USER_MODEL = 'base.User'
@@ -112,7 +111,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates'
+            os.path.join(BASE_DIR, 'frontend/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,8 +133,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'ceAVfnv8uLnsROWmf3ij',
+        'HOST': 'containers-us-west-35.railway.app',
+        'PORT': '7643',
     }
 }
 
@@ -179,7 +182,12 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '349287919356185',
     'API_SECRET': 'JgqH2PumUr_ZnNl-0wa_AAzqrj4',
 }
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    # update the STATICFILES_DIRS
+    os.path.join(BASE_DIR, 'frontend', "build", "static"),
+)
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Default primary key field type
