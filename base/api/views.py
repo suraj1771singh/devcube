@@ -313,7 +313,9 @@ def createMsg(request, pk):
         msg.save()
         if (parent is not None):
             parent.replies.add(msg)
-        return Response({'msg': "Message created successfully"}, status=status.HTTP_201_CREATED)
+        msg = Message.objects.get(id=msg.id)
+        sl = MsgSerializer(msg, context={"user": request.user})
+        return Response(sl.data, status=status.HTTP_201_CREATED)
     else:
         return Response({'msg': "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
 
