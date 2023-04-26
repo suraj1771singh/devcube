@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { AiFillDelete, AiFillEdit, AiOutlineLike } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
-import { createComments, deleteComments, getRecentComments, getrepliesOfComment } from '../Redux/comments/comments.actions'
+import { createComments, deleteComments, getRecentComments, getrepliesOfComment, likeMsg } from '../Redux/comments/comments.actions'
 import { CalcTime } from './time'
 import { TbSend } from 'react-icons/tb'
 import { rootReducertype } from '../Redux/Store'
@@ -10,12 +10,13 @@ import { FiMoreHorizontal } from 'react-icons/fi'
 import { BiMessageDetail } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
 import { updateComments } from '../Redux/comments/comments.actions'
+import { ClipLoader } from 'react-spinners'
 
 const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
   const {myId } = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-  const {roomComments} = useSelector((val:rootReducertype)=>val.comments)
+  const {roomComments,get_reply_msg_loading} = useSelector((val:rootReducertype)=>val.comments)
 
   const [commentReplyes, setCommentReplyes] = useState([])
   const nav = useNavigate()
@@ -26,7 +27,15 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const [commentBody, setCommentBody] = useState("")
   const [showUpdateComment,setShowUpdateComment] = useState(false);
   const [updateCommentData,setUpdateCommentData] = useState("");
-  const [reply, setReply] = useState(false)
+  const [reply, setReply] = useState(false);
+  const [msgLoading,setMsgLoading] = useState<boolean|undefined>(false)
+  
+  useEffect(()=>{
+    if(!get_reply_msg_loading){
+      setMsgLoading(false)
+    }
+  },[get_reply_msg_loading])
+
   useEffect(() => { 
     dispatch(getRecentComments())
     return ()=>{
@@ -48,10 +57,12 @@ const Comment = ({ data,canReply,roomId }: any) => {
       setYourComment(true)
     }
   }, [data?.user?.id, myId])
+
   const handleEditModal= (e:any)=>{
     e.stopPropagation()
     setcommentModal(true)
   }
+
   const handleReplybtn = (id:string|number)=>{
     //dispatch for getting all the comments of the parent
     setShowUpdateComment(false)
@@ -59,9 +70,11 @@ const Comment = ({ data,canReply,roomId }: any) => {
     if(replyCalled){
         dispatch(getrepliesOfComment(id,roomId))
         setReplyCalled(false)
-    }
+        setMsgLoading(true)
+      }
     setReply(!reply)
   }
+
   const handleComment = (id: string | number) => {    
     if(commentBody.length>4){
       let msg = {body:commentBody,parent:id} 
@@ -82,6 +95,9 @@ const Comment = ({ data,canReply,roomId }: any) => {
     data.body=updateCommentData;
     dispatch(updateComments(data))
     setShowUpdateComment(false)
+  }
+  const handleLikeMsg = (data:any)=>{
+   dispatch(likeMsg(data.id))
   }
   return (
     <div onClick={()=>setcommentModal(false)} className=''>
@@ -112,9 +128,10 @@ const Comment = ({ data,canReply,roomId }: any) => {
         <div className='flex items-center'>
           <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:underline hover:text-blue-500'>{(data?.replies?.length!==0)&& <div className=' mr-4'>{data?.replies?.length} Reply</div>}</button>
          {data.height<2&&<BiMessageDetail className='ml-0 mr-4 text-xl cursor-pointer text-fade_font mt-2' onClick={()=>{setReply(false);setShowUpdateComment(false); setShowWriteComment(!showWriteComment)}} />}
-          <AiOutlineLike className='mx-4 text-xl cursor-pointer text-fade_font m-2' />
+          <AiOutlineLike onClick={()=>handleLikeMsg(data)} className='mx-4 text-xl cursor-pointer text-fade_font m-2' />
+          {/* <AiFillLike className='mx-4 text-xl cursor-pointer m-2 text-blue-500' /> */}
         </div>
-      {data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
+      {msgLoading? <div className='mx-2'><ClipLoader color="#8001FF" /></div> :data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
         {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 my-2 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
         {(canReply)?<textarea rows={2} onChange={(e)=>setCommentBody(e.target.value)} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Reply to the message..'></textarea>:<p className='text-gray-500'>Please Join Room to reply</p>}
         <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />

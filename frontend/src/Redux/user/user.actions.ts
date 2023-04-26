@@ -37,8 +37,7 @@ export const getUserById = (id: number | string) => async (dispatch: Dispatch) =
 export const updateUser = (data: any) => async (dispatch: Dispatch) => {
     dispatch({ type: UPDATE_USER_LOADING })
     try {
-        let res = await updateUserApi(data)
-        console.log(res)
+        await updateUserApi(data)
         dispatch({ type: UPDATE_USER_SUCCESS })
     } catch (err) {
         dispatch({ type: UPDATE_USER_ERROR })

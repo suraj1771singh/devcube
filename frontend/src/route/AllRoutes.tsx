@@ -10,7 +10,7 @@ import CreateRoom from '../page/CreateRoom'
 import UpdateRoom from '../page/UpdateRoom'
 const AllRoutes = () => {
   return (
-    <div>
+    <div className='' >
         <Navbar/>
         <div className='pt-28'>
         <Routes>

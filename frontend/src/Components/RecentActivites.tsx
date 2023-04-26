@@ -25,4 +25,4 @@ const RecentActivites = () => {
 </div>
   )
 }
-export default RecentActivites
+export default React.memo(RecentActivites,()=>false) 

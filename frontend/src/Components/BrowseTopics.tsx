@@ -9,6 +9,7 @@ import { topicDataType } from '../dataTypes'
 import { getRoomsByTopic } from '../Redux/room/room.action'
 import Loader from './Loader'
 import Error from './Error'
+import React from 'react'
 
 const BrowseTopics = ({isCreate=false}) => {
   const { allTopics,topicTags,get_topics_loading,get_topics_error,} = useSelector((val: rootReducertype) => val.topics)
@@ -80,4 +81,4 @@ const BrowseTopics = ({isCreate=false}) => {
   )
 } 
 
-export default BrowseTopics
+export default React.memo(BrowseTopics,()=>false) 

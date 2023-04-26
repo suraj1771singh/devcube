@@ -116,8 +116,7 @@ const ProfileCard = ({ id }:any) => {
                     </div>
                     </div>}
                     </div>
-                {get_user_rooms_error||get_user_joined_rooms_error?<div className='my-4'> <Error text='Something Went Wrong !' /></div>:get_user_rooms_loading||get_user_joined_rooms_loading? <div className='my-4'><Loader text='Fetching Data'/></div> :userRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
-                {(userRooms.length === 0)&&<h2 className='text-gray-500 text-center my-10 text-xl'>No Records found </h2>}
+                {get_user_rooms_error||get_user_joined_rooms_error?<div className='my-4'> <Error text='Something Went Wrong !' /></div>:get_user_rooms_loading||get_user_joined_rooms_loading? <div className='my-4'><Loader text='Fetching Data'/></div> :(userRooms.length === 0)?<h2 className='text-gray-500 text-center my-10 text-xl'>No Records found </h2>:userRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
             </div>
             {editModal && <EditProfileModal data={usersData} closeModal={closeEditModal} />}
             {profilePhotoModal&&<ProfilePhotoModal data={photo} closeModal={()=>setProfilePhotoModal(false)} />}

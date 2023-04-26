@@ -19,7 +19,7 @@ export const updateUserApi = async (data: any) => {
     let authToken: userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     try {
-        let res = await axios.patch(`${baseUrl}/update/`,data, { headers: { Authorization: `Bearer ${token}` } })
+        let res = await axios.put(`${baseUrl}/update/`,data, { headers: { Authorization: `Bearer ${token}` } })
         return res
     } catch (err) {
         throw err

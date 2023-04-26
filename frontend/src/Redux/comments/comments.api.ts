@@ -80,3 +80,16 @@ export const deleteCommentsApi = async(id:string|number)=>{
         return res
     }catch(err){throw err}
 }
+
+export const likeMsgApi = async(id:string|number)=>{
+    try{
+        let tokenAll:any = sessionStorage.getItem("authTokens");
+        let authToken:userTokenType = JSON.parse(tokenAll);
+        let token = authToken.access;
+        let res = await axios.patch(`${baseUrl}/msg-like/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
+        return res
+    }catch(err){
+        throw err
+    }
+
+}

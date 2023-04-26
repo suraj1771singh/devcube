@@ -7,6 +7,7 @@ import RecentActivites  from '../Components/RecentActivites'
 import ProfileCard from '../Components/ProfileCard'
 import { useParams } from 'react-router-dom'
 import { getFollowers, getFollowing, getUserById } from '../Redux/user/user.actions'
+import { getUserComments } from '../Redux/comments/comments.actions'
 const Profile = () => {
     const {id} = useParams()
     const dispatch: Dispatch<any> = useDispatch()
@@ -16,6 +17,8 @@ const Profile = () => {
             dispatch(getRoomByUserId(id))
             dispatch(getFollowers(+id))
             dispatch(getFollowing(+id))
+            dispatch(getUserComments(+id))
+
         }
     }, [dispatch, id])
     return (
