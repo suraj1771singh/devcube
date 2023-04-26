@@ -47,8 +47,7 @@ export const updateUser = (data: any) => async (dispatch: Dispatch) => {
 export const followUser = (id: string | number) => async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
     dispatch({ type: FOLLOW_USER_LOADING })
     try {
-        let res = await followUserApi(id)
-        console.log(res)
+        await followUserApi(id)
         dispatch({ type: FOLLOW_USER_SUCCESS, })
     } catch (err) {
         dispatch({ type: FOLLOW_USER_ERROR })
@@ -58,8 +57,7 @@ export const followUser = (id: string | number) => async (dispatch: (arg0: { typ
 export const unfollowUser = (id: string | number) => async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
     dispatch({ type: UNFOLLOW_USER_LOADING })
     try {
-        let res = await unfollowUserApi(id)
-        console.log(res)
+        await unfollowUserApi(id)
         dispatch({ type: UNFOLLOW_USER_SUCCESS })
     } catch (err) {
         dispatch({ type: UNFOLLOW_USER_ERROR })

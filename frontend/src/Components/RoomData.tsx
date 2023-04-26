@@ -76,10 +76,9 @@ const RoomData = ({data}:any) => {
 
    const handleComment = (id:string|number)=>{
          if(commentBody.length>4){
-        let msg = {body:commentBody,parent:null} 
+        let msg = {body:commentBody,parent:null}  
         dispatch(createComments(msg,id))
         setCommentBody("")
-        window.location.reload()
       }else{
         console.log('empty')
       }
