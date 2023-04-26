@@ -14,11 +14,12 @@ export const getUserByIdApi = async (id: number|string) => {
     }
 }
 export const updateUserApi = async (data: any) => {
+    console.log(data)
     let tokenAll: any = sessionStorage.getItem("authTokens");
     let authToken: userTokenType = JSON.parse(tokenAll);
     let token = authToken.access;
     try {
-        let res = await axios.put(`${baseUrl}/update/`,data, { headers: { Authorization: `Bearer ${token}` } })
+        let res = await axios.patch(`${baseUrl}/update/`,data, { headers: { Authorization: `Bearer ${token}` } })
         return res
     } catch (err) {
         throw err

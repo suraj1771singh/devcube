@@ -102,13 +102,13 @@ export const userReducer = (state = initialTopics, actions: { type: string; payl
          return { ...state, }
       }
       case PROFILE_PHOTO_LOADING: {
-         return { ...state, }
+         return { ...state,get_photo_loading:true,get_photo_error:false }
       }
       case PROFILE_PHOTO_SUCCESS: {
-         return { ...state,new_photo:payload }
+         return { ...state,new_photo:payload,get_photo_loading:false,get_photo_error:false}
       }
       case PROFILE_PHOTO_ERROR: {
-         return { ...state, }
+         return { ...state,get_photo_loading:false,get_photo_error:true}
       }
       default:
          return { ...state }

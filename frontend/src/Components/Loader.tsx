@@ -1,14 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { rootReducertype } from '../Redux/Store'
+import { PulseLoader } from 'react-spinners'
 
-const Loader = ({text}:any) => {
-  let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
+const Loader = ({text="Loading"}:{text?:string}) => {
   return (
-    <div className={`w-full fixed text-center top-20 bottom-[90%] z-50 flex items-center z-index-50`}>
-    <div className={`animate-in slide-in-from-top duration-500 mx-auto rounded-md py-2 px-4 flex items-center ${drk_theme?"text-font_dark_sec":"text-font_light_sec"} `}>
-        <h5 className=''>{text}</h5>
-        </div>
+    <div className='flex flex-col justify-center items-center rounded-full'>
+    <PulseLoader color="#8001FF" />
+    <h5 className='text-lg my-4'>{text}</h5>
     </div>
   )
 }

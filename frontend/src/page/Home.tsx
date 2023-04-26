@@ -10,14 +10,15 @@ import RecentActivites  from '../Components/RecentActivites'
 import { NavLink, useNavigate } from 'react-router-dom'
 import TagsDiv from '../Components/TagsDiv'
 import { resetTopicTag } from '../Redux/topic/topic.actions'
+import Loader from '../Components/Loader'
+import Error from '../Components/Error'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
-    let { allRooms } = useSelector((val: rootReducertype) => val.rooms)
+    let { allRooms,get_loading,get_error,allRoomsLength,search_loading,search_error} = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)
   let {isAuth} = useSelector((val:rootReducertype)=>val.auth)
   const nav = useNavigate()
-
   const [roomsArray,setRoomsArray] = useState<any>([])
   useEffect(() => {
       if(topicTags.length===0){
@@ -50,7 +51,7 @@ const Home = () => {
                     <div className={`flex items-center justify-between`} >
                         <div className={`${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} py-3 px-4 rounded-xl w-fit`}>
                             <h3 className='font-bold'>Study Rooms</h3>
-                            <p className='text-fade_font text-sm font-semibold'>38 Rooms Available</p>
+                            <p className='text-fade_font text-sm font-semibold'>{allRoomsLength} Room(s) Available</p>
                         </div>
 
                         <p className='ml-2'>{(topicTags.length===0)?"":`${topicTags.length}/5`}</p>
@@ -61,13 +62,14 @@ const Home = () => {
                         <NavLink to='/create_room' className='text-sm bg-third_color text-white text-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
-                    {roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                        
+                    {get_error||search_error?<Error text='Error While Fetching Rooms !'/>:get_loading||search_loading ? <Loader text='Fetching Rooms..'/>:(roomsArray.length===0)?<p className='text-gray-500 text-center my-10 text-xl'>No Records Found</p>:roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
                     </div>
                 </div>
                 {/* right section => recent acitivies  */}
                 <RecentActivites/>
             </div>
-        </>
+        </> 
     )
 }
 export default Home

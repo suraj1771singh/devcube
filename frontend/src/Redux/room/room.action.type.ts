@@ -38,3 +38,7 @@ export const GET_ROOMS_BY_TOPICS_LOADING="get/room/topic/loading"
 export const GET_ROOMS_BY_TOPICS_ERROR="get/room/topic/error"
 export const GET_ROOMS_BY_TOPICS_SUCCESS="get/room/topic/success"
 
+export const GET_ROOMS_BY_SEARCH_LOADING="get/room/search/loading"
+export const GET_ROOMS_BY_SEARCH_ERROR="get/room/search/error"
+export const GET_ROOMS_BY_SEARCH_SUCCESS="get/room/search/success"
+
