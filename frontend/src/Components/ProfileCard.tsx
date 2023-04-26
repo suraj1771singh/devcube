@@ -51,9 +51,13 @@ const ProfileCard = ({ id }:any) => {
     }
     const handleFollow = (id: string | number) => {
         dispatch(followUser(id))
+        setIsFollowing(true)
+        followers.length = followers.length+1
     } 
     const handleUnfollow = (id: string | number) => {
         dispatch(unfollowUser(id))
+        setIsFollowing(false)
+        followers.length = followers.length-1
     } 
     const handleHostedRooms =  (id:string|number)=>{
         dispatch(getRoomByUserId(id))
@@ -98,7 +102,7 @@ const ProfileCard = ({ id }:any) => {
                                 </div>
                             </div>
                             <div className="mt-10 mr-10">
-                                {myId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : isfollowing?<button onClick={() => handleUnfollow(id)} className={`${"bg-red-300 px-4 py-2 rounded-full text-black"}`}>Unfollow</button>:<button onClick={() => handleFollow(id)} className='text-xl bg-blue-400 text-font_dark_pri px-4 py-1 rounded-full'>Follow</button>}
+                                {myId === (+id) ? <BiEdit onClick={() => handleProfileEdit()} className='text-3xl cursor-pointer hover:text-third_color' /> : isfollowing?<button onClick={() => handleUnfollow(id)} className="bg-red-200 px-4 py-2 rounded-full text-third_color animate-in zoom-in ease-in-out">Unfollow</button>:<div onClick={() => handleFollow(id)} className='bg-blue-200 px-4 py-2 rounded-full text-third_color animate-in zoom-in ease-in-out cursor-pointer'>Follow</div>}
                             </div>
                         </div>
                     </div>

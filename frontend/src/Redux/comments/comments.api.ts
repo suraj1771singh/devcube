@@ -86,8 +86,15 @@ export const likeMsgApi = async(id:string|number)=>{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
         let token = authToken.access;
-        let res = await axios.patch(`${baseUrl}/msg-like/${id}/`,{headers:{Authorization:`Bearer ${token}`}})
-        return res
+        let res = await axios({
+            method: "PATCH",
+            url: `${baseUrl}/msg-like/${id}/`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+          return res
     }catch(err){
         throw err
     }

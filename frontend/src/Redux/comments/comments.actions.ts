@@ -77,7 +77,7 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
         try {
             let res = await updateCommentsApi(data)
             console.log(res)
-            dispatch({ type: UPDATE_COMMENTS_SUCCESS })
+            dispatch({ type: UPDATE_COMMENTS_SUCCESS})
         } catch (err) {
             dispatch({ type: UPDATE_COMMENTS_ERROR })
         }
@@ -93,10 +93,11 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
     }
 
     export const likeMsg = (id:number|string)=>async(dispatch:Dispatch)=>{
+            dispatch({type:"UPDATE_COMMENTS_LOADING"})
         try{
-            let res = await likeMsgApi(id);
-            console.log(res)
+            await likeMsgApi(id);
+            dispatch({type:"UPDATE_COMMENTS_SUCCESS"})
         }catch(err){
-            
+            dispatch({type:"UPDATE_COMMENTS_ERROR"})
         }
     }

@@ -127,6 +127,7 @@ export const commentReducer = (state = initialComments, { type, payload }: { typ
                 ...state, create_comment_loading: false,
                 create_comment_error: false,
                 create_comment_success: true,
+                roomComments:[payload,...state.roomComments]
             }
         }
         case CREATE_COMMENTS_ERROR: {
