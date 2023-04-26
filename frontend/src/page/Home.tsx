@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import RoomCard from '../Components/RoomCard'
 import { IoAddSharp } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,7 +6,7 @@ import { rootReducertype } from '../Redux/Store'
 import { getRooms } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
 import BrowseTopics from '../Components/BrowseTopics'
-import RecentActivites  from '../Components/RecentActivites'
+import RecentActivites from '../Components/RecentActivites'
 import { NavLink, useNavigate } from 'react-router-dom'
 import TagsDiv from '../Components/TagsDiv'
 import { resetTopicTag } from '../Redux/topic/topic.actions'
@@ -14,33 +14,38 @@ import Loader from '../Components/Loader'
 import Error from '../Components/Error'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
-    let { allRooms,get_loading,get_error,allRoomsLength,search_loading,search_error} = useSelector((val: rootReducertype) => val.rooms)
+    let { allRooms, get_loading, get_error, allRoomsLength, search_loading, search_error } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-  const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)
-  let {isAuth} = useSelector((val:rootReducertype)=>val.auth)
-  const nav = useNavigate()
-  const [roomsArray,setRoomsArray] = useState<any>([])
-  useEffect(() => {
-      if(topicTags.length===0){
-        dispatch(getRooms())
-      }
-    if(!isAuth){
-        nav("/login")
-    }
+    const { topicTags } = useSelector((val: rootReducertype) => val.topics)
+    let { isAuth } = useSelector((val: rootReducertype) => val.auth)
+    const nav = useNavigate()
+    const [roomsArray, setRoomsArray] = useState<any>([])
+
+    // check auth and fetch rooms
+    useEffect(() => {
+        if (topicTags.length === 0) {
+            dispatch(getRooms())
+        }
+        if (!isAuth) {
+            nav("/login")
+        }
     }, [dispatch, isAuth, nav, topicTags])
-    useEffect(()=>{
+
+    useEffect(() => {
         setRoomsArray(allRooms)
-    },[allRooms])
-    useEffect(()=>{
-        return ()=>{
+    }, [allRooms])
+
+    useEffect(() => {
+        return () => {
             dispatch(resetTopicTag())
-                }
-    },[dispatch])
+        }
+    }, [dispatch])
+
     return (
-        <> 
+        <>
             <div className='w-11/12 m-auto flex flex-col md:flex-row justify-between'>
                 {/* lefe section => browse topics  */}
-                <BrowseTopics/>
+                <BrowseTopics />
                 {/* for Mobile devices  */}
                 <div className='md:hidden flex justify-between mb-4'>
                     <button className='border-2 border-third_color py-1 px-4 text-third_color rounded-full'>Borowse Topics</button>
@@ -53,23 +58,22 @@ const Home = () => {
                             <h3 className='font-bold'>Study Rooms</h3>
                             <p className='text-fade_font text-sm font-semibold'>{allRoomsLength} Room(s) Available</p>
                         </div>
-
-                        <p className='ml-2'>{(topicTags.length===0)?"":`${topicTags.length}/5`}</p>
+                        <p className='ml-2'>{(topicTags.length === 0) ? "" : `${topicTags.length}/5`}</p>
                         <div className={`flex items-center py-3 rounded-xl overflow-y-auto w-1/2 scrollbar box-border mr-2`} >
-                        <TagsDiv isCreate={false} />
+                            <TagsDiv isCreate={false} />
                         </div>
 
                         <NavLink to='/create_room' className='text-sm bg-third_color text-white text-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
-                        
-                    {get_error||search_error?<Error text='Error While Fetching Rooms !'/>:get_loading||search_loading ? <Loader text='Fetching Rooms..'/>:(roomsArray.length===0)?<p className='text-gray-500 text-center my-10 text-xl'>No Records Found</p>:roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+
+                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-gray-500 text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
                     </div>
                 </div>
                 {/* right section => recent acitivies  */}
-                <RecentActivites/>
+                <RecentActivites />
             </div>
-        </> 
+        </>
     )
 }
 export default Home

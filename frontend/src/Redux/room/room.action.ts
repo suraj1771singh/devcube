@@ -141,8 +141,7 @@ try{
     dispatch({type:GET_ROOMS_BY_SEARCH_LOADING})
     try{
         let res = await getRoomsSearchApi(data)
-        console.log(res)
-        dispatch({type:GET_ROOMS_BY_SEARCH_SUCCESS,payload:res})
+        dispatch({type:GET_ROOMS_BY_SEARCH_SUCCESS,payload:res.data})
     }catch(err){
         dispatch({type:GET_ROOMS_BY_SEARCH_ERROR})
     }

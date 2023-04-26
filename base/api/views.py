@@ -253,11 +253,9 @@ def follow(request, pk):
 @api_view(['PUT', 'POST'])
 @permission_classes([IsAuthenticated])
 def unfollow(request, pk):
-    relationship = UserRelationship.get(follower=request.user, followed_id=pk)
+    relationship = UserRelationship.objects.get(follower=request.user, followed_id=pk)
     relationship.delete()
     return Response({'msg': f"Unfollowed user with id {pk} "}, status=status.HTTP_200_OK)
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getFollowers(request, pk):

@@ -13,12 +13,12 @@ const Participants = ({data}:any) => {
     <div className='grid grid-col-1 gap-3' >
       {/* Map the below div : it is Participants of the perticular room */}
       {
-        data?.map((el:any,id:number)=><div key={id} className='flex items-center justify-between py-2  px-4'>
+        data?.map((el:any)=><div key={el.id} className='flex items-center justify-between py-2  px-4'>
       <div>
-        <img src="/profile.svg" alt="" className='w-[40px]' />
+        <img src="/profile.svg" alt="" className='w-[40px] rounded-full' />
       </div>
-      <div className='w-4/5 text-sm font-semibold'>
-        <NavLink to={`/profile/${el.id}`} className='hover:text-third_color hover:shadow-md py-2 cursor-pointer'>{el.email}</NavLink>
+      <div className='w-4/5 text-sm font-semibold mx-3'>
+        <NavLink to={`/profile/${el.id}`} className='hover:text-third_color py-2 cursor-pointer'>{el.email}</NavLink>
       </div>             
     </div>)}
     </div>

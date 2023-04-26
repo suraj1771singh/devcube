@@ -22,7 +22,7 @@ import {
 GET_REPLY_MSGS_SUCCESS,
 GET_REPLY_MSGS_ERROR,
 } from './comments.action.types'
-import { createCommentsApi, deleteCommentsApi, getRecentCommentsApi, getRoomCommentsApi, getUserCommentsApi, getrepliesOfCommentApi, updateCommentsApi } from './comments.api'
+import { createCommentsApi, deleteCommentsApi, getRecentCommentsApi, getRoomCommentsApi, getUserCommentsApi, getrepliesOfCommentApi, likeMsgApi, updateCommentsApi } from './comments.api'
 
 
 export const getRecentComments = () => async (dispatch: Dispatch) => {
@@ -57,7 +57,6 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
         dispatch({ type: GET_USER_COMMENTS_LOADING })
         try {
             let res = await getUserCommentsApi(id)
-            console.log(res)
             dispatch({ type: GET_USER_COMMENTS_SUCCESS,payload:res.data })
         } catch (err) {
             dispatch({ type: GET_USER_COMMENTS_ERROR })
@@ -90,5 +89,14 @@ export const getRoomComments = (id: string | number) => async (dispatch: Dispatc
             dispatch({ type: DELETE_COMMENTS_SUCCESS,payload:id})
         } catch (err) {
             dispatch({ type: DELETE_COMMENTS_ERROR })
+        }
+    }
+
+    export const likeMsg = (id:number|string)=>async(dispatch:Dispatch)=>{
+        try{
+            let res = await likeMsgApi(id);
+            console.log(res)
+        }catch(err){
+            
         }
     }

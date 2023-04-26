@@ -7,16 +7,22 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Dispatch, useEffect, useState } from 'react';
 import { joinRoom } from '../Redux/room/room.action';
 import { loggedinUserType, topicDataType } from '../dataTypes';
+import React from 'react';
 
 const RoomCard = ({ data }: any) => {
     const dispatch: Dispatch<any> = useDispatch()
+    const { join_loading } = useSelector((val: rootReducertype) => val.rooms);
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
     const { myData, myId } = useSelector((val: rootReducertype) => val?.auth)
     const [joined, setJoined] = useState(false)
     const [owner, setOwner] = useState(false)
-    const { join_loading } = useSelector((val: rootReducertype) => val.rooms)
+    const [joiningRoomLoading,setJoiningRoomLoading]= useState<boolean|undefined>(false)
     const nav = useNavigate()
-    let desc = data?.description.split(' ').slice(0,50).join(" ")
+    useEffect(()=>{
+        if(!join_loading){
+            setJoiningRoomLoading(false)
+        }
+    },[join_loading])
     useEffect(() => {
         setJoined(data?.participants.some((el: any) => el.id === myId))
         if (data.host.id === myId) {
@@ -28,15 +34,16 @@ const RoomCard = ({ data }: any) => {
         if(myData){
             let user = { id: myId, email: myData.email}
             dispatch(joinRoom(id, user))
+            setJoiningRoomLoading(true)
         }
     }
 
     const handleGotoRoom = (id: string | number) => {
         nav(`/room/${id}`)
     }
-    
     let date = data.created;
     let dynamicTime = new Date(date).getTime()
+    let desc = data?.description.split(' ').slice(0,50).join(" ")
     return (
         <div className={`my-3 ${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md hover:shadow-xl`} >
             <div className='flex justify-between items-center'>
@@ -60,8 +67,8 @@ const RoomCard = ({ data }: any) => {
             <div className='flex justify-between mt-6' >
                 <div className='flex items-center'>
                     {
-                        owner ? <div></div> : joined ? <div className={`flex justify-center items-center px-6 py-2 font-semibold rounded-full mx-2 ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>Joined</div> : <button onClick={() => handleJoinRoom(myData,data.id)} className='bg-third_color px-6 rounded-full text-semibold text-white text-center py-2 mr-4'>{join_loading ? "Loading..." : "Join"}</button>}
-                    <GrGroup className='text-sm mx-2 text-gray-600' />
+                        owner ? <div></div> : joined ? <div className={`flex justify-center items-center px-6 py-2 font-semibold rounded-full mx-2 ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>Joined</div> : <button onClick={() => handleJoinRoom(myData,data.id)} className='bg-third_color px-6 rounded-full text-semibold text-white text-center py-2 mr-4'>{joiningRoomLoading ? "Loading..." : "Join"}</button>}
+                    <GrGroup className={`mx-2 text-third_color bg-third-color`} />
                     <p className='text-fade_font text-sm font-semibold'> {data?.participants.length} Joined</p>
                 </div>
                 <div className='flex max-w-[60%] overflow-auto scrollbar-hide'>
@@ -72,4 +79,4 @@ const RoomCard = ({ data }: any) => {
     )
 }
 
-export default RoomCard
+export default React.memo(RoomCard,()=>false)

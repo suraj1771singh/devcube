@@ -18,7 +18,8 @@ const ProfilePhotoModal = (props: props) => {
     const { data, closeModal } = props;
     const dispatch: Dispatch<any> = useDispatch();
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-    let { get_photo_loading, get_photo_error, new_photo } = useSelector((val: rootReducertype) => val.user)
+    const {userData} = useSelector((val: rootReducertype) => val.user)
+    let { get_photo_loading, new_photo } = useSelector((val: rootReducertype) => val.user)
     const [photo, setPhoto] = useState("")
     const [profileHover, setProfileHover] = useState(false)
     useEffect(() => {
@@ -35,8 +36,8 @@ const ProfilePhotoModal = (props: props) => {
         dispatch(updateUserProfile(e.target.files[0]))
     }
     const handleProfileUpdate = (img: string) => {
-        let data = { photo: img }
-        dispatch(updateUser(data))
+        userData.photo=img;
+        dispatch(updateUser(userData))
         closeModal()
     }
     return (
@@ -46,13 +47,13 @@ const ProfilePhotoModal = (props: props) => {
                 {get_photo_loading?<Loader text={"Uploading Photo..."} />:
                     <div onMouseMove={() => setProfileHover(true)} onMouseOut={() => setProfileHover(false)} className='relative rounded-full overflow-hidden h-[600px] w-[600px] '>
                         <img src={photo} alt="profile" className='min-w-[600px] min-h-[600px] h-fit w-fit' />
-                        {data.owner ? profileHover && <div className='absolute bg-white/40 bottom-0 left-0 h-[20%] w-full flex justify-center items-center'>
+                        {data.owner && profileHover && <div className='absolute bg-white/40 bottom-0 left-0 h-[20%] w-full flex justify-center items-center'>
                             {new_photo ? <MdFileDownloadDone onClick={() => handleProfileUpdate(new_photo)} className='text-6xl text-black cursor-pointer hover:text-third_color ' /> : <label>
                                 <input type="file" accept='image/png,image/jpeg' className='hidden' onChange={(e: any) => handleEditProfile(e)} />
                                 <BiEdit className='text-6xl text-black cursor-pointer hover:text-third_color' />
                             </label>
                             }
-                        </div> : ""}
+                        </div>}
                     </div>}
                 </div>
 
