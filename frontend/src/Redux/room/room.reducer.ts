@@ -78,7 +78,6 @@ let initialData: roomInitialDataType = {
 
     get_room_by_id_loading: false,
     get_room_by_id_error: false,
-    get_room_by_id_success: false,
     roomData: null
 }
 
@@ -180,21 +179,19 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return {
                 ...state, get_room_by_id_loading: true,
                 get_room_by_id_error: false,
-                get_room_by_id_success: false,
             }
         }
         case GET_ROOM_BY_ID_ERROR: {
             return {
                 ...state, get_room_by_id_loading: false,
                 get_room_by_id_error: true,
-                get_room_by_id_success: false,
             }
         }
         case GET_ROOM_BY_ID_SUCCESS: {
             return {
                 ...state, get_room_by_id_loading: false,
-                get_room_by_id_error: false,
-                get_room_by_id_success: true, roomData: payload
+                get_room_by_id_error: false, 
+                roomData: payload
             }
         }
         case GET_ROOMS_JOINED_BY_USER_LOADING: {

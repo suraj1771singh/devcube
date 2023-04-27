@@ -67,14 +67,14 @@ const CreateRoomModal = () => {
     <>
     <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl animate-in slide-in-from-bottom-96 ease-in-out duration-500`}>
         <form onSubmit={handleRoomData} className='flex flex-col'>
-          <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-gray-500 mb-2`} name='name' id="name" value={roomData.name} onChange={handleChange} type="text" placeholder='Room Title'/>
+          <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-fade_font mb-2`} name='name' id="name" value={roomData.name} onChange={handleChange} type="text" placeholder='Room Title'/>
           
-          <textarea required name="description" value={roomData.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} outline-none p-4 rounded-md resize-none my-4 border-gray-500 border-2 `} placeholder='About Your Room'id="room_about" cols={20}  rows={16}></textarea>
+          <textarea required name="description" value={roomData.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} outline-none p-4 rounded-md resize-none my-4 border-fade_font border-2 `} placeholder='About Your Room'id="room_about" cols={20}  rows={16}></textarea>
           {/* to show all the tags present  */}
           <div className='border-2 border-fade_font p-3 my-2 rounded-xl flex items-center '>
           <TagsDiv isCreate={true} />
           </div>
-          <div className='my-4 flex flex-row-reverse items-center'>
+          <div className='mt-4 flex flex-row-reverse items-center'>
           <input type="submit" className='py-2 px-4 rounded-md text-right w-fit text-white mx-4 bg-third_color font-semibold text-bg_pri cursor-pointer'value={"Create Room"}/>
             <button onClick={handleClose} className='bg-red-400 text-white py-2 px-4 rounded-md '>Cancel</button>
           </div>

@@ -45,7 +45,7 @@ const Signup = () => {
 
       <label htmlFor="name" className='my-4 my-4 border-[1px] rounded-md border-gray-700 p-3 flex'>Name-
       <input type="text" required name="first_name" value={newUserData.first_name} onChange={handleChange} id='name' placeholder='First Name' className='bg-transparent w-3/4 outline-none px-2' />
-      <span className='text-gray-500'>|</span>
+      <span className='text-fade_font'>|</span>
       <input type="text" name="last_name" value={newUserData.last_name} onChange={handleChange} id='last_name' placeholder='Last Name' className='bg-transparent w-3/4 outline-none px-2' />
       </label>
       <label htmlFor="email" className='my-4 my-4 border-[1px] rounded-md border-gray-700 p-3'>Email
@@ -58,7 +58,7 @@ const Signup = () => {
       <input required type="password" name='password2' value={newUserData.password2} onChange={handleChange} id='c_password' placeholder='password (Same as Above)' className='bg-transparent outline-none px-2 mx-2' />
       </label>
       {signup_loading?<button disabled className='border-[1px] w-fit border-gray-700 py-2 px-4 cursor-pointer m-auto rounded-md' >Loading...</button>:<input type="submit" value='Signup' className='border-[1px] w-fit border-gray-700 py-2 px-4 cursor-pointer m-auto rounded-md'/>}
-      <p className='text-sm text-gray-500 mt-4'>Are You a New User? <span className='text-blue-500 underline cursor-pointer' onClick={()=>nav('/login')}>Login here</span> </p>
+      <p className='text-sm text-fade_font mt-4'>Are You a New User? <span className='text-blue-500 underline cursor-pointer' onClick={()=>nav('/login')}>Login here</span> </p>
     </form>
     </div>
     </div>  
