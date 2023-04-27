@@ -4,7 +4,7 @@ import { rootReducertype } from '../Redux/Store'
 import { TbSend } from 'react-icons/tb'
 import { CalcTime } from './time'
 import { FiMoreHorizontal } from 'react-icons/fi'
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai'
 import {MdOutlineReport} from 'react-icons/md'
 import { deleteRoom, joinRoom, leaveRoom } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
@@ -86,13 +86,15 @@ const RoomData = ({data}:any) => {
    const handleauthOnchange = (myData:loggedinUserType,e:any)=>{
     if(isParticipant||(myData?.id===data.host.id) ){
       setCommentBody(e.target.value)
+      e.target.style.height="auto"
+      e.target.style.height= `${e.target.scrollHeight}px`
     }else{
       setAlertModal(!alertModal)
     }
    }
   return (
     <>
-        <div className={`${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md ease-in-out duration-500 animate-in slide-in-from-bottom-48 mb-20`} >
+        <div className={`${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md ease-in-out duration-500 animate-in slide-in-from-bottom-48 mb-20`}>
       <div onClick={()=>setToggle(false)} className='relative' >
         <div className='my-2'>
           <div className='flex justify-between items-center' >
@@ -136,7 +138,7 @@ const RoomData = ({data}:any) => {
               }
             </div>
           </div>
-        <p className='text-sm font-semibold my-2'>Hosted by</p> 
+        <p className='text-sm font-semibold text-fade_font my-2'>Hosted by</p> 
         </div>
         <div className='flex items-center'>
           <img src={data?.host.photo} alt="pp" className='w-[50px] h-[50px] rounded-full mr-2'/>
@@ -146,18 +148,18 @@ const RoomData = ({data}:any) => {
         <div className='m-6'>
           <p>{data?.description}</p>
         </div>
-        <h4 className='mx-5 font-semibold my-2'>Topic Tages</h4>
-        <div className='mx-5 my-4'> 
+        <h4 className='font-semibold my-2'>Topic Tages</h4>
+        <div className='my-4'> 
         {data?.topic?.map((el:topicDataType)=><button key={el.id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full`} >{el.name}</button>)}
         </div>
         <div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
-                    {(isParticipant||owner)? <textarea rows={2} onChange={(e:any)=>handleauthOnchange(myData,e)} value={commentBody} className={`w-[80%] h-fit overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-gray-500'>Please Join the Room To Comment</p>}
+                    {(isParticipant||owner)? <textarea onChange={(e:any)=>handleauthOnchange(myData,e)} value={commentBody} className={`w-[80%] overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri "} min-h-[20px]`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-fade_font'>Please Join the Room To Comment</p>}
                     <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
                 </div>
       </div> 
-      <div className='mt-12'>
-        <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-2 mx-4'>Comments <span> </span> </button>
-       {showComments&&<div className=''>
+      <div className='mt-12 mx-2'>
+        <button onClick={()=>setShowComments(!showComments)} className='text-xl font-semibold my-4 flex items-center'>Discussions {showComments?<AiOutlineCaretUp  className='text-2xl mx-4 animate-in spin-in-90 duration-300'/>:<AiOutlineCaretDown  className='text-2xl mx-4 text-third_color animate-in spin-in-[-90deg] duration-300'/>}</button>
+       {showComments&&<div className='animate-in slide-in-from-top-10'>
         <Comments canReply={isParticipant||owner} roomId={data.id} />
         </div>}
       </div>

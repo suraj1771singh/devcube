@@ -16,7 +16,7 @@ const Comments = ({canReply,roomId}:any) => {
   },[roomComments])
   return (
     <>
-      {rootComments?.map((el:any,id:number)=><Comment key={id} data={el} roomId={roomId} canReply={canReply} />)}
+      {rootComments?.map((el:any)=><Comment key={el.id} data={el} roomId={roomId} canReply={canReply} />)}
     </>
   )
 }

@@ -65,17 +65,17 @@ const UpdateRoomModal = () => {
     <>
     <div className={`md:w-[80%] ml-[19.3%] p-10 ${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl`}>
         <form onSubmit={handleRoomData} className='flex flex-col'>
-          <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-gray-500 mb-2`} name='name' id="name" value={roomData?.name} onChange={handleChange} type="text" placeholder='Room Title'/>
+          <input required className={`bg-bg_sec p-2 text-lg rounded-md ${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} py-4 border-2 border-fade_font mb-2`} name='name' id="name" value={roomData?.name} onChange={handleChange} type="text" placeholder='Room Title'/>
           
-          <textarea required name="description" value={roomData?.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} outline-none p-4 rounded-md resize-none my-4 border-gray-500 border-2 `} placeholder='About Your Room'id="room_about" cols={20}  rows={16}></textarea>
+          <textarea required name="description" value={roomData?.description} onChange={handleChange} className={`${drk_theme?"bg-bg_dark_sec text-font_dark_pri":"bg-bg_light_sec text-font_light_pri"} outline-none p-4 rounded-md resize-none my-4 border-fade_font border-2 `} placeholder='About Your Room'id="room_about" cols={20}  rows={16}></textarea>
 
-          <div className='border-2 border-gray-500 p-3 my-2 rounded-xl flex items-center '>
-            <div className='text-gray-500 flex items-center mr-3'>
+          <div className='border-2 border-fade_font p-3 my-2 rounded-xl flex items-center '>
+            <div className='text-fade_font flex items-center mr-3'>
             <p className='py-2 mx-2'> Tags </p>
             <p> {addTags.length}/5 </p>
             </div>
             <div className='flex'>
-           {(addTags.length===0)?<p className="text-gray-500 mx-2">Select Tags From Menu at left (min:1 max:5) </p>:addTags?.map((el:topicDataType,id:number)=><p key={id} className='border-2 px-4 py-2 mx-2 flex items-center rounded-full'>{el.name} <span><AiOutlineClose onClick={()=>handleRemoveTag(el)} className='ml-2 cursor-pointer'/> </span> </p> )}
+           {(addTags.length===0)?<p className="text-fade_font mx-2">Select Tags From Menu at left (min:1 max:5) </p>:addTags?.map((el:topicDataType,id:number)=><p key={id} className='border-2 px-4 py-2 mx-2 flex items-center rounded-full'>{el.name} <span><AiOutlineClose onClick={()=>handleRemoveTag(el)} className='ml-2 cursor-pointer'/> </span> </p> )}
             </div>
           </div>
 

@@ -34,7 +34,7 @@ const Profile = () => {
                 {/* middle section => study rooms  */}
                 <ProfileCard id={id} />
                 {/* right section => recent acitivies  */}
-                <RecentActivites/>
+                <RecentActivites heading='Recent Comments' />
             </div>
         </>
     )

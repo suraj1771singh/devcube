@@ -67,7 +67,7 @@ const Home = () => {
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
 
-                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-gray-500 text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
                     </div>
                 </div>
                 {/* right section => recent acitivies  */}
