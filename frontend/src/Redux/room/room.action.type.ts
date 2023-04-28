@@ -42,3 +42,6 @@ export const GET_ROOMS_BY_SEARCH_LOADING="get/room/search/loading"
 export const GET_ROOMS_BY_SEARCH_ERROR="get/room/search/error"
 export const GET_ROOMS_BY_SEARCH_SUCCESS="get/room/search/success"
 
+
+export const RESET_CREATE_ROOM_DATA="create/room/reset/success"
+export const RESET_UPDATE_ROOM_DATA="update/room/reset/success"

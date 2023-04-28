@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { CiSearch } from 'react-icons/ci'
 import { Dispatch, useEffect, useState } from 'react'
-import { addTopicTag, getTopics } from '../Redux/topic/topic.actions'
+import { addTopicTag } from '../Redux/topic/topic.actions'
 import { topicDataType } from '../dataTypes'
 import { getRoomsByTopic } from '../Redux/room/room.action'
 import Loader from './Loader'
@@ -28,9 +28,7 @@ const BrowseTopics = ({isCreate=false}) => {
       }
     }
   },[dispatch, isCreate, topicTags])
-  useEffect(() => {
-    dispatch(getTopics())
-  }, [dispatch])
+
   useEffect(() => {
     if(topicTags.length<5){
       setLimit(false)

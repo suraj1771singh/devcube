@@ -11,10 +11,11 @@ import { GoReply } from 'react-icons/go'
 import { useNavigate } from 'react-router-dom'
 import { updateComments } from '../Redux/comments/comments.actions'
 import { ClipLoader } from 'react-spinners'
+import { joinRoom } from '../Redux/room/room.action'
 
 const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
-  const {myId } = useSelector((val: rootReducertype) => val?.auth)
+  const {myId, myData} = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const {roomComments,get_reply_msg_loading,create_comment_loading,delete_comment_loading,} = useSelector((val:rootReducertype)=>val.comments)
 
@@ -102,6 +103,10 @@ const Comment = ({ data,canReply,roomId }: any) => {
   }
   }
 
+  const handleJoinRoom = (id:number)=>{
+    let user = {id:myId,email:myData.email}
+    dispatch(joinRoom(id,user))
+  }
   const handleEditComment = (data:any)=>{
     setUpdateCommentData(data.body);
     setReply(false); 
@@ -195,8 +200,8 @@ const Comment = ({ data,canReply,roomId }: any) => {
       {msgLoading? <div className='mx-2'><ClipLoader color="#8001FF" /></div> :data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
       {createLoading&&<div className='mx-2'><ClipLoader color="#8001FF" /> </div>}
         {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 my-2 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} animate-in slide-in-from-top-5 ease-in-out duration-200`}>
-        {canReply?<textarea onKeyDown={handleCommentKeyPress} ref={refReply} rows={2} onChange={handleCommentBodyChange} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} min-h-12`} placeholder='Write..'/>:<p className='text-fade_font'>Please Join Room to reply</p>}
-        <TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />
+        {canReply?<textarea onKeyDown={handleCommentKeyPress} ref={refReply} rows={2} onChange={handleCommentBodyChange} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} min-h-12 max-h-[200px] resize-none overflow-y-auto`} placeholder='Write..'/>:<p className='text-fade_font'>Please <span className='text-third_color underline cursor-pointer' onClick={()=>handleJoinRoom(data?.room?.id)}>Join</span> Room to reply</p>}
+        {canReply&&<TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />}
         </div>:<div>
           </div>}
       </div>

@@ -1,4 +1,0 @@
-brwose topics  // done 
-profile and photo update => pending
-follower & following // pending from backend 
-social media show only if url is there. // done

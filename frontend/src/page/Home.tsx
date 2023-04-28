@@ -3,7 +3,6 @@ import RoomCard from '../Components/RoomCard'
 import { IoAddSharp } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
-import { getRooms } from '../Redux/room/room.action'
 import { Dispatch } from 'redux'
 import BrowseTopics from '../Components/BrowseTopics'
 import RecentActivites from '../Components/RecentActivites'
@@ -23,17 +22,13 @@ const Home = () => {
 
     // check auth and fetch rooms
     useEffect(() => {
-        if (topicTags.length === 0) {
-            dispatch(getRooms())
-        }
         if (!isAuth) {
             nav("/login")
         }
-    }, [dispatch, isAuth, nav, topicTags])
-
+    }, [isAuth, nav])
     useEffect(() => {
         setRoomsArray(allRooms)
-    }, [allRooms])
+    }, [allRooms,allRooms.length])
 
     useEffect(() => {
         return () => {
@@ -49,7 +44,7 @@ const Home = () => {
                 {/* for Mobile devices  */}
                 <div className='md:hidden flex justify-between mb-4'>
                     <button className='border-2 border-third_color py-1 px-4 text-third_color rounded-full'>Borowse Topics</button>
-                    <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Recent Activites</button>
+                    <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Popular Discussions</button>
                 </div>
                 {/* middle section => study rooms  */}
                 <div className='md:w-[54%] ml-[19.3%]'>
@@ -67,7 +62,7 @@ const Home = () => {
                     </div>
                     <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
 
-                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any,id:number) => <RoomCard key={id} data={el} />)}
                     </div>
                 </div>
                 {/* right section => recent acitivies  */}
