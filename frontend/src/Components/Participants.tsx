@@ -15,7 +15,7 @@ const Participants = ({data}:any) => {
       {
         data?.map((el:any)=><div key={el.id} className='flex items-center justify-between py-2  px-4'>
       <div>
-        <img src="/profile.svg" alt="" className='w-[40px] rounded-full' />
+        <img src={el?.photo} alt="profile" className='w-[40px] rounded-full' />
       </div>
       <div className='w-4/5 text-sm font-semibold mx-3'>
         <NavLink to={`/profile/${el.id}`} className='hover:text-third_color py-2 cursor-pointer'>{el.email}</NavLink>

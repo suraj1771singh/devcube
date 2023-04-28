@@ -32,6 +32,7 @@ import {
     GET_ROOMS_BY_SEARCH_LOADING,
     GET_ROOMS_BY_SEARCH_ERROR,
     GET_ROOMS_BY_SEARCH_SUCCESS,
+    RESET_CREATE_ROOM_DATA
 } from "./room.action.type";
 let initialData: roomInitialDataType = {
     search_loading: false,
@@ -85,13 +86,24 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
     const { type, payload } = actions;
     switch (type) {
         case CREATE_ROOM_LOADING: {
-            return { ...state, create_loading: true }
+            return { ...state, create_loading: true,
+                create_error: false,
+                create_success: false, }
         }
         case CREATE_ROOM_SUCCESS: {
-            return { ...state, create_loading: false, create_success: true } // if needed update rooms here
+            return { ...state, create_loading: false,
+                create_error: false,
+                create_success: true}
         }
         case CREATE_ROOM_ERROR: {
-            return { ...state, create_loading: false, create_success: false, create_error: true }
+            return { ...state, create_loading: false,
+                create_error: true,
+                create_success: false, }
+        }
+        case RESET_CREATE_ROOM_DATA:{
+           return {...state, create_loading: false,
+                create_error: false,
+                create_success: false, }
         }
         case UPDATE_ROOM_LOADING: {
             return { ...state, update_loading: true }

@@ -9,7 +9,7 @@ const RecentCards = ({data}:any) => {
     let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
     let reply = data.body.split(' ');
     let comment=''
-    for(let i=0;i<20;i++){
+    for(let i=0;i<=20;i++){
         if(reply[i]){
             comment+=reply[i]+" "
         }
@@ -33,7 +33,7 @@ const RecentCards = ({data}:any) => {
             </div>
         </div>
         <div className={`${drk_theme?"bg-bg_dark_sec  text-font_dark_sec":"bg-bg_light_sec text-font_light_pri"} text-sm font-semibold rounded-2xl p-2 mt-2`}>
-            <p className={`${drk_theme && "font-light"}`}>{comment}...</p>
+            <p className={`${drk_theme && "font-light"}`}>{comment} {(comment.split(' ').length>18)&&" ..."}</p>
         </div>
     </div>
   )
