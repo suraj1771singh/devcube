@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AiFillDelete, AiFillEdit, AiFillLike, AiOutlineLike } from 'react-icons/ai'
+import { AiFillDelete, AiFillEdit, AiFillLike, AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createComments, deleteComments, getRecentComments, getrepliesOfComment, likeMsg } from '../Redux/comments/comments.actions'
@@ -16,7 +16,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const dispatch: Dispatch<any> = useDispatch()
   const {myId } = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-  const {roomComments,get_reply_msg_loading,create_comment_loading} = useSelector((val:rootReducertype)=>val.comments)
+  const {roomComments,get_reply_msg_loading,create_comment_loading,delete_comment_loading,} = useSelector((val:rootReducertype)=>val.comments)
 
   const [commentReplyes, setCommentReplyes] = useState([]) 
   const nav = useNavigate()
@@ -28,16 +28,25 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const [updateCommentData,setUpdateCommentData] = useState("");
   const [reply, setReply] = useState(false);
   const [msgLoading,setMsgLoading] = useState<boolean|undefined>(false)
-  const [likedMsg,setLikedMsg] = useState<any|undefined>(data?.is_liked)
+  const [likedMsg,setLikedMsg] = useState<boolean|undefined>(data?.is_liked)
   const [createLoading,setCreateLoading] = useState(false)
+  const [deleteLoading,setDeleteLoading] = useState(false);
+  const [replyArr, setReplyArr] = useState<any>([])
+  const [init, setInit] = useState(true)
   const refReply = useRef<HTMLTextAreaElement>(null)
-  const [replyArr,setReplyArr] = useState(data.replies);
 
   useEffect(()=>{
-    if(commentReplyes.length>0){
+    if(!init){
       setReplyArr(commentReplyes)
     }
-  },[commentReplyes, setCommentReplyes])
+    if(commentReplyes.length>0){
+      setInit(false)
+    }
+    if(init&&data){
+      setReplyArr(data.replies)
+  }
+  },[commentReplyes, data, init])
+
   
   useEffect(()=>{
     if(!create_comment_loading){
@@ -46,7 +55,10 @@ const Comment = ({ data,canReply,roomId }: any) => {
      if(!get_reply_msg_loading){
       setMsgLoading(false)
     }
-  },[create_comment_loading, get_reply_msg_loading])
+    if(!delete_comment_loading){
+      setDeleteLoading(false)
+    }
+  },[create_comment_loading, delete_comment_loading, get_reply_msg_loading])
 
   useEffect(() => { 
     dispatch(getRecentComments())
@@ -111,8 +123,9 @@ const Comment = ({ data,canReply,roomId }: any) => {
     setLikedMsg(false)
     data.like_count = data.like_count-1 
   }
-  const handleDeleteComment = (data:any)=>{
-    dispatch(deleteComments(data.id))
+  const handleDeleteComment = (id:number)=>{
+    dispatch(deleteComments(id))
+    setDeleteLoading(true);
   }
   const handleReplyMsg = ()=>{
     setReply(false);setShowUpdateComment(false); 
@@ -162,7 +175,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
               Edit
             </span>
           </div>
-          <div onClick={()=>{handleDeleteComment(data)}} className='hover:text-red-400 my-2 cursor-pointer flex items-center'>
+          <div onClick={()=>{handleDeleteComment(data?.id)}} className='hover:text-red-400 my-2 cursor-pointer flex items-center'>
             <AiFillDelete className='mx-2' />
             <span className='mx-2'>
               Delete
@@ -171,13 +184,12 @@ const Comment = ({ data,canReply,roomId }: any) => {
         </div>}
       </div>
       <div className={`mx-3 px-[40px] ${reply ? "border-l-2" : ""} border-gray-400`}>
-        <p className=''>{data?.body}</p>
+       {deleteLoading?<div className='mx-2'><ClipLoader color="#8001FF" /></div>:<p className=''>{data?.body}</p>}
         <div className='flex items-center'>
-          <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:text-blue-500'>{(data?.replies?.length!==0)&& <div className='mr-4'>{(data.replies.length===1)?"1 Reply":`${replyArr.length} Replies`}</div>}</button>
+          <button onClick={()=>handleReplybtn(data.id)} className='my-2 font-bold hover:text-blue-500'>{(replyArr?.length!==0)&& <div className='mr-4 flex items-center'>{(replyArr?.length===1)?"1 Reply":`${replyArr?.length} Replies`} {reply ?<AiOutlineCaretUp  className=' mx-2 animate-in spin-in-90 duration-300'/>:<AiOutlineCaretDown  className='mx-2 animate-in spin-in-[-90deg] duration-300'/>} </div>}</button>
          {data.height<2&&<GoReply className='ml-0 mr-4 cursor-pointer hover:text-third_color underline' onClick={handleReplyMsg}/>}
-          {likedMsg?<AiFillLike onClick={()=>handleDislikeMsg(data)} className='m-2 text-xl cursor-pointer text-blue-500 animate-in spin-in-90 ease-in-out duration-200'/>:
-          <AiOutlineLike onClick={()=>handleLikeMsg(data)} className='text-xl cursor-pointer text-fade_font m-2 animate-in spin-in-90 ease-in-out duration-200'/>
-        }
+          {likedMsg?<AiFillLike onClick={()=>handleDislikeMsg(data)} className='m-2 text-xl cursor-pointer text-blue-500 animate-in spin-in-[-90deg] ease-in-out duration-500'/>:
+          <AiOutlineLike onClick={()=>handleLikeMsg(data)} className='text-xl cursor-pointer text-fade_font m-2 animate-in spin-in-90 ease-in-out duration-500'/>}
         <p className='text-sm' >{data?.like_count}</p>
         </div>
       {msgLoading? <div className='mx-2'><ClipLoader color="#8001FF" /></div> :data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
