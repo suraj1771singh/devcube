@@ -32,7 +32,8 @@ import {
     GET_ROOMS_BY_SEARCH_LOADING,
     GET_ROOMS_BY_SEARCH_ERROR,
     GET_ROOMS_BY_SEARCH_SUCCESS,
-    RESET_CREATE_ROOM_DATA
+    RESET_CREATE_ROOM_DATA,
+    RESET_UPDATE_ROOM_DATA
 } from "./room.action.type";
 let initialData: roomInitialDataType = {
     search_loading: false,
@@ -106,13 +107,13 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
                 create_success: false, }
         }
         case UPDATE_ROOM_LOADING: {
-            return { ...state, update_loading: true }
+            return { ...state, update_loading: true,update_error:false,update_success:false }
         }
         case UPDATE_ROOM_SUCCESS: {
-            return { ...state, update_loading: false, update_success: true }
+            return { ...state, update_loading: false, update_success: true,update_error:false}
         }
         case UPDATE_ROOM_ERROR: {
-            return { ...state, update_loading: false, update_error: true }
+            return { ...state, update_loading: false, update_error: true,update_success:false}
         }
         case DELETE_ROOM_LOADING: {
             return { ...state, delete_loading: true }
@@ -136,7 +137,7 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
             return { ...state, get_loading: false, get_error: true }
         }
         case GET_ROOM_SUCCESS: {
-            return { ...state, get_success: true, get_loading: false, get_error: false, allRooms: payload.rooms, allRoomsLength: payload.rooms_count }
+            return { ...state, get_success: true, get_loading:false, get_error: false, allRooms: payload.rooms, allRoomsLength: payload.rooms_count }
         }
         case GET_ROOM_BY_USER_LOADING: {
             return { ...state,get_user_rooms_loading:true,
@@ -239,6 +240,11 @@ export const roomReducer = (state = initialData, actions: { type: string; payloa
         return {...state, allRooms: payload.rooms,
             allRoomsLength: payload.rooms_count,search_loading: false,
             search_error: false,}
+    }
+    case RESET_UPDATE_ROOM_DATA:{
+        return{...state, update_loading: false,
+            update_error: false,
+            update_success: false}
     }
         default:
             return { ...state }

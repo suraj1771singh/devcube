@@ -9,8 +9,8 @@ import RecentActivites from '../Components/RecentActivites'
 import { NavLink, useNavigate } from 'react-router-dom'
 import TagsDiv from '../Components/TagsDiv'
 import { resetTopicTag } from '../Redux/topic/topic.actions'
-import Loader from '../Components/Loader'
-import Error from '../Components/Error'
+import Error from '../Components/Error' 
+import AllRoomsSkl from '../Components/skeletons/AllRoomsSkl'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
     let { allRooms, get_loading, get_error, allRoomsLength, search_loading, search_error } = useSelector((val: rootReducertype) => val.rooms)
@@ -24,17 +24,16 @@ const Home = () => {
         if (!isAuth) {
             nav("/login")
         }
-    }, [isAuth, nav])
+    }, [dispatch, isAuth, nav])
     useEffect(() => {
         setRoomsArray(allRooms)
-    }, [allRooms,allRooms.length])
+    }, [allRooms])
 
     useEffect(() => {
         return () => {
             dispatch(resetTopicTag())
         }
     }, [dispatch])
-
     return (
         <>
             <div className='w-11/12 m-auto flex flex-col md:flex-row justify-between'>
@@ -46,6 +45,7 @@ const Home = () => {
                     <button className='border-2 border-third_color py-1 px-4 rounded-full text-third_color'>Popular Discussions</button>
                 </div>
                 {/* middle section => study rooms  */}
+                {get_loading || search_loading ? <AllRoomsSkl />: 
                 <div className='md:w-[54%] ml-[19.3%]'>
                     <div className={`flex items-center justify-between`} >
                         <div className={`${drk_theme ? "bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} py-3 px-4 rounded-xl w-fit`}>
@@ -54,16 +54,16 @@ const Home = () => {
                         </div>
                         <p className='ml-2'>{(topicTags.length === 0) ? "" : `${topicTags.length}/5`}</p>
                         <div className={`flex items-center py-3 rounded-xl overflow-y-auto w-1/2 scrollbar box-border mr-2`} >
-                            <TagsDiv isCreate={false} />
+                         {topicTags&&<TagsDiv isCreate={false} />}
                         </div>
-
                         <NavLink to='/create_room' className='text-sm bg-third_color text-white text-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
-                    <div className='ease-in-out duration-500 animate-in slide-in-from-bottom-48 '>
-
-                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' /> : get_loading || search_loading ? <Loader text='Fetching Rooms..' /> : (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any,id:number) => <RoomCard key={id} data={el} />)}
+                    <div className='ease-in-out duration-500'>
+                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' />: (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any,id:number) => <RoomCard key={id} data={el} />)}
                     </div>
                 </div>
+                }
+
                 {/* right section => recent acitivies  */}
                 <RecentActivites />
             </div>

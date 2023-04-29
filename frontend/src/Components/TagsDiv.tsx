@@ -13,7 +13,12 @@ const TagsDiv = ({isCreate}:any) => {
   const [addTags,setAddTags]= useState<topicDataType[]>([])
   useEffect(()=>{
     setAddTags(topicTags)
-  },[topicTags])
+    },[topicTags])
+    useEffect(()=>{
+      return()=>{
+        console.log("tags over")
+      }
+    },[])
     const handleRemoveTag = (el:topicDataType)=>{
         dispatch(removeTopicTag(el))
       }
