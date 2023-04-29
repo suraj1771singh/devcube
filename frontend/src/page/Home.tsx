@@ -19,7 +19,6 @@ const Home = () => {
     let { isAuth } = useSelector((val: rootReducertype) => val.auth)
     const nav = useNavigate()
     const [roomsArray, setRoomsArray] = useState<any>([])
-
     // check auth and fetch rooms
     useEffect(() => {
         if (!isAuth) {

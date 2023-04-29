@@ -147,12 +147,10 @@ const Comment = ({ data,canReply,roomId }: any) => {
     e.target.style.height= `${e.target.scrollHeight}px`;
   }
   const handleUpdateKeypress = (e:any)=>{
-    e.preventDefault()
-    if(e.key==="Enter"){
-      setUpdateCommentData(updateCommentData + "\n")
-    }
-    console.log(updateCommentData)
-
+    // e.preventDefault()
+    // if(e.key==="Enter"){
+    //   setUpdateCommentData(updateCommentData + "\n")
+    // }
   }
   function handleCommentKeyPress(e:any) {
     // e.preventDefault()

@@ -42,7 +42,7 @@ const Login = () => {
       </label>
 
         {login_loading?<button disabled className='border-[1px] w-fit border-gray-600 py-2 px-4 cursor-pointer m-auto rounded-md' >Loading...</button>  :<input type="submit" value='Login' className='border-[1px] w-fit border-gray-600 py-2 px-4 cursor-pointer m-auto rounded-md'/>}
-        <p className='text-sm text-gray-300 mt-4'>Are You a New User? <span className='text-blue-500 underline cursor-pointer' onClick={()=>nav('/signup')}>Registor here</span> </p>
+        <p className='text-sm text-gray-300 mt-4'>Are You a New User? <span className='text-blue-500 underline cursor-pointer' onClick={()=>nav('/signup')}>Register here</span> </p>
       </form>
       </div>
       </div>  

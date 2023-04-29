@@ -27,9 +27,7 @@ const Navbar = () => {
 
   useEffect(()=>{
     if(isAuth){
-      if(allRooms.length===0){
         dispatch(getRooms())
-      }
       if(allTopics.length===0){
         dispatch(getTopics())
       }

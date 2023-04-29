@@ -102,11 +102,11 @@ const RoomData = ({data}:any) => {
         <div className='my-2'>
           <div className='flex justify-between items-center' >
             <div className='flex items-center'>
-        <h2 className='text-xl font-bold' >{data?.name}</h2> <span className='text-gray-400 mx-2 font-normal' >{(updatedTime!==createdTime)?"(edited)":""}</span>
+        <h2 className='text-2xl font-bold' >{data?.name}</h2> <span className='text-fade_font mx-2 font-normal text-sm' >{(updatedTime!==createdTime)?"(edited)":""}</span>
             </div>
             <div>
             <FiMoreHorizontal className='text-2xl cursor-pointer hover:text-third_color mx-8' onClick={(e)=>toggleMoreInfo(e)} />
-           {owner?toggle&&<div className='py-4 absolute w-fit top-[10%] right-[2%] p-2 font-semibold rounded-xl shadow-md'>
+           {owner?toggle&&<div className='py-4 absolute w-fit top-[10%] right-[2%] p-2 font-semibold rounded-xl shadow-md'> 
               <div onClick={()=>editRoomModal(data)} className='text-third_color mb-2 cursor-pointer flex items-center'>
                 <AiFillEdit className='mx-2'/>
                <span className='mx-2'>
@@ -151,13 +151,13 @@ const RoomData = ({data}:any) => {
         <div className='m-6'>
           <p className='mx-10' >{data?.description}</p>
         </div>
-        <h4 className='font-semibold my-2'>Topic Tages</h4>
+        <h4 className='font-semibold text-xl my-2'>Topic Tages</h4>
         <div className='my-4'> 
         {data?.topic?.map((el:topicDataType)=><button key={el.id} className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} py-2 mr-6 px-4 my-4 rounded-full text-sm`} >{el.name}</button>)}
         </div>
         {leave_loading? <Loader text='Leaving room ..' />:join_error?<Error text='Error While joining Room !'/> :join_loading? <Loader text='Joining room ..' />:<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
                     {(isParticipant||owner)? <textarea onChange={(e:any)=>handleauthOnchange(myData,e)} value={commentBody} className={`w-[80%] overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri "} min-h-[20px] max-h-[200px] resize-none overflow-y-auto`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-fade_font'>Please <span className='text-third_color underline cursor-pointer text-xl'onClick={()=>handleJoinRoom(myData,data.id)} >Join</span> the Room to Comment</p>}
-                   {(isParticipant||owner)&&<TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-gray-400":"cursor-pointer"}`} />}
+                   {(isParticipant||owner)&&<TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-fade_font":"cursor-pointer"}`} />}
                 </div>}
       </div> 
       <div className='mt-12 mx-2'>
