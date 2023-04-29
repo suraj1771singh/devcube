@@ -7,13 +7,17 @@ module.exports = {
     extend: {
       colors: {
         bg_light_pri: "#EAEDF1",
+        bg_light_pri_skl: "#EAEDF1",
         bg_light_sec: "#FFFFFF",
+        bg_light_sec_skl: "#FFFFFF",
         font_light_pri: "#00000",
         font_light_sec: "#436086",
 
         fade_font: "#808080",
         bg_dark_pri: "#111111",
+        bg_dark_pri_skl: "#111111",
         bg_dark_sec: "#1C1C1C",
+        bg_dark_sec_skl: "#1C1C1C",
         font_dark_pri: "#CCCCCC",
         font_dark_sec: "#D9D9D9",
 

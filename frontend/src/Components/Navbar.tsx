@@ -13,10 +13,8 @@ import { getRooms, getRoomsSearch } from '../Redux/room/room.action'
 import { getTopics } from '../Redux/topic/topic.actions'
 const Navbar = () => {
   const dispatch: Dispatch<any> = useDispatch()
-  let { allRooms} = useSelector((val: rootReducertype) => val.rooms)
   let { isAuth, myData, myId } = useSelector((val: rootReducertype) => val.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme);
-  const { allTopics} = useSelector((val: rootReducertype) => val.topics)
 
   const nav = useNavigate()
   const [dropdown, setDropdown] = useState(false);
@@ -27,12 +25,10 @@ const Navbar = () => {
 
   useEffect(()=>{
     if(isAuth){
-        dispatch(getRooms())
-      if(allTopics.length===0){
         dispatch(getTopics())
-      }
+        dispatch(getRooms())
     }
-  },[allRooms.length, allTopics.length, dispatch, isAuth])
+  },[dispatch, isAuth])
 
 
   useEffect(() => {
@@ -78,13 +74,17 @@ const Navbar = () => {
       }else{
         nav("/")
         dispatch(getRoomsSearch(searchValue))
-        setSearchValue("")
       }
     }else{
       setLoginAlert(true)
     } 
   }
-
+  const handleEnterKey = (e:any)=>{
+    if(e.key==='Enter'){
+      nav("/")
+        dispatch(getRoomsSearch(searchValue))
+    }
+  }
   return (
     <>
     <nav className={`fixed h-[80px] left-0 right-0 top-0 w-screen ${drk_theme ? "bg-bg_dark_sec" : "bg-bg_light_sec"} p-2 z-50 flex items-center px-10 `}>
@@ -96,7 +96,7 @@ const Navbar = () => {
           </NavLink>
         </div>
         <div className={`w-[50%] px-2 py-3 rounded-full hidden md:flex justify-around ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`}>
-          <input onChange={(e)=>{setSearchValue(e.target.value)}} value={searchValue} type="search" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Search here..' />
+          <input onKeyDown={handleEnterKey} onChange={(e)=>{setSearchValue(e.target.value)}} value={searchValue} type="search" className={`w-[80%] bg-bg_pri outline-none ${drk_theme ? "bg-bg_dark_pri text-font_dark_pri" : "bg-bg_light_pri text-font_light_pri"}`} placeholder='Search here..' />
           <CiSearch onClick={handleSearchResult} className='cursor-pointer text-3xl' />
         </div>
         <div className='flex items-center relative' >

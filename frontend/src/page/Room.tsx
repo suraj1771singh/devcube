@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getRoombyId } from '../Redux/room/room.action'
 import { rootReducertype } from '../Redux/Store'
 import { getRecentComments, getRoomComments } from '../Redux/comments/comments.actions'
-import Loader from '../Components/Loader'
 import Error from '../Components/Error'
+import RoomDataSkl from '../Components/skeletons/RoomDataSkl'
+import ParticipantsSkl from '../Components/skeletons/ParticipantsSkl'
 
 const Room = () => {
     const {id} = useParams()
@@ -32,11 +33,11 @@ const Room = () => {
                 </div>
                 {/* middle section => Room's Data  */}
                 <div className='w-[74%] mr-[30%] ml-[4%]'>
-                    {get_room_by_id_loading?<div className='m-10'><Loader text='Fetching room Data'/> </div>:get_room_by_id_error?<div> <Error text='Error Wnile Fetching Room !' /> </div>:roomData&&<RoomData data={roomData} />}
+                    {get_room_by_id_loading?<RoomDataSkl/> :get_room_by_id_error?<div> <Error text='Error Wnile Fetching Room !' /> </div>:roomData&&<RoomData data={roomData} />}
                 </div>
                 {/* right section => recent acitivies  */}
-            {!get_room_by_id_loading&&roomData&&<Participants data={roomData?.participants} />}
+            {get_room_by_id_loading?<ParticipantsSkl/>:<Participants data={roomData?.participants} />}
             </div>
   )
-}
+} 
 export default Room

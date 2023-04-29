@@ -82,8 +82,6 @@ const RoomData = ({data}:any) => {
         let msg = {body:commentBody,parent:null}  
         dispatch(createComments(msg,id))
         setCommentBody("")
-      }else{
-        console.log('empty')
       }
    }
    const handleauthOnchange = (myData:loggedinUserType,e:any)=>{
@@ -97,7 +95,7 @@ const RoomData = ({data}:any) => {
    }
   return (
     <>
-        <div className={`${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md ease-in-out duration-500 animate-in slide-in-from-bottom-48 mb-20`}>
+        <div className={`${drk_theme ?"bg-bg_dark_sec text-font_dark_pri" : "bg-bg_light_sec text-font_light_pri"} rounded-2xl p-6 shadow-md ease-in-out mb-20`}>
       <div onClick={()=>setToggle(false)} className='relative' >
         <div className='my-2'>
           <div className='flex justify-between items-center' >
@@ -157,7 +155,7 @@ const RoomData = ({data}:any) => {
         </div>
         {leave_loading? <Loader text='Leaving room ..' />:join_error?<Error text='Error While joining Room !'/> :join_loading? <Loader text='Joining room ..' />:<div className={`px-2 py-3 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"}`}>
                     {(isParticipant||owner)? <textarea onChange={(e:any)=>handleauthOnchange(myData,e)} value={commentBody} className={`w-[80%] overflow-hidden bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri "} min-h-[20px] max-h-[200px] resize-none overflow-y-auto`} placeholder='Add Comment..'></textarea>:<p className='text-lg text-fade_font'>Please <span className='text-third_color underline cursor-pointer text-xl'onClick={()=>handleJoinRoom(myData,data.id)} >Join</span> the Room to Comment</p>}
-                   {(isParticipant||owner)&&<TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-fade_font":"cursor-pointer"}`} />}
+                   {(isParticipant||owner)&&<TbSend onClick={()=>handleComment(data?.id)} className={`text-3xl ${(commentBody.length<4)?"text-fade_font/30":"cursor-pointer"}`} />}
                 </div>}
       </div> 
       <div className='mt-12 mx-2'>

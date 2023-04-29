@@ -33,11 +33,13 @@ GET_ROOMS_BY_TOPICS_SUCCESS,
 GET_ROOMS_BY_SEARCH_LOADING,
 GET_ROOMS_BY_SEARCH_ERROR,
 GET_ROOMS_BY_SEARCH_SUCCESS,
-RESET_CREATE_ROOM_DATA
+RESET_CREATE_ROOM_DATA,
+RESET_UPDATE_ROOM_DATA
 }from "./room.action.type";
 import { createRoomApi, deleteRoomApi, getRoomByIdApi, getRoomByUserIdApi, getRoomsApi, getRoomsByTopicApi, getRoomsJoinedByUserApi, getRoomsSearchApi, joinRoomApi, leaveRoomApi, updateRoomApi } from "./room.api";
 
 export const getRooms = ()=>async(dispatch:Dispatch)=>{
+    console.log("called")
     dispatch({type:GET_ROOM_LOADING})
     try{
         let res = await getRoomsApi()
@@ -150,4 +152,7 @@ try{
 
  export const resetCreateRoomData= ()=>(dispatch:Dispatch)=>{
     dispatch({type:RESET_CREATE_ROOM_DATA})
+ }
+ export const resetUpdateRoomData= ()=>(dispatch:Dispatch)=>{
+    dispatch({type:RESET_UPDATE_ROOM_DATA})
  }

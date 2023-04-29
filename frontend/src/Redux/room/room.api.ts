@@ -27,7 +27,6 @@ export const createRoomApi = async(data:createRoomDataType)=>{
 }
 
 export const updateRoomApi = async(data:any)=>{
-    console.log(data)
     try{
         let tokenAll:any = sessionStorage.getItem("authTokens");
         let authToken:userTokenType = JSON.parse(tokenAll);
