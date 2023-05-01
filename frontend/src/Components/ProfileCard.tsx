@@ -11,7 +11,12 @@ import ProfilePhotoModal from './ProfilePhotoModal'
 import Loader from './Loader'
 import Error from './Error'
 import ProfileSkl from './skeletons/ProfileSkl'
-const ProfileCard = ({ id }: any) => {
+import { roomDataDataType, userProfileDataType } from '../dataTypes'
+
+interface propsType{
+    id:number|string;
+}
+const ProfileCard = ({ id }: propsType) => {
     let { userRooms, get_user_rooms_loading, get_user_rooms_error, get_user_joined_rooms_loading,
         get_user_joined_rooms_error } = useSelector((val: rootReducertype) => val.rooms)
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
@@ -26,7 +31,7 @@ const ProfileCard = ({ id }: any) => {
     const [usersData, setUsersData] = useState<any>(null);
     useEffect(() => {
         // eslint-disable-next-line array-callback-return
-        let youFollowing = followers.filter((el: any) => {
+        let youFollowing = followers.filter((el: userProfileDataType) => {
             if (el.id === myId) {
                 return el
             }
@@ -82,7 +87,7 @@ const ProfileCard = ({ id }: any) => {
                             <div className='absolute left-0 top-0 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-32'></div>
                             <div className={`flex pb-4 px-4 items-center justify-between mt-28 `}>
                                 <div className={`flex z-20 mt-[-10px]`}>
-                                    <div onMouseMove={() => setProfileHover(true)} onMouseOut={() => setProfileHover(false)} onClick={() => handlePhotoModal(myId === (+id), usersData?.photo)} className={`cursor-pointer border-4 ${drk_theme ? "border-bg_dark_sec" : "border-bg_light_sec"} w-[120px] h-[120px] overfhow-hidden rounded-full z-20 relative overflow-hidden`}>
+                                    <div onMouseMove={() => setProfileHover(true)} onMouseOut={() => setProfileHover(false)} onClick={() => handlePhotoModal(myId===(+id), usersData?.photo)} className={`cursor-pointer border-4 ${drk_theme ? "border-bg_dark_sec" : "border-bg_light_sec"} w-[120px] h-[120px] overfhow-hidden rounded-full z-20 relative overflow-hidden`}>
                                         <img src={usersData?.photo} alt="profile" className='w-full rounded-full' />
                                         {myId === (+id) && profileHover && <div className='absolute bg-white/40 bottom-0 left-0 h-[50%] w-full flex justify-center items-center'>
                                             <BiEdit className='text-3xl text-black' />
@@ -121,7 +126,7 @@ const ProfileCard = ({ id }: any) => {
                         </div>
                     </div>}
                 </div>
-                {get_user_rooms_error || get_user_joined_rooms_error ? <div className='my-4'> <Error text='Something Went Wrong !' /></div> : get_user_rooms_loading || get_user_joined_rooms_loading ? <div className='my-4'><Loader text='Fetching Data' /></div> : (userRooms?.length === 0) ? <h2 className='text-fade_font text-center my-10 text-xl'>No Records found </h2> : userRooms?.map((el: any) => <RoomCard key={el.id} data={el} />)}
+                {get_user_rooms_error || get_user_joined_rooms_error ? <div className='my-4'> <Error text='Something Went Wrong !' /></div> : get_user_rooms_loading || get_user_joined_rooms_loading ? <div className='my-4'><Loader text='Fetching Data' /></div> : (userRooms?.length === 0) ? <h2 className='text-fade_font text-center my-10 text-xl'>No Records found </h2> : userRooms?.map((el: roomDataDataType) => <RoomCard key={el.id} data={el} />)}
             </div>
             {editModal && <EditProfileModal data={usersData} closeModal={closeEditModal} />}
             {profilePhotoModal && <ProfilePhotoModal data={photo} closeModal={() => setProfilePhotoModal(false)} />}

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removeTopicTag } from '../Redux/topic/topic.actions'
 import { rootReducertype } from '../Redux/Store'
 
-const TagsDiv = ({isCreate}:any) => {
+const TagsDiv = ({isCreate}:{isCreate:boolean}) => {
     const dispatch:Dispatch<any> = useDispatch();
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const {topicTags} =  useSelector((val:rootReducertype)=>val.topics)

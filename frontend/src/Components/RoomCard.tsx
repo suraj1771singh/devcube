@@ -6,10 +6,13 @@ import { FiMoreHorizontal } from 'react-icons/fi'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Dispatch, useEffect, useState } from 'react';
 import { joinRoom } from '../Redux/room/room.action';
-import { loggedinUserType, topicDataType } from '../dataTypes';
+import { loggedinUserType, roomDataDataType, topicDataType } from '../dataTypes';
 import React from 'react';
 
-const RoomCard = ({ data }: any) => {
+interface propsType{
+    data:roomDataDataType
+}
+const RoomCard = ({ data }: propsType) => {
     const dispatch: Dispatch<any> = useDispatch()
     const { join_loading } = useSelector((val: rootReducertype) => val.rooms);
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)

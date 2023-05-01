@@ -4,34 +4,32 @@ import { useDispatch, useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { Dispatch } from 'redux';
 import { updateUser } from '../Redux/user/user.actions';
+import { userProfileDataType } from '../dataTypes';
 interface editmodalProps{
-    data:any;
+    data:userProfileDataType;
     closeModal:()=>void
 }
 const EditProfileModal = (props:editmodalProps) => {
     const{data,closeModal} = props;
     const dispatch:Dispatch<any> = useDispatch()
     let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
-    const [update,setUpdate] = useState(data);
+    const [update,setUpdate] = useState<any>(data);
     useEffect(()=>{
         window.document.body.style.overflow='hidden'
         return ()=>{
             window.document.body.style.overflow='auto'
         }
-    })
-    for(let key in data){
-        if(data[key]==null){
-            data[key]=''
-        }
-    }
-    const handleChange = (e: { target: { name: any; value: any; }; })=>{
+    },[])
+    const handleChange = (e: { target: { name: string; value: string; }; })=>{
         setUpdate({...update,[e.target.name]:e.target.value})
     }
-    const handleUserDetailsUpdate =(e:any)=>{
+
+    const handleUserDetailsUpdate:React.FormEventHandler<HTMLFormElement> =(e)=>{
       e.preventDefault()
         dispatch(updateUser(update))
         closeModal()
     }
+
   return (
     <div className='z-50 fixed flex justify-center items-center bg-black/50 top-0 bottom-0 left-0 right-0'>
         <div className={`${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} md:w-[50%] overflow-hidden shadow-xl rounded-2xl animate-in zoom-in-50 ease-in-out duration-500`}>

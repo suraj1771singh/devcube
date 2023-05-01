@@ -9,18 +9,21 @@ import { topicDataType } from '../dataTypes'
 import { getRoomsByTopic } from '../Redux/room/room.action'
 import Error from './Error'
 import BrowseTopicsSkeleton from './skeletons/BrowseTopicsSkeleton'
-
+interface topicsDataTypes{
+  id:number|string,
+  name:string
+}
 const BrowseTopics = ({isCreate=false}) => {
   const { allTopics,topicTags,get_topics_loading,get_topics_error,} = useSelector((val: rootReducertype) => val.topics)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
   const [more,setMore] = useState(false);
-  const [topics, setTopics] = useState<any>([]) 
+  const [topics, setTopics] = useState<topicsDataTypes[]>([]) 
   const [limit,setLimit] = useState(false)
   const dispatch: Dispatch<any> = useDispatch()
   const [topicsrch,setTopicSrch] = useState("")
   useEffect(()=>{
     if(!isCreate){
-      let topicsNums = topicTags.map((el:any)=>{
+      let topicsNums = topicTags.map((el:topicsDataTypes)=>{
         return el.id
       })
       if(topicTags.length>0){
@@ -60,7 +63,7 @@ const BrowseTopics = ({isCreate=false}) => {
   if(get_topics_loading){
     return (<><BrowseTopicsSkeleton/> </>)
   }
-  const handleKeyDown = (e:any)=>{
+  const handleKeyDown:React.KeyboardEventHandler<HTMLInputElement> = (e)=>{
     if(e.key==="Enter"){
       console.log('Search for',topicsrch)
     }
@@ -75,7 +78,7 @@ const BrowseTopics = ({isCreate=false}) => {
           <CiSearch className='cursor-pointer text-3xl'/>
         </div>
       </div>
-      {topics?.map((el: any)=> <Topics key={el.id} data={el} limit={limit} handleTopic={handleTopics} />)}
+      {topics?.map((el: topicsDataTypes)=> <Topics key={el.id} data={el} limit={limit} handleTopic={handleTopics} />)}
       {more?<button onClick={()=>setMore(false)} className='flex font-semibold items-center justify-between my-3 mx-8 hover:text-third_color '>
         <p className='font-semibold'>Less</p>
         <AiOutlineUp className='font-bold mx-2' />

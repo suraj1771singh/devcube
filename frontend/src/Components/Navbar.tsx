@@ -79,7 +79,7 @@ const Navbar = () => {
       setLoginAlert(true)
     } 
   }
-  const handleEnterKey = (e:any)=>{
+  const handleEnterKey:React.KeyboardEventHandler<HTMLInputElement> = (e)=>{
     if(e.key==='Enter'){
       nav("/")
         dispatch(getRoomsSearch(searchValue))
