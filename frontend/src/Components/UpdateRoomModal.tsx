@@ -45,7 +45,7 @@ const UpdateRoomModal = () => {
   }, [dispatch])
   // functions for various events:
   // changing input for controlled components
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: { target: { name: string; value: string; }; }) => {
     setRoomData({ ...roomData, [e.target.name]: e.target.value })
   }
   // on Create Room Button click

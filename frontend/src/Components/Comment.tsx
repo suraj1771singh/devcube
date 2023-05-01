@@ -12,8 +12,13 @@ import { useNavigate } from 'react-router-dom'
 import { updateComments } from '../Redux/comments/comments.actions'
 import { ClipLoader } from 'react-spinners'
 import { joinRoom } from '../Redux/room/room.action'
-
-const Comment = ({ data,canReply,roomId }: any) => {
+import { commentDataDataType } from '../dataTypes'
+interface propsType{
+  data:commentDataDataType,
+  canReply:boolean,
+  roomId:number|string;
+}
+const Comment = ({ data,canReply,roomId }:propsType) => {
   const dispatch: Dispatch<any> = useDispatch()
   const {myId, myData} = useSelector((val: rootReducertype) => val?.auth)
   let { drk_theme } = useSelector((val: rootReducertype) => val.theme)
@@ -32,10 +37,9 @@ const Comment = ({ data,canReply,roomId }: any) => {
   const [likedMsg,setLikedMsg] = useState<boolean|undefined>(data?.is_liked)
   const [createLoading,setCreateLoading] = useState(false)
   const [deleteLoading,setDeleteLoading] = useState(false);
-  const [replyArr, setReplyArr] = useState<any>([])
+  const [replyArr, setReplyArr] = useState<commentDataDataType[]>([])
   const [init, setInit] = useState(true)
   const refReply = useRef<HTMLTextAreaElement>(null)
-
   useEffect(()=>{
     if(!init){
       setReplyArr(commentReplyes)
@@ -47,8 +51,6 @@ const Comment = ({ data,canReply,roomId }: any) => {
       setReplyArr(data.replies)
   }
   },[commentReplyes, data, init])
-
-  
   useEffect(()=>{
     if(!create_comment_loading){
       setCreateLoading(false)
@@ -69,15 +71,16 @@ const Comment = ({ data,canReply,roomId }: any) => {
   }, [dispatch])
 
   useEffect(()=>{
-    // eslint-disable-next-line array-callback-return
-    setCommentReplyes(roomComments.filter((el:any)=>{
+    setCommentReplyes(roomComments.filter((el:commentDataDataType)=>{
         if(el.parent===data?.id){
-            return el
+            return true
+        }else{
+          return false
         }
     }))
   },[data?.id, roomComments?.length,roomComments])
   
-  const handleEditModal= (e:any)=>{
+  const handleEditModal:React.MouseEventHandler<SVGElement>= (e)=>{
     e.stopPropagation()
     setcommentModal(true)
   }
@@ -107,28 +110,28 @@ const Comment = ({ data,canReply,roomId }: any) => {
     let user = {id:myId,email:myData.email}
     dispatch(joinRoom(id,user))
   }
-  const handleEditComment = (data:any)=>{
+  const handleEditComment= (data:commentDataDataType)=>{
     setUpdateCommentData(data.body);
     setReply(false); 
     setShowWriteComment(false);
     setShowUpdateComment(!showUpdateComment)
   }
-  const handleUpdateComment = (data:any)=>{
+  const handleUpdateComment = (data:commentDataDataType)=>{
     data.body=updateCommentData;
     dispatch(updateComments(data))
     setShowUpdateComment(false)
   }
-  const handleLikeMsg = (data:any)=>{
+  const handleLikeMsg = (data:commentDataDataType)=>{
     dispatch(likeMsg(data.id))
     setLikedMsg(true)
     data.like_count = data.like_count+1 
   }
-  const handleDislikeMsg = (data:any)=>{
+  const handleDislikeMsg = (data:commentDataDataType)=>{
     dispatch(likeMsg(data.id))
     setLikedMsg(false)
     data.like_count = data.like_count-1 
   }
-  const handleDeleteComment = (id:number)=>{
+  const handleDeleteComment = (id:number|string)=>{
     dispatch(deleteComments(id))
     setDeleteLoading(true);
   }
@@ -141,24 +144,24 @@ const Comment = ({ data,canReply,roomId }: any) => {
       }
     }, 600);
   }
-  const hdnaleUpdateMsgChange = (e:any)=>{
+  const hdnaleUpdateMsgChange:React.ChangeEventHandler<HTMLTextAreaElement> = (e)=>{
     setUpdateCommentData(e.target.value);
     e.target.style.height="auto"
     e.target.style.height= `${e.target.scrollHeight}px`;
   }
-  const handleUpdateKeypress = (e:any)=>{
+  const handleUpdateKeypress:React.KeyboardEventHandler<HTMLTextAreaElement> = (e)=>{
     // e.preventDefault()
     // if(e.key==="Enter"){
     //   setUpdateCommentData(updateCommentData + "\n")
     // }
   }
-  function handleCommentKeyPress(e:any) {
-    // e.preventDefault()
+  const handleCommentKeyPress:React.KeyboardEventHandler<HTMLTextAreaElement>= (e)=>{
+
     // if(e.key==="Enter"){
     //   setCommentBody(commentBody + "n" )
     // }
   }
-  const handleCommentBodyChange = (e:any)=>{
+  const handleCommentBodyChange:React.ChangeEventHandler<HTMLTextAreaElement> = (e)=>{
     setCommentBody(e.target.value)
     e.target.style.height="auto";
     e.target.style.height= `${e.target.scrollHeight}px`;
@@ -195,7 +198,7 @@ const Comment = ({ data,canReply,roomId }: any) => {
           <AiOutlineLike onClick={()=>handleLikeMsg(data)} className='text-xl cursor-pointer text-fade_font m-2 animate-in spin-in-90 ease-in-out duration-500'/>}
         <p className='text-sm' >{data?.like_count}</p>
         </div>
-      {msgLoading? <div className='mx-2'><ClipLoader color="#8001FF" /></div> :data.height<2&&reply&&commentReplyes?.map((el: any,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
+      {msgLoading? <div className='mx-2'><ClipLoader color="#8001FF" /></div> :data.height<2&&reply&&commentReplyes?.map((el: commentDataDataType,id:number) => <Comment key={id} data={el} canReply={canReply} roomId={roomId} />)}
       {createLoading&&<div className='mx-2'><ClipLoader color="#8001FF" /> </div>}
         {showWriteComment && (data?.height<2)?<div className={`px-2 py-3 my-2 rounded-xl hidden md:flex items-end justify-around ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} animate-in slide-in-from-top-5 ease-in-out duration-200`}>
         {canReply?<textarea onKeyDown={handleCommentKeyPress} ref={refReply} rows={2} onChange={handleCommentBodyChange} value={commentBody} className={`w-[80%] bg-bg_pri outline-none ${drk_theme?"bg-bg_dark_pri text-font_dark_pri":"bg-bg_light_pri text-font_light_pri"} min-h-12 max-h-[200px] resize-none overflow-y-auto`} placeholder='Write..'/>:<p className='text-fade_font'>Please <span className='text-third_color underline cursor-pointer' onClick={()=>handleJoinRoom(data?.room?.id)}>Join</span> Room to reply</p>}

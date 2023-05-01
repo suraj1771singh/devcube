@@ -12,7 +12,7 @@ const Login = () => {
   let dispatch:Dispatch<any> = useDispatch()
   let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)
   const [userData,setUserData] = useState({email:"",password:""})
-  const handleChange=(e: { target: { name: any; value: any } })=>{
+  const handleChange=(e: { target: { name: string; value: string } })=>{
     setUserData({...userData,[e.target.name]:e.target.value})
   }
   const [showPass,setShowPass] = useState(false)

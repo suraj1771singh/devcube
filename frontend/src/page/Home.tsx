@@ -11,6 +11,7 @@ import TagsDiv from '../Components/TagsDiv'
 import { resetTopicTag } from '../Redux/topic/topic.actions'
 import Error from '../Components/Error' 
 import AllRoomsSkl from '../Components/skeletons/AllRoomsSkl'
+import { roomDataDataType } from '../dataTypes'
 const Home = () => {
     const dispatch: Dispatch<any> = useDispatch()
     let { allRooms, get_loading, get_error, allRoomsLength, search_loading, search_error } = useSelector((val: rootReducertype) => val.rooms)
@@ -59,7 +60,7 @@ const Home = () => {
                         <NavLink to='/create_room' className='text-sm bg-third_color text-white text-semibold md:px-4 p-2 md:py-3 rounded-md flex items-center cursor-pointer md:text-md'> <IoAddSharp className='text-2xl md:mr-2' /> Create Room</NavLink>
                     </div>
                     <div className='ease-in-out duration-500'>
-                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' />: (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: any,id:number) => <RoomCard key={id} data={el} />)}
+                        {get_error || search_error ? <Error text='Error While Fetching Rooms !' />: (roomsArray.length === 0) ? <p className='text-fade_font text-center my-10 text-xl'>No Records Found</p> : roomsArray?.map((el: roomDataDataType,id:number) => <RoomCard key={id} data={el} />)}
                     </div>
                 </div>
                 }

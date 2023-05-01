@@ -2,8 +2,12 @@ import { useSelector } from 'react-redux'
 import { rootReducertype } from '../Redux/Store'
 import { CalcTime } from './time'
 import { useNavigate } from 'react-router-dom'
+import { commentDataDataType} from '../dataTypes'
 
-const RecentCards = ({data}:any) => {
+interface propsType{
+    data:commentDataDataType
+}
+const RecentCards = ({data}:propsType) => {
     let dynamicTime = new Date(data?.created).getTime()
     const nav = useNavigate()
     let {drk_theme} = useSelector((val:rootReducertype)=>val.theme)

@@ -32,8 +32,10 @@ const ProfilePhotoModal = (props: props) => {
             setPhoto('')
         }
     }, [data.pic, new_photo])
-    const handleEditProfile = async (e: any) => {
-        dispatch(updateUserProfile(e.target.files[0]))
+    const handleEditProfile:React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+        if(e.target.files){
+            dispatch(updateUserProfile(e.target.files[0]))
+        }
     }
     const handleProfileUpdate = (img: string) => {
         userData.photo=img;
@@ -49,7 +51,7 @@ const ProfilePhotoModal = (props: props) => {
                         <img src={photo} alt="profile" className='min-w-[600px] min-h-[600px] h-fit w-fit' />
                         {data.owner && profileHover && <div className='absolute bg-white/40 bottom-0 left-0 h-[20%] w-full flex justify-center items-center'>
                             {new_photo ? <MdFileDownloadDone onClick={() => handleProfileUpdate(new_photo)} className='text-6xl text-black cursor-pointer hover:text-third_color ' /> : <label>
-                                <input type="file" accept='image/png,image/jpeg' className='hidden' onChange={(e: any) => handleEditProfile(e)} />
+                                <input type="file" accept='image/png,image/jpeg' className='hidden' onChange={handleEditProfile} />
                                 <BiEdit className='text-6xl text-black cursor-pointer hover:text-third_color' />
                             </label>
                             }

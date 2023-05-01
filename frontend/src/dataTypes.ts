@@ -10,23 +10,23 @@ export interface loginUserDataType {
     password: string;
 }
 export interface loggedinUserType {
-    bio:string|null,
-    date_joined:string,
-    email:string,
-    first_name:string,
-    following:number[],
-    groups:any[],
-    id:number|string,
-    insta_url:string|null,
-    is_active:boolean,
-    is_staff:boolean,
-    is_superuser:boolean,
-    last_name:string|null
-    linkedin_url:string|null,
-    photo:string|null,
-    twitter_url:string|null
-    user_permissions:string[]
-    username:string
+    bio: string | null,
+    date_joined: string,
+    email: string,
+    first_name: string,
+    following: number[],
+    groups: any[],
+    id: number | string,
+    insta_url: string | null,
+    is_active: boolean,
+    is_staff: boolean,
+    is_superuser: boolean,
+    last_name: string | null
+    linkedin_url: string | null,
+    photo: string | null,
+    twitter_url: string | null
+    user_permissions: string[]
+    username: string
 }
 export interface authUserDataType {
     login_loading: boolean,
@@ -35,7 +35,7 @@ export interface authUserDataType {
     signup_loading: boolean,
     signup_error: boolean,
     signup_success: boolean,
-    myData: loggedinUserType|null,
+    myData: loggedinUserType | null,
     logout_loading: boolean,
     logout_error: boolean,
     myId: string | number | null
@@ -60,13 +60,13 @@ export interface topicDataType {
     id: number | string;
     name: string
 }
-export interface jwtTokenType{
-    exp:number,
-    iat:number,
-    jti:string,
-    token_type:string,
-    user_id:string,
-    username:string
+export interface jwtTokenType {
+    exp: number,
+    iat: number,
+    jti: string,
+    token_type: string,
+    user_id: string,
+    username: string
 }
 
 export interface topicDataInitialDatatype {
@@ -85,9 +85,13 @@ export interface roomHostDataType {
     first_name: string,
     last_name: string,
     id: string | number,
-    profile?: string
+    photo?: string
 }
 
+export interface topictype{
+name:string;
+id:number
+}
 
 export interface roomDataDataType {
     created: string,
@@ -96,21 +100,21 @@ export interface roomDataDataType {
     id: string | number,
     name: string,
     participants: roomParticipantsDataType[],
-    topic: number | number[],
+    topic: topictype[],
     updated: string
 }
 
 // room reducer initial data type 
 export interface roomInitialDataType {
-    search_loading:boolean,
-    get_user_rooms_loading:boolean,
-    get_user_rooms_error:boolean,
-    get_user_joined_rooms_loading:boolean,
-    get_user_joined_rooms_error:boolean,
-    search_error:boolean,
+    search_loading: boolean,
+    get_user_rooms_loading: boolean,
+    get_user_rooms_error: boolean,
+    get_user_joined_rooms_loading: boolean,
+    get_user_joined_rooms_error: boolean,
+    search_error: boolean,
     allRooms: roomDataDataType[],
-    allRoomsLength:number,
-    userRooms:roomDataDataType[],
+    allRoomsLength: number,
+    userRooms: roomDataDataType[],
     create_loading?: boolean,
     create_error?: boolean,
     create_success?: boolean,
@@ -144,4 +148,49 @@ export interface roomInitialDataType {
     get_room_by_id_error?: boolean,
     get_room_by_id_success?: boolean,
     roomData: roomDataDataType | null
+}
+
+export interface commentRoomType {
+    id: number,
+    name: string;
+}
+export interface commentUserType {
+    email: string;
+    first_name: string;
+    last_name: string;
+    photo: string;
+    id: number;
+}
+export interface commentDataDataType {
+    body: string;
+    created: string;
+    height: number;
+    id: number|string;
+    is_liked: boolean;
+    like_count: number;
+    parent: number | null
+    replies?:any;
+    room: commentRoomType;
+    updated: string;
+    user: commentUserType
+}
+
+export interface userProfileDataType{
+bio:string;
+date_joined:string;
+email:string; 
+first_name:string;
+following:number[]
+groups?:number[]
+id:number;
+insta_url?:string|null;
+is_active:boolean;
+is_staff:boolean
+is_superuser:boolean;
+last_name:string;
+linkedin_url?:string|null;
+photo:string;
+twitter_url?:string|null;
+user_permissions?:string[]
+username:string;
 }
